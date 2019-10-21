@@ -34,7 +34,7 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
             glo.tmp_dir                    = [dag_drive_IP 'Data\' group{gr}{sub}];
         end
         
-        [~, date_files{gr}{sub}]                 = bh_arrange_trials_eye_hand(glo.tmp_dir, dates_subject_in{gr}{sub}, batching{gr});
+        [~, date_files{gr}{sub}]                 = beh_arrange_trials_eye_hand(glo.tmp_dir, dates_subject_in{gr}{sub}, batching{gr});
         
         for j=1:size(date_files{gr}{sub},1)
             da(j)                   = str2num(date_files{gr}{sub}{j,1}(end-7:end));
@@ -99,7 +99,7 @@ for gr=1:numel(group)
     %here get behavioral analysis from Monkeypsych_analyse and perform
     %additional analysis, need to understand what's happening here !!!! 
     [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), batch.unique_pos.(subject_ID{gr})] ...
-        = bh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
+        = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
 end
 
 %% Here repetition for the same group
@@ -184,12 +184,12 @@ end
 
 
 % [anova_out] = bh_anova_3_factors(batch,testing);
-[batch.stat]=bh_statistics(batch,testing);
-[batch.stat.groups, ~]=bh_statistics_control_exp_group(batch,testing);
+[batch.stat]=beh_statistics(batch,testing);
+[batch.stat.groups, ~]=beh_statistics_control_exp_group(batch,testing);
 
 save([GLO.folder_to_save filesep 'data'],'batch');
 
 GLO.correlation_mode = steady.correlation_mode;
 if GLO.plot_it          == 1
-    bh_compare_groups(batch,testing)
+    beh_compare_groups(batch,testing)
 end
