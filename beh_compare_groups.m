@@ -9,7 +9,8 @@ close all
 
 Plot_settings.saccades.effectors    = {'0','3',GLO.type_of_free_gaze};
 Plot_settings.reaches.effectors     = {'4',GLO.type_of_free_gaze};
-Plot_settings.types                 = {'2', '3', '4'};
+% Plot_settings.types                 = {'2', '3', '4'};
+Plot_settings.types                 = {'4'};
 
 Plot_settings.saccades.n_rows       = numel(Plot_settings.types);
 Plot_settings.saccades.n_columns    = numel(Plot_settings.saccades.effectors);
