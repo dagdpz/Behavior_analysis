@@ -94,7 +94,8 @@ steady.saccade_definition         = 4;
         steady.tar_range_x                  =   [NaN;NaN];
         steady.tar_range_y                  =   [NaN;NaN];
 
-load('Y:\Projects\PPC_pulv_eye_hand\ephys\MIP_dPul_inj_working_post_sfn\behaviour_filelist.mat');
+% load('Y:\Projects\PPC_pulv_eye_hand\ephys\MIP_dPul_inj_working_post_sfn\behaviour_filelist.mat');
+load('Y:\Projects\PPC_pulv_eye_hand\ephys\MIP_dPul_inj_choi_w_o_20171012\behaviour_filelist.mat');
 
 filelist_formatted_control=filelist_formatted.Lin_MIP_R_PT0_Ddre_han;
 filelist_formatted_inactivation=filelist_formatted.Lin_MIP_R_PT1_Ddre_han;
@@ -116,7 +117,7 @@ batching{2}.range_of_dates      = 0;
 
 
 %% over all
-GLO.folder_to_save                  = 'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Linus_dPul_inj_MIP_per_run';
+GLO.folder_to_save                  = 'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Linus_dPul_inj_MIP_w_o_20171012';
 run beh_run_analysis
 
 
