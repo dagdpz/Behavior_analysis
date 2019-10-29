@@ -97,7 +97,7 @@ for gr=1:numel(group)
         continue
     end
     %here get behavioral analysis from Monkeypsych_analyse and perform
-    %additional analysis, need to understand what's happening here !!!! 
+    %some correlation (latency with hands, etc) everything is saved in the structure bactch 
     [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), batch.unique_pos.(subject_ID{gr})] ...
         = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
 end
