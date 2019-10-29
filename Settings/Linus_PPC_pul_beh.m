@@ -16,7 +16,7 @@ GLO.fontsize_labels                 =   12;
 GLO.linewidth                       =   2;
 GLO.plot_raw_endpoints              =   1; %1 means 1 point per trial, 0 means average across trials
 GLO.calculate_statististics         =   1;
-GLO.parametric_testing              =   0;
+GLO.parametric_testing              =   1;
 GLO.plot_statististics              =   1;
 GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
@@ -35,7 +35,7 @@ GLO.choice_only                     =   0;
 GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
-GLO.point_per_batch                 =   1; %0 average across session , 1 % 1 point per run
+GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
 GLO.summary                         =   [-1]; %which plots
 GLO.target_locations_in_raw         =   0;
 GLO.saccade_in_raw                  =   0;
@@ -116,7 +116,7 @@ batching{2}.range_of_dates      = 0;
 
 
 %% over all
-GLO.folder_to_save                  = 'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Linus_dPul_inj_MIP_per_run';
+GLO.folder_to_save                  = 'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Linus_dPul_inj_MIP_post_sfn';
 run beh_run_analysis
 
 
