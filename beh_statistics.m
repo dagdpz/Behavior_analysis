@@ -25,7 +25,7 @@ for sr=1:numel(saccades_reaches)
     for co=1:numel(comparissons)
         comparisson=comparissons{co};
         for pa=1:numel(parameters)
-            par=parameters{pa};
+            par=parameters{pa}; %the next if condition defines the parameters to NOT calculate statistics 
             if strcmp(par,'ini_fix') || strcmp(par,'ini_abort') || strcmp(par,'abort_raw_states') || strcmp(par,'abort_raw_time_axis') || strcmp(par,'abort_raw_x') || strcmp(par,'abort_raw_y') || strcmp(par,'abort_fix_pos') || strcmp(par,'abort_tar_pos') || strcmp(par,'success_raw_states') || strcmp(par,'success_raw_time_axis') || strcmp(par,'success_raw_x') || strcmp(par,'success_raw_y') || strcmp(par,'success_fix_pos') || strcmp(par,'success_tar_pos') || strcmp(par,'abort_code') || strcmp(par,'abort_lat') || strcmp(par,'success_lat') ...
                     || strcmp(par,'abort_trial') || strcmp(par,'abort_run') || strcmp(par,'abort_session') || strcmp(par,'success_trial') || strcmp(par,'success_run') || strcmp(par,'success_session') || strcmp(par,'trial') || strcmp(par,'run') || strcmp(par,'session'), continue, end
             out_stru_te_sr=vertcat(out_stru_te.(par));
@@ -130,7 +130,7 @@ end
 end
 
 
-function type_effector_counter=get_counter(comparisson,type_effector)
+function type_effector_counter=get_counter(comparisson,type_effector) % this function find the opposite condition (defined by comparison)
 global GLO
 
 type_effector_counter=type_effector;
