@@ -26,65 +26,65 @@ for sr=1:numel(saccades_reaches)
     
     for pa=1:numel(parameters)
         par=parameters{pa};
-            if strcmp(par,'ini_fix') || strcmp(par,'ini_abort') || strcmp(par,'abort_raw_states') || strcmp(par,'abort_raw_time_axis') || strcmp(par,'abort_raw_x') || strcmp(par,'abort_raw_y') || strcmp(par,'abort_fix_pos') || strcmp(par,'abort_tar_pos') || strcmp(par,'success_raw_states') || strcmp(par,'success_raw_time_axis') || strcmp(par,'success_raw_x') || strcmp(par,'success_raw_y') || strcmp(par,'success_fix_pos') || strcmp(par,'success_tar_pos') || strcmp(par,'abort_code') || strcmp(par,'abort_lat') || strcmp(par,'success_lat') ...
-                                  || strcmp(par,'abort_trial') || strcmp(par,'abort_run') || strcmp(par,'abort_session') || strcmp(par,'success_trial') || strcmp(par,'success_run') || strcmp(par,'success_session') || strcmp(par,'trial') || strcmp(par,'run') || strcmp(par,'session'), continue, end
+        if strcmp(par,'ini_fix') || strcmp(par,'ini_abort') || strcmp(par,'abort_raw_states') || strcmp(par,'abort_raw_time_axis') || strcmp(par,'abort_raw_x') || strcmp(par,'abort_raw_y') || strcmp(par,'abort_fix_pos') || strcmp(par,'abort_tar_pos') || strcmp(par,'success_raw_states') || strcmp(par,'success_raw_time_axis') || strcmp(par,'success_raw_x') || strcmp(par,'success_raw_y') || strcmp(par,'success_fix_pos') || strcmp(par,'success_tar_pos') || strcmp(par,'abort_code') || strcmp(par,'abort_lat') || strcmp(par,'success_lat') ...
+                || strcmp(par,'abort_trial') || strcmp(par,'abort_run') || strcmp(par,'abort_session') || strcmp(par,'success_trial') || strcmp(par,'success_run') || strcmp(par,'success_session') || strcmp(par,'trial') || strcmp(par,'run') || strcmp(par,'session'), continue, end
         out_stru_te_sr=vertcat(out_stru_te.(par));
         type_effector_fieldnames=fieldnames(out_stru_te_sr);
         
-
-%% ANOVAS!!
-%         if ~strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')
-%             anova_type_effectors=unique(cellfun(@(x) x(1:7),type_effector_fieldnames,'uniformoutput',false));
-%             for ate=1:numel(anova_type_effectors)
-%                 type_effector=anova_type_effectors{ate};
-%                 
-%                 FN.LSLH=[type_effector '_L_IN_LH'];
-%                 FN.LSRH=[type_effector '_L_IN_RH'];
-%                 FN.RSLH=[type_effector '_R_IN_LH'];
-%                 FN.RSRH=[type_effector '_R_IN_RH'];
-%                 
-%                 if all(ismember({FN.LSLH; FN.LSRH; FN.RSLH; FN.RSRH},type_effector_fieldnames))
-%                     subconditions=fieldnames(out_stru_te_sr(1).(FN.LSLH));
-%                     for sc=1:numel(subconditions)
-%                         if ~GLO.one_subject
-%                             subcondition=subconditions{sc};
-%                             VA(1).LSLH=out_stru_te_sr(1).(FN.LSLH).(subcondition);
-%                             VA(1).LSRH=out_stru_te_sr(1).(FN.LSRH).(subcondition);
-%                             VA(1).RSLH=out_stru_te_sr(1).(FN.RSLH).(subcondition);
-%                             VA(1).RSRH=out_stru_te_sr(1).(FN.RSRH).(subcondition);
-%                             VA(2).LSLH=out_stru_te_sr(2).(FN.LSLH).(subcondition);
-%                             VA(2).LSRH=out_stru_te_sr(2).(FN.LSRH).(subcondition);
-%                             VA(2).RSLH=out_stru_te_sr(2).(FN.RSLH).(subcondition);
-%                             VA(2).RSRH=out_stru_te_sr(2).(FN.RSRH).(subcondition);
-%                             
-%                             anovainput=[VA(1).LSLH(:);VA(1).LSRH(:);VA(1).RSLH(:);VA(1).RSRH(:);VA(2).LSLH(:); VA(2).LSRH(:);VA(2).RSLH(:);VA(2).RSRH(:)];
-%                             factorgoup=[ones(numel([VA(1).LSLH(:);VA(1).LSRH(:);VA(1).RSLH(:);VA(1).RSRH(:)]),1);...
-%                                 zeros(numel([VA(2).LSLH(:);VA(2).LSRH(:);VA(2).RSLH(:);VA(2).RSRH(:)]),1)];
-%                             factorspace=[ones(numel([VA(1).LSLH(:);VA(1).LSRH(:)]),1);...
-%                                 zeros(numel([VA(1).RSLH(:);VA(1).RSRH(:)]),1);...
-%                                 ones(numel([VA(2).LSLH(:);VA(2).LSRH(:)]),1);...
-%                                 zeros(numel([VA(2).RSLH(:);VA(2).RSRH(:)]),1)];
-%                             factorhand=[ones(numel(VA(1).LSLH(:)),1);zeros(numel(VA(1).LSRH(:)),1);...
-%                                 ones(numel(VA(1).RSLH(:)),1);zeros(numel(VA(1).RSRH(:)),1);...
-%                                 ones(numel(VA(2).LSLH(:)),1);zeros(numel(VA(2).LSRH(:)),1);...
-%                                 ones(numel(VA(2).RSLH(:)),1);zeros(numel(VA(2).RSRH(:)),1)];
-%                             if any(~isnan(anovainput))
-%                                 %if any(iscomplex(anovainput))
-%                                 anova_out.(sac_rea).(par).(type_effector).(subcondition).preal=anovan(real(anovainput),[factorgoup factorspace factorhand],'display','off','model','full');
-%                                 anova_out.(sac_rea).(par).(type_effector).(subcondition).pimag=anovan(imag(anovainput),[factorgoup factorspace factorhand],'display','off','model','full');
-%                                 %                         else
-%                                 %                     anova_out.(sac_rea).(par).(type_effector).(subcondition).preal=anovan(anovainput,[factorgoup factorspace factorhand],'display','off');
-%                                 %                         end
-%                                 
-%                             end
-%                         else
-%                             anova_out.(sac_rea).(par).(type_effector).(subcondition).preal=NaN;
-%                             anova_out.(sac_rea).(par).(type_effector).(subcondition).pimag=NaN;
-%                         end
-%                     end
-%                 end
-%             end
-%         end
+        
+        %% ANOVAS!!
+        %         if ~strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')
+        %             anova_type_effectors=unique(cellfun(@(x) x(1:7),type_effector_fieldnames,'uniformoutput',false));
+        %             for ate=1:numel(anova_type_effectors)
+        %                 type_effector=anova_type_effectors{ate};
+        %
+        %                 FN.LSLH=[type_effector '_L_IN_LH'];
+        %                 FN.LSRH=[type_effector '_L_IN_RH'];
+        %                 FN.RSLH=[type_effector '_R_IN_LH'];
+        %                 FN.RSRH=[type_effector '_R_IN_RH'];
+        %
+        %                 if all(ismember({FN.LSLH; FN.LSRH; FN.RSLH; FN.RSRH},type_effector_fieldnames))
+        %                     subconditions=fieldnames(out_stru_te_sr(1).(FN.LSLH));
+        %                     for sc=1:numel(subconditions)
+        %                         if ~GLO.one_subject
+        %                             subcondition=subconditions{sc};
+        %                             VA(1).LSLH=out_stru_te_sr(1).(FN.LSLH).(subcondition);
+        %                             VA(1).LSRH=out_stru_te_sr(1).(FN.LSRH).(subcondition);
+        %                             VA(1).RSLH=out_stru_te_sr(1).(FN.RSLH).(subcondition);
+        %                             VA(1).RSRH=out_stru_te_sr(1).(FN.RSRH).(subcondition);
+        %                             VA(2).LSLH=out_stru_te_sr(2).(FN.LSLH).(subcondition);
+        %                             VA(2).LSRH=out_stru_te_sr(2).(FN.LSRH).(subcondition);
+        %                             VA(2).RSLH=out_stru_te_sr(2).(FN.RSLH).(subcondition);
+        %                             VA(2).RSRH=out_stru_te_sr(2).(FN.RSRH).(subcondition);
+        %
+        %                             anovainput=[VA(1).LSLH(:);VA(1).LSRH(:);VA(1).RSLH(:);VA(1).RSRH(:);VA(2).LSLH(:); VA(2).LSRH(:);VA(2).RSLH(:);VA(2).RSRH(:)];
+        %                             factorgoup=[ones(numel([VA(1).LSLH(:);VA(1).LSRH(:);VA(1).RSLH(:);VA(1).RSRH(:)]),1);...
+        %                                 zeros(numel([VA(2).LSLH(:);VA(2).LSRH(:);VA(2).RSLH(:);VA(2).RSRH(:)]),1)];
+        %                             factorspace=[ones(numel([VA(1).LSLH(:);VA(1).LSRH(:)]),1);...
+        %                                 zeros(numel([VA(1).RSLH(:);VA(1).RSRH(:)]),1);...
+        %                                 ones(numel([VA(2).LSLH(:);VA(2).LSRH(:)]),1);...
+        %                                 zeros(numel([VA(2).RSLH(:);VA(2).RSRH(:)]),1)];
+        %                             factorhand=[ones(numel(VA(1).LSLH(:)),1);zeros(numel(VA(1).LSRH(:)),1);...
+        %                                 ones(numel(VA(1).RSLH(:)),1);zeros(numel(VA(1).RSRH(:)),1);...
+        %                                 ones(numel(VA(2).LSLH(:)),1);zeros(numel(VA(2).LSRH(:)),1);...
+        %                                 ones(numel(VA(2).RSLH(:)),1);zeros(numel(VA(2).RSRH(:)),1)];
+        %                             if any(~isnan(anovainput))
+        %                                 %if any(iscomplex(anovainput))
+        %                                 anova_out.(sac_rea).(par).(type_effector).(subcondition).preal=anovan(real(anovainput),[factorgoup factorspace factorhand],'display','off','model','full');
+        %                                 anova_out.(sac_rea).(par).(type_effector).(subcondition).pimag=anovan(imag(anovainput),[factorgoup factorspace factorhand],'display','off','model','full');
+        %                                 %                         else
+        %                                 %                     anova_out.(sac_rea).(par).(type_effector).(subcondition).preal=anovan(anovainput,[factorgoup factorspace factorhand],'display','off');
+        %                                 %                         end
+        %
+        %                             end
+        %                         else
+        %                             anova_out.(sac_rea).(par).(type_effector).(subcondition).preal=NaN;
+        %                             anova_out.(sac_rea).(par).(type_effector).(subcondition).pimag=NaN;
+        %                         end
+        %                     end
+        %                 end
+        %             end
+        %         end
         
         for te=1:numel(type_effector_fieldnames)
             type_effector=type_effector_fieldnames{te};
@@ -98,7 +98,7 @@ for sr=1:numel(saccades_reaches)
                     subconditions=fieldnames(out_stru_te_sr_con);
                     for sc=1:numel(subconditions)
                         subcondition=subconditions{sc};
-                        x=[]; y=[]; hr=NaN; pr=NaN;  hi=NaN; pi=NaN; tab_r=NaN; tab_i=NaN; 
+                        x=[]; y=[]; hr=NaN; pr=NaN;  hi=NaN; pi=NaN; tab_r=NaN; tab_i=NaN;
                         x = [out_stru_te_sr_con(1,1).(subcondition)]';
                         y = [out_stru_te_sr_con(1,2).(subcondition)]';
                         if ~any(isempty(real(x)) | isempty(real(y)))
@@ -155,10 +155,18 @@ for sr=1:numel(saccades_reaches)
                                         y_s=sum(y==1);
                                         [h pp]= f_exakt_scalars(x_s,x_n,y_s,y_n);
                                     else
-                                        if (strcmp(testing,'groups')) && ~GLO.parametric_testing
+                                        %                                         if (strcmp(testing,'groups')) && ~GLO.parametric_testing
+                                        %                                             [pp h tab]= ranksum(x,y);
+                                        %                                         elseif (strcmp(testing,'groups')) && GLO.parametric_testing
+                                        %                                             [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
+                                        if strcmp(testing,'groups') && ~GLO.parametric_testing && strcmp(subcondition,'raw_of_raw') 
                                             [pp h tab]= ranksum(x,y);
-                                        elseif (strcmp(testing,'groups')) && GLO.parametric_testing
+                                        elseif (strcmp(testing,'groups')) && ~GLO.parametric_testing && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
+                                            [pp h tab]= signrank(x,y);
+                                        elseif (strcmp(testing,'groups')) && GLO.parametric_testing && (strcmp(subcondition,'raw_of_raw')) 
                                             [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
+                                        elseif (strcmp(testing,'groups')) && GLO.parametric_testing  && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
+                                            [h pp ci tab]= ttest(x,y,0.05,'both',1);
                                         elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
                                             [h pp tab]= ttest_1n(x,y);
                                         elseif (strcmp(testing,'patient')) && ~(strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && GLO.parametric_testing
