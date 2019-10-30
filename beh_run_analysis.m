@@ -121,7 +121,7 @@ unique_saccade_positions=unique([Positions.saccades]);
 unique_reach_positions=unique([Positions.reaches]);
 fieldnames_per_position={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a'};
 
-for g = 1:numel(Group_temp) %????
+for g = 1:numel(Group_temp) % I think this loop just check that the structure field exist, if not create it and fill it with NaN
     for FN=fieldnames_per_position
         % saccades
         if ~isfield(Group_temp(g).saccades,FN{:}) 
@@ -158,12 +158,12 @@ for g = 1:numel(Group_temp) %????
     end
 end
 
-oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental);
+oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental); %create NaN structure
 new.Control=oo;
 new.Experimental=oo;
 
-fn=fieldnames(batch.out_stru_ext);
-for gr=1:numel(fn)
+fn=fieldnames(batch.out_stru_ext); 
+for gr=1:numel(fn)  % here concatinate the existing with NaN to make sure no field is missing anywhere ??
     fnn=fieldnames(batch.out_stru_ext.(fn{gr}));
     for j=1:numel(fnn)
         fnnn= fieldnames(batch.out_stru_ext.(fn{gr}).(fnn{j}));
@@ -172,8 +172,10 @@ for gr=1:numel(fn)
          end
     end
 end
+
 clear batch.out_stru_ext
 batch.out_stru_ext=new;
+
 
 
 if GLO.testing_patient
