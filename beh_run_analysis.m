@@ -189,7 +189,7 @@ end
 [batch.stat]=beh_statistics(batch,testing);
 [batch.stat.groups, ~]=beh_statistics_control_exp_group(batch,testing);
 
-save([GLO.folder_to_save filesep 'data'],'batch');
+save([GLO.folder_to_save filesep 'data'],'-struct','batch');
 
 GLO.correlation_mode = steady.correlation_mode;
 if GLO.plot_it          == 1
