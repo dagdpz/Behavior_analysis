@@ -155,10 +155,10 @@ for sr=1:numel(saccades_reaches)
                                         y_s=sum(y==1);
                                         [h pp]= f_exakt_scalars(x_s,x_n,y_s,y_n);
                                     else
-                                        %                                         if (strcmp(testing,'groups')) && ~GLO.parametric_testing
-                                        %                                             [pp h tab]= ranksum(x,y);
-                                        %                                         elseif (strcmp(testing,'groups')) && GLO.parametric_testing
-                                        %                                             [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
+%                                                                                  if (strcmp(testing,'groups')) && ~GLO.parametric_testing
+%                                                                                      [pp h tab]= ranksum(x,y);
+%                                                                                  elseif (strcmp(testing,'groups')) && GLO.parametric_testing
+%                                                                                      [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
                                         if strcmp(testing,'groups') && ~GLO.parametric_testing && strcmp(subcondition,'raw_of_raw') 
                                             [pp h tab]= ranksum(x,y);
                                         elseif (strcmp(testing,'groups')) && ~GLO.parametric_testing && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
