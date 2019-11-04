@@ -86,12 +86,15 @@ reachpositions                      = [out_comp_reaches.tar_pos]-[out_comp_reach
 % reorganise and calculate mean, raw, stfd, and num of hits for the bacth
 unique_pos.saccades                 = unique_positions(saccadepositions,1.5);
 unique_pos.reaches                  = unique_positions(reachpositions,1.5);
-[out_str,  out_ini_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos);
+[out_str,  out_ini_fix,out_dur_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos);
 [out_stru_ext]                      = external_cal(out_str);
 
 subparameters                       = {'mean','raw','std','num_hits'};
 out_stru_ext.reaches.ini_fix.LH=get_external_means_std([out_ini_fix.LH.ini_fix],subparameters);
 out_stru_ext.reaches.ini_fix.RH=get_external_means_std([out_ini_fix.RH.ini_fix],subparameters);
+
+out_stru_ext.reaches.dur_fix.LH=get_external_means_std([out_dur_fix.LH.dur_fix],subparameters);
+out_stru_ext.reaches.dur_fix.RH=get_external_means_std([out_dur_fix.RH.dur_fix],subparameters);
 
 out_stru_ext.reaches.ini_abort.LH=get_external_means_std([out_ini_abort.LH.abort_code],subparameters);
 out_stru_ext.reaches.ini_abort.RH=get_external_means_std([out_ini_abort.RH.abort_code],subparameters);
@@ -103,7 +106,7 @@ out_stru_ext.reaches.hnd_stay.LH=get_external_means_std([out_hnd_abort.LH.hnd_st
 out_stru_ext.reaches.hnd_stay.RH=get_external_means_std([out_hnd_abort.RH.hnd_stay],subparameters);
 end
 
-function  [out_str, out_ini_fix, out_ini_abort, out_hnd_abort]= rt_s_internal_cal(out_comp,unique_pos)
+function  [out_str, out_ini_fix, out_dur_fix, out_ini_abort, out_hnd_abort]= rt_s_internal_cal(out_comp,unique_pos)
 global GLO
 
 % effector_names                  = {'0','2','3','4',GLO.type_of_free_gaze};
@@ -174,13 +177,14 @@ for idx_batch=1:numel(out_comp)
         end
     end
     
-    % ini_fix
+    % ini_fix and dur_fix
     for h = 1:numel(hand_names)
         hand = hand_names{h};
         temp_index_h = idx.(['reach_' hand]){idx_batch};
         out_ini_fix.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'ini_fix','IN');
         out_ini_abort.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'abort_code','IN');
         out_hnd_abort.(hand)(idx_batch)= get_hand_switch_errors(idx.incorrect_hand{idx_batch},temp_index_h,idx,idx_batch);
+        out_dur_fix.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'dur_fix','IN'); %MP
     end
     
     % runs sessions trials
@@ -408,7 +412,8 @@ if strcmp(reach_or_saccade,'reaches')
 elseif strcmp(reach_or_saccade,'saccades')
     parameters = {'lat','dur','endpos','tar_pos','velocity','run','session','trial','accuracy_xy','accuracy_x','accuracy_y'};
 else
-    parameters = {'ini_fix','abort_code'};reach_or_saccade='reaches';
+%     parameters = {'ini_fix','abort_code'};reach_or_saccade='reaches'; 
+    parameters = {'ini_fix','abort_code','dur_fix'};reach_or_saccade='reaches';%MP
 end
 for p = 1:numel(parameters)
     par                             = parameters{p};
