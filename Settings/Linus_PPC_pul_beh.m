@@ -8,7 +8,7 @@ warning('off','all')
 
 global GLO
 GLO.accuracy_as_absolute            =   1; %% 1 meaning it computes the averages of x and y first and then creates the euclidean
-GLO.delete_last                     =   0;
+GLO.delete_last                     =   0; %1 delete the last trial of each run
 GLO.fontsize_titles_big             =   16;
 GLO.fontsize_small                  =   8;
 GLO.fontsize_ticks                  =   12;
@@ -25,9 +25,9 @@ GLO.parent_folder                   =   '';
 GLO.folder_to_save                  =   'Y:\Projects\Pulv_eye_gaze_position\behavior\Linus';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
-GLO.trial_by_trial                  =   0; % for statistics
-GLO.CDF                             =   0;
-GLO.text_in_plot                    =   1;
+GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
+GLO.CDF                             =   0; % 1 plot cumulative distribution function
+GLO.text_in_plot                    =   1; % plot mean and std in text
 GLO.same_day                        =   0;
 GLO.testing_patient                 =   0;
 GLO.instructed_only                 =   0;
@@ -36,16 +36,16 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1]; %which plots
-GLO.target_locations_in_raw         =   0;
-GLO.saccade_in_raw                  =   0;
-GLO.modify_positions                =   0;
-GLO.euclideans_reach                =   [-15, 15];
-GLO.trial_numbers                   =   0;
-GLO.keep_raw_output                 =   1;
-GLO.hits_in_plot                    =   0;
+GLO.summary                         =   [1 5]; %which plots
+GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
+GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
+GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
+GLO.euclideans_reach                =   [-15, 15]; % used in reallocate_positions_from_mpa ?
+GLO.trial_numbers                   =   0; %in correlation plot
+GLO.keep_raw_output                 =   1; % 1 = save raw data in the output structure and plot raw traces in some plots 
+GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
-GLO.eccentricity                    =   'ALL'; %%new
+
 
 % steady.passfilter                   =   {'saccades','lat',0.08, 0.5;'reaches','lat',0.1, 10};
 
