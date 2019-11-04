@@ -63,7 +63,7 @@ for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
         %         parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','lat_residuals_sac_rea','lat_raw_sac_rea','lat_r_residuals','lat_slo_residuals','lat_int_residuals','lat_difference_sac_rea','ini_fix','ini_abort','abort_raw_x', 'success_raw_x'};
-        parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful'};
+        parameters={'lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful'};
         
         eye_or_hand_evaluated = ' Looking at hands';
     else
@@ -74,8 +74,8 @@ for rs=1:numel(reaches_saccades)
         par=parameters{s_p};
         
         switch par
-            case 'lat';                         par_title = 'latency';
-            case 'dur';                         par_title = 'duration';
+            case 'lat';                         par_title = 'Reaction time to target';
+            case 'dur';                         par_title = 'Movement time to target';
             case 'endpoints_per_position';      par_title = 'accuracy all';
             case 'endpoints_per_position_s';    par_title = 'accuracy successful only';
             case 'endpoints_per_position_a';    par_title = 'accuracy aborted only';
@@ -96,7 +96,8 @@ for rs=1:numel(reaches_saccades)
             case 'lat_difference_sac_rea';      par_title = 'latency difference reach minus saccade';
             case 'abort_raw_x';                 par_title = 'Error raw traces';
             case 'success_raw_x';               par_title = 'Success raw traces';
-            case 'ini_fix';                     par_title = 'Latency of sensor release';
+            case 'ini_fix';                     par_title = 'Reaction time to fixation';
+            case 'dur_fix';                     par_title = 'Movement time to fixation';
             case 'ini_abort';                   par_title = 'Abort by using incorrect hand';
             case 'accuracy_xy';                 par_title = 'euclidean distance to target';
             case 'precision_xy';                par_title = 'euclidean cloud spread';
@@ -114,7 +115,7 @@ for rs=1:numel(reaches_saccades)
         precision = 0;
         if strcmp(par,'precision_xy'), precision = 1; par='accuracy_xy'; end
         
-        if (~strcmp(par,'lat_residuals_sac_rea') && ~strcmp(par,'endpoints_per_position') && ~strcmp(par,'endpoints_per_position_s') && ~strcmp(par,'endpoints_per_position_a') &&~strcmp(par,'ini_fix')  && ~strcmp(par,'ini_abort') && ~strcmp(par,'lat_raw_sac_rea') ...
+        if (~strcmp(par,'ini_fix')&& ~strcmp(par,'dur_fix') && ~strcmp(par,'lat_residuals_sac_rea') && ~strcmp(par,'endpoints_per_position') && ~strcmp(par,'endpoints_per_position_s') && ~strcmp(par,'endpoints_per_position_a')  && ~strcmp(par,'ini_abort') && ~strcmp(par,'lat_raw_sac_rea') ...
                 && ~strcmp(par,'abort_raw_states') && ~strcmp(par,'abort_raw_time_axis') && ~strcmp(par,'abort_raw_x') && ~strcmp(par,'abort_raw_y') ...
                 && ~strcmp(par,'success_raw_states') && ~strcmp(par,'success_raw_time_axis') && ~strcmp(par,'success_raw_x') && ~strcmp(par,'success_raw_y')) ...
                 && (any(ismember(1,GLO.summary)) || any(ismember(2,GLO.summary)) || any(ismember(10,GLO.summary)) || any(ismember(11,GLO.summary)) || any(ismember(-1,GLO.summary)))
@@ -318,6 +319,13 @@ for rs=1:numel(reaches_saccades)
         elseif (strcmp(par,'ini_fix') && strcmp('reaches',sac_rea)) && (any(ismember(5,GLO.summary)) || any(ismember(-1,GLO.summary)))
             
             % HAND RELEASE FIGURE
+            plot_title                                                = [' Summary 5, ' print_out2 ', ' par_title ];
+            summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
+            hand_release(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,Plot_settings,par);
+            title_and_save(summary_figure,plot_title);
+            
+               elseif (strcmp(par,'dur_fix') && strcmp('reaches',sac_rea)) && (any(ismember(5,GLO.summary)) || any(ismember(-1,GLO.summary)))
+             % Fixation Movement time
             plot_title                                                = [' Summary 5, ' print_out2 ', ' par_title ];
             summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
             hand_release(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,Plot_settings,par);
@@ -1028,15 +1036,15 @@ LH2=input_group2.LH; RH2=input_group2.RH;
 
 
 if ~GLO.parametric_testing && GLO.calculate_statististics && GLO.plot_statististics
-    [ps(1)] = ranksum(LH1.(sub)',RH1.(sub)');
-    [ps(2)] = ranksum(LH2.(sub)',RH2.(sub)');
-    [ps(3)] = ranksum(LH1.(sub)',LH2.(sub)');
-    [ps(4)] = ranksum(RH1.(sub)',RH2.(sub)');
+    [ps(1)] = signrank(LH1.(sub)',RH1.(sub)');
+    [ps(2)] = signrank(LH2.(sub)',RH2.(sub)');
+    [ps(3)] = signrank(LH1.(sub)',LH2.(sub)');
+    [ps(4)] = signrank(RH1.(sub)',RH2.(sub)');
 elseif GLO.parametric_testing && GLO.calculate_statististics && GLO.plot_statististics
-    [~,     ps(1)] = ttest2(LH1.(sub)',RH1.(sub)',0.05,0,1,1);
-    [~,     ps(2)] = ttest2(LH2.(sub)',RH2.(sub)',0.05,0,1,1);
-    [~,     ps(3)] = ttest2(LH1.(sub)',LH2.(sub)',0.05,0,1,1);
-    [~,     ps(4)] = ttest2(RH1.(sub)',RH2.(sub)',0.05,0,1,1);
+    [~,     ps(1)] = ttest(LH1.(sub)',RH1.(sub)',0.05,'both',1);
+    [~,     ps(2)] = ttest(LH2.(sub)',RH2.(sub)',0.05,'both',1);
+    [~,     ps(3)] = ttest(LH1.(sub)',LH2.(sub)',0.05,'both',1);
+    [~,     ps(4)] = ttest(RH1.(sub)',RH2.(sub)',0.05,'both',1);
 end
 
 if GLO.calculate_statististics && GLO.plot_statististics
@@ -1049,7 +1057,7 @@ end
 
 bars = {'LH1','LH2','RH1','RH2'};
 
-subplot(3,1,1)
+subplot(2,1,1)
 
 for idx=1:numel(bars)
     hold on
@@ -1094,7 +1102,7 @@ set(ha,'facecolor',[[0.65,0.65,0.65]])
 uistack(ho,'bottom');
 uistack(ha,'bottom');
 
-subplot(3,1,2)
+subplot(2,1,2)
 lin=['-'];
 
 rt_b=0:0.1:2;
@@ -1577,7 +1585,7 @@ for g=1:size(groups,1)
                 set(e_bar{idx}.(con),'MarkerFaceColor',col2,'MarkerEdgeColor',col2,'Color',col1(g,:),'Linewidth',GLO.linewidth,'MarkerSize',Plot_settings.markersize);
             end
             if GLO.text_in_plot
-                t=text(idx+(0.1), temp_mean-(temp_mean*0), sprintf('%.3f + %.3f',temp_mean,temp_sem));
+                t=text(idx+(0.3), temp_mean-(temp_mean*0), sprintf('%.3f + %.3f',temp_mean,temp_sem));
                 set(t,'Color', [0.3 0.3 0.3], 'FontSize', GLO.fontsize_small, 'FontWeight', 'bold')
             end
             if GLO.hits_in_plot
