@@ -184,7 +184,7 @@ for idx_batch=1:numel(out_comp)
         out_ini_fix.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'ini_fix','IN');
         out_ini_abort.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'abort_code','IN');
         out_hnd_abort.(hand)(idx_batch)= get_hand_switch_errors(idx.incorrect_hand{idx_batch},temp_index_h,idx,idx_batch);
-        out_dur_fix.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'dur_fix','IN'); %MP
+        out_dur_fix.(hand)(idx_batch)= get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'dur_fix','IN');
     end
     
     % runs sessions trials
