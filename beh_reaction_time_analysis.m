@@ -444,15 +444,29 @@ for p = 1:numel(parameters)
     end
     
 end
-if strcmp(decision,'IN')
+% if strcmp(decision,'IN')
     variable_of_interest            = 1*(temp_index_su(temp_index));
-else
-    variable_of_interest            = [ones(1,sum(temp_index_su)) zeros(1,sum(temp_cindex_su))];
-end
+% else
+%     variable_of_interest            = [ones(1,sum(temp_index_su)) zeros(1,sum(temp_cindex_su))];
+% end
 out.successful.mean             = nanmean(variable_of_interest);
 out.successful.raw              = variable_of_interest;
 out.successful.std              = nanstd(variable_of_interest);
 out.successful.num_hits         = sum(variable_of_interest);
+
+
+
+if GLO.only_successful_side_selection
+ variable_of_interest_side            = [ones(1,sum(temp_index_su)) zeros(1,sum(temp_cindex_su))]; 
+else
+ variable_of_interest_side            = [ones(1,sum(temp_index)) zeros(1,sum(temp_cindex))];   
+end
+
+
+out.side_selection.mean  = nanmean(variable_of_interest_side);
+out.side_selection.raw              = variable_of_interest_side;
+out.side_selection.std              = nanstd(variable_of_interest_side);
+out.side_selection.num_hits         = sum(variable_of_interest_side);
 end
 
 
