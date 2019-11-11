@@ -16,7 +16,7 @@ GLO.fontsize_labels                 =   12;
 GLO.linewidth                       =   2;
 GLO.plot_raw_endpoints              =   1; %1 means 1 point per trial, 0 means average across trials
 GLO.calculate_statististics         =   1;
-GLO.parametric_testing              =   0;
+GLO.parametric_testing              =   1;
 GLO.plot_statististics              =   1;
 GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
@@ -35,7 +35,7 @@ GLO.choice_only                     =   0;
 GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
-GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
+GLO.point_per_batch                 =   1; %0 average across session , 1 % 1 point per run
 GLO.summary                         =   [-1]; %which plots (vector of number of -1 for all plots)
 GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
@@ -45,6 +45,7 @@ GLO.trial_numbers                   =   0; %in correlation plot
 GLO.keep_raw_output                 =   1; % 1 = save raw data in the output structure and plot raw traces in some plots 
 GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
+GLO.only_successful_side_selection  =   1; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
 
 
 % steady.passfilter                   =   {'saccades','lat',0.08, 0.5;'reaches','lat',0.1, 10};
