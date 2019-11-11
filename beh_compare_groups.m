@@ -63,7 +63,7 @@ for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
         %         parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','lat_residuals_sac_rea','lat_raw_sac_rea','lat_r_residuals','lat_slo_residuals','lat_int_residuals','lat_difference_sac_rea','ini_fix','ini_abort','abort_raw_x', 'success_raw_x'};
-        parameters={'lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful'};
+        parameters={'lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','side_selection'};
         
         eye_or_hand_evaluated = ' Looking at hands';
     else
@@ -101,6 +101,7 @@ for rs=1:numel(reaches_saccades)
             case 'ini_abort';                   par_title = 'Abort by using incorrect hand';
             case 'accuracy_xy';                 par_title = 'euclidean distance to target';
             case 'precision_xy';                par_title = 'euclidean cloud spread';
+            case 'side_selection';              par_title = 'side selection';
         end
         
         %         print_out2  = [print_out ',' eye_or_hand_evaluated];
@@ -157,7 +158,7 @@ for rs=1:numel(reaches_saccades)
             
             
             
-            if (any(ismember(11,GLO.summary)) || any(ismember(-100,GLO.summary))) %&& (strcmp(par,'lat') || strcmp(par,'successful'))
+            if (any(ismember(11,GLO.summary)) || any(ismember(-1,GLO.summary))) %&& (strcmp(par,'lat') || strcmp(par,'successful'))
                 % Session by session dots plot
                 plot_title                                                = [' Summary 11, ' print_out2 ', ' par_title ];
                 summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
