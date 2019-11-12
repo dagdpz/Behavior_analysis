@@ -742,7 +742,7 @@ for s=1:numel(sides)
         switch str2double(effector)
             case 0, effector_label='saccades'; case 1, effector_label='free gaze reaches'; case 2, effector_label='joint eye-hand'; case 3, effector_label='disociated saccades'; case 4, effector_label='dissociated reaches'; case 6, effector_label='free gaze with fixation';
         end
-        elh(numel(effectors)*(s-1)+e)=text(idx+1,1,effector_label);
+%         elh(numel(effectors)*(s-1)+e)=text(idx+1,0.95,effector_label);
         type_effector=['t_' type '_e_' effector];
         
         if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
@@ -765,13 +765,15 @@ end
 y_lim=get(gca,'ylim');
 for s=1:numel(slh)
     pos=get(slh(s),'Position');
-    set(slh(s),'Position',[pos(1) y_lim(2)+diff(y_lim)*2/10])
+    set(slh(s),'Position',[pos(1) y_lim(2)- diff(y_lim)*1/10])
 end
-for e=1:numel(elh)
-    pos=get(elh(e),'Position');
-    set(elh(e),'Position',[pos(1) y_lim(2)+diff(y_lim)*1/10])
-end
+% for e=1:numel(elh)
+%     pos=get(elh(e),'Position');
+%     set(elh(e),'Position',[pos(1) (y_lim(2)- diff(y_lim)*1/10)])
+% end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
+
+
 
 
 ylabel(par);
