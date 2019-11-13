@@ -267,8 +267,8 @@ for rs=1:numel(reaches_saccades)
                         subplot(Plot_settings.(sac_rea).n_rows,Plot_settings.(sac_rea).n_columns,(t-1)*Plot_settings.(sac_rea).n_columns + e);
                         %                         plot_accuracy_internal(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Plot_settings,par);
                         plot_accuracy_internal_ellipse(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Plot_settings,par,batch.stat.groups.(sac_rea).(par),testing,precision);
-                        set(gca,'ylim',[-6 6],'Xlim',[-30 30])
-                        axis('equal')
+                        set(gca,'ylim',[-30 30],'Xlim',[-30 30])
+%                         axis('equal')
                         
                         
                         %  axis equal
@@ -834,7 +834,9 @@ end
 
 
 if strcmp(sac_rea,'reaches')
-    comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
+%     comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
+comp_IN={[1 2] [3 4], [7 8] [9 10]};
+    
 else
     comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
 end
@@ -854,9 +856,9 @@ end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
 
 if strcmp(sac_rea,'reaches')
-    xticks=[1 2 3 4, 6 7 8 9, 12 13 14 15, 17 18 19 20];
+    xticks=[1 2 3 4, 7 8 9 10]
     %     xticklabels={'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb'};
-    xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
+    xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
 else
     xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
     %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
@@ -918,7 +920,7 @@ elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
     hand=[];idx_bar_start=idx+1;
     [idx]=plot_par_histograms_internal(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,precision);
 end
-%set(gca,'xlim',[-inf,inf],'ylim',[-inf,inf])
+% set(gca,'xlim',[-inf,inf],'ylim',[-inf,inf])
 title([type_labels ' ' effector_labels ' ' side_label])
 end
 
@@ -1836,8 +1838,9 @@ for g=1:size(groups,1)
             
             X_mean=real(complex_mean);
             Y_mean=imag(complex_mean);
-            plot(real(complex_mean),imag(complex_mean),'MarkerSize',5,'Marker',symbol(c),'MarkerEdgeColor',current_color,'Color',current_color);
+            plot(real(complex_mean),imag(complex_mean),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor',current_color,'Color',current_color);
             if GLO.plot_raw_endpoints
+%                 scatter(real(complex_all),imag(complex_all),10,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color);
                 scatter(real(complex_all),imag(complex_all),10,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color);
             end
             cl=line((circle_x*real_std)+real(complex_mean),(circle_y*imag_std)+imag(complex_mean));
@@ -1897,7 +1900,7 @@ end
 switch par
     case 'lat', rt_b=0.1:0.01:0.8;          case 'dur', rt_b=0:0.01:0.5;            case 'n_obs', rt_b=0:1:1000;                case 'velocity', rt_b=0:10:1000;
     case 'lat_r', rt_b=0:0.1:1;             case 'lat_r_residuals', rt_b=0:0.1:1;   case 'dur_r', rt_b=0:0.1:1;                 case 'dur_r_residuals', rt_b=0:0.1:1;
-    case 'lat_raw_sac_rea', rt_b=0:0.1:1;   case 'dur_raw_sac_rea', rt_b=0:0.1:1;   otherwise, rt_b=0:0.1:2;
+    case 'lat_raw_sac_rea', rt_b=0:0.1:1;   case 'dur_raw_sac_rea', rt_b=0:0.1:1;   otherwise, rt_b=0:0.4:6;
 end
 
 for g=1:size(groups,1)
