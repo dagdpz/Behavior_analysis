@@ -46,9 +46,6 @@ GLO.keep_raw_output                 =   1; % 1 = save raw data in the output str
 GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
-GLO.compute_reach_1st_pos           =   0;
-GLO.compute_reach_1st_pos_in        =   1;
-GLO.compute_reach_pos_at_state_change = 0;  
 
 
 
