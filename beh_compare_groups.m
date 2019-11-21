@@ -63,7 +63,7 @@ for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
         %         parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','lat_residuals_sac_rea','lat_raw_sac_rea','lat_r_residuals','lat_slo_residuals','lat_int_residuals','lat_difference_sac_rea','ini_fix','ini_abort','abort_raw_x', 'success_raw_x'};
-        parameters={'ini_abort','lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','side_selection'};
+        parameters={'ini_abort','lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a','accuracy_xy','precision_xy','successful','side_selection'};
         
         eye_or_hand_evaluated = ' Looking at hands';
     else
@@ -79,6 +79,7 @@ for rs=1:numel(reaches_saccades)
             case 'endpoints_per_position';      par_title = 'accuracy all';
             case 'endpoints_per_position_s';    par_title = 'accuracy successful only';
             case 'endpoints_per_position_a';    par_title = 'accuracy aborted only';
+            case 'endpoints_per_position_t_a';  par_title = 'accuracy hand target aborted only';    
             case 'velocity';                    par_title = 'velocity';
             case 'lat_r';                       par_title = 'latency corr';
             case 'lat_r_residuals';             par_title = 'latency corr, residuals';
@@ -116,7 +117,7 @@ for rs=1:numel(reaches_saccades)
         precision = 0;
         if strcmp(par,'precision_xy'), precision = 1; par='accuracy_xy'; end
         
-        if (~strcmp(par,'ini_fix')&& ~strcmp(par,'dur_fix') && ~strcmp(par,'lat_residuals_sac_rea') && ~strcmp(par,'endpoints_per_position') && ~strcmp(par,'endpoints_per_position_s') && ~strcmp(par,'endpoints_per_position_a')  && ~strcmp(par,'ini_abort') && ~strcmp(par,'lat_raw_sac_rea') ...
+        if (~strcmp(par,'ini_fix')&& ~strcmp(par,'dur_fix') && ~strcmp(par,'lat_residuals_sac_rea') && ~strcmp(par,'endpoints_per_position') && ~strcmp(par,'endpoints_per_position_s') && ~strcmp(par,'endpoints_per_position_a')&& ~strcmp(par,'endpoints_per_position_t_a')  && ~strcmp(par,'ini_abort') && ~strcmp(par,'lat_raw_sac_rea') ...
                 && ~strcmp(par,'abort_raw_states') && ~strcmp(par,'abort_raw_time_axis') && ~strcmp(par,'abort_raw_x') && ~strcmp(par,'abort_raw_y') ...
                 && ~strcmp(par,'success_raw_states') && ~strcmp(par,'success_raw_time_axis') && ~strcmp(par,'success_raw_x') && ~strcmp(par,'success_raw_y')) ...
                 && (any(ismember(1,GLO.summary)) || any(ismember(2,GLO.summary)) || any(ismember(10,GLO.summary)) || any(ismember(11,GLO.summary)) || any(ismember(-1,GLO.summary)))
@@ -151,7 +152,7 @@ for rs=1:numel(reaches_saccades)
                 end
                 title_and_save(summary_figure,plot_title);
                 
-                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'successful')
+                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')|| strcmp(par,'endpoints_per_position_t_a') || strcmp(par,'successful')
                     continue
                 end
             end
@@ -186,7 +187,7 @@ for rs=1:numel(reaches_saccades)
                 end
                 title_and_save(summary_figure,plot_title);
                 
-                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') ||strcmp(par,'successful')
+                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a') ||strcmp(par,'successful')
                     continue
                 end
             end
@@ -222,7 +223,7 @@ for rs=1:numel(reaches_saccades)
                 end
                 title_and_save(summary_figure,plot_title);
                 
-                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'successful')
+                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a') || strcmp(par,'successful')
                     continue
                 end
             end
@@ -252,7 +253,7 @@ for rs=1:numel(reaches_saccades)
                 title_and_save(summary_figure,plot_title);
             end
             
-        elseif (strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary))) % && strcmp(effector,GLO.type_of_free_gaze)
+        elseif (strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a')) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary))) % && strcmp(effector,GLO.type_of_free_gaze)
             % ACCURACY BAR FIGURES
             plot_title                                                = [' Summary 3, ' print_out2 ', ' par_title ];
             summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
@@ -260,7 +261,7 @@ for rs=1:numel(reaches_saccades)
             clear ylim_sp;
             for t=1:numel(Plot_settings.types)
                 type=Plot_settings.types{t};
-                if (strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')) && isfield(Group(1).(sac_rea),par) && isfield(Group(2).(sac_rea),par) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary)))
+                if (strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a')) && isfield(Group(1).(sac_rea),par) && isfield(Group(2).(sac_rea),par) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary)))
                     
                     for e=1:numel(Plot_settings.(sac_rea).effectors)
                         effector=Plot_settings.(sac_rea).effectors{e};
@@ -856,7 +857,7 @@ end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
 
 if strcmp(sac_rea,'reaches')
-    xticks=[1 2 3 4, 7 8 9 10]
+    xticks=[1 2 3 4, 7 8 9 10];
     %     xticklabels={'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb'};
     xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
 else
