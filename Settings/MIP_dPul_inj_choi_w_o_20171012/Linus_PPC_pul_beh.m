@@ -74,8 +74,8 @@ GLO.remove_outliers                 =   0;
 % % 3: last saccade in the state
 % % 4: first saccade in the state
 % % 5: the first that is bigger than 'sac_min_amp'
-steady.reach_1st_pos                =   0; %%new used for all but
-steady.reach_1st_pos_in             =   1; %%new
+steady.reach_1st_pos                =   1; %%new used for all but
+steady.reach_1st_pos_in             =   0; %%new
 steady.reach_pos_at_state_change    =   0; %%new
 
 steady.remove_outliers              =   GLO.remove_outliers;
