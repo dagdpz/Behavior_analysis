@@ -154,8 +154,8 @@ for idx_batch=1:numel(out_comp)
     idx.success{idx_batch}                          =   [out_comp{idx_batch,1}.binary.success]==1;
     idx.error{idx_batch}                            =   [out_comp{idx_batch,1}.binary.success]==0;
     idx.error_after_success{idx_batch}              =   [false (idx.error{idx_batch}(2:end) & idx.success{idx_batch}(1:end-1))];
-    idx.incorrect_hand{idx_batch}                   =   idx.error_after_success{idx_batch} & ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_USE_INCORRECT_HAND');
-    
+%     idx.incorrect_hand{idx_batch}                   =   idx.error_after_success{idx_batch} & ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_USE_INCORRECT_HAND');
+    idx.incorrect_hand{idx_batch}                   =   ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_USE_INCORRECT_HAND');
     idx.rew_mod{idx_batch}                          =   [out_comp{idx_batch,1}.task.reward_modulation]==1;
     
     idx.pre_control{idx_batch}                      =   [out_comp{idx_batch,1}.binary.microstim]==0;
@@ -173,6 +173,8 @@ for idx_batch=1:numel(out_comp)
     
     corr_idx.L_tar{idx_batch}                       =   [batch_correlation_conditions.target_side]==-1;
     corr_idx.R_tar{idx_batch}                       =   [batch_correlation_conditions.target_side]==1;
+    
+    idx.hnd_abort_tar_acq{idx_batch}                =  ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_HND_TAR_ACQ_STATE');
     
     for t=1:numel(type_names)
         for e                                       = 1:numel(effector_names)
@@ -223,11 +225,12 @@ for t = 1:numel(type_names)
                         P_index_s   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & idx.success{batch};
                         P_index_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & ~idx.success{batch};
                         P_index     = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d;
+                        P_index_t_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & ~idx.success{batch};
                         
                         out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_s(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
                         out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_a(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
                         out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
-                        
+                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_t_a(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_t_a).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index_t_a).fix_pos]);
                         
                         %                         out_str(batch).(type_effector).(reach_or_saccade).(decision).accuracy_xy(p,1)            = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).accuracy_xy]);
                         
@@ -402,9 +405,9 @@ global GLO
 
 Abort_codes_temp= {
     'DUMMY', 1;
-    'ABORT_USE_INCORRECT_HAND' ,2;};
-%     'ABORT_HND_FIX_ACQ_STATE'  ,3;
-%     'ABORT_HND_FIX_HOLD_STATE' ,4 ...
+    'ABORT_USE_INCORRECT_HAND' ,2};
+%      'ABORT_HND_FIX_ACQ_STATE'  ,3;
+%      'ABORT_HND_FIX_HOLD_STATE' ,4 ...
 %     };
 
 temp_index_all=temp_index;
