@@ -119,7 +119,7 @@ end
 
 unique_saccade_positions=unique([Positions.saccades]);
 unique_reach_positions=unique([Positions.reaches]);
-fieldnames_per_position={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a'};
+fieldnames_per_position={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a' };
 
 for g = 1:numel(Group_temp) % I think this loop just check that the structure field exist, if not create it and fill it with NaN
     for FN=fieldnames_per_position
