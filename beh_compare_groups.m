@@ -3,13 +3,11 @@ global GLO
 close all
 
 
-% Plot_settings.saccades.effectors    = {'0','2','3',GLO.type_of_free_gaze};
-% Plot_settings.reaches.effectors     = {'2','4',GLO.type_of_free_gaze};
-% Plot_settings.types                 = {'2', '3', '4'};
 
-Plot_settings.saccades.effectors    = {'3'};
-Plot_settings.reaches.effectors     = {'4'};
-Plot_settings.types                 = {'4'};
+
+Plot_settings.saccades.effectors    = GLO.saccades_effectors ;
+Plot_settings.reaches.effectors     = GLO.reaches_effectors ;
+Plot_settings.types                 = GLO.types_to_plot ;
 
 Plot_settings.saccades.n_rows       = numel(Plot_settings.types);
 Plot_settings.saccades.n_columns    = numel(Plot_settings.saccades.effectors);
