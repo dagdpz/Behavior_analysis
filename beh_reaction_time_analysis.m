@@ -90,7 +90,11 @@ saccadepositions                    = [out_comp_saccades.tar_pos]-[out_comp_sacc
 reachpositions                      = [out_comp_reaches.tar_pos]-[out_comp_reaches.fix_pos];
 % reorganise and calculate mean, raw, stfd, and num of hits for the bacth
 unique_pos.saccades                 = unique_positions(saccadepositions,1.5);
-unique_pos.reaches                  = unique_positions(reachpositions,1.5);
+unique_pos.reaches = unique_positions(reachpositions,1.5);
+%get target radius for reaches and saccades
+unique_pos.reaches_tar_rad = nanmean([out_comp_reaches.tar_rad]);
+unique_pos.saccades_tar_rad = nanmean([out_comp_saccades.tar_rad]);
+
 [out_str,  out_ini_fix,out_dur_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos);
 [out_stru_ext]                      = external_cal(out_str);
 
