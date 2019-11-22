@@ -117,7 +117,7 @@ global GLO
 % effector_names                  = {'0','2','3','4',GLO.type_of_free_gaze};
 % type_names                      = {'2','3','4'};
 
-effector_names                  = {'0','3','4',GLO.type_of_free_gaze};
+effector_names                  = {'0','1','3','4',GLO.type_of_free_gaze};
 type_names                      = {'2','3','4'};
 
 side_names                      = {'L','R'};
