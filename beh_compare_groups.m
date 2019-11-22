@@ -46,6 +46,7 @@ for i = 1:numel(fn_g)
     Group_temp(1,i)=batch.out_stru_ext.(fn_g{i});
     monkey{1,i} = fn_g{i}; 
     Positions(1,i)=batch.unique_pos.(fn_g{i});
+    
 end
 
 
@@ -58,7 +59,7 @@ unique_reach_positions      =   unique([Positions.reaches]);
 
 for i = 1:numel(Group)
     Positions(1,i).saccades =   unique_saccade_positions;
-    Positions(1,i).reaches  =   unique_reach_positions;
+    Positions(1,i).reaches  =   unique_reach_positions;    
 end
 
 % print_out = [GLO.subject{1} '(a)' ' Vs ' GLO.subject{2} '(b)'];
@@ -274,9 +275,9 @@ for rs=1:numel(reaches_saccades)
                         effector=Plot_settings.(sac_rea).effectors{e};
                         subplot(Plot_settings.(sac_rea).n_rows,Plot_settings.(sac_rea).n_columns,(t-1)*Plot_settings.(sac_rea).n_columns + e);
                         %                         plot_accuracy_internal(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Plot_settings,par);
-                        plot_accuracy_internal_ellipse(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Plot_settings,par,batch.stat.groups.(sac_rea).(par),testing,precision);
+                        plot_accuracy_internal_ellipse(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Positions(1).([sac_rea '_tar_rad']),Plot_settings,par,batch.stat.groups.(sac_rea).(par),testing,precision);
                         set(gca,'ylim',[-30 30],'Xlim',[-30 30])
-%                         axis('equal')
+                        axis('equal')
                         
                         
                         %  axis equal
@@ -1740,7 +1741,7 @@ for g=1:size(groups,1)
 end
 end
 
-function [idx] = plot_accuracy_internal_ellipse(input_group1,input_group2,sac_rea,type,effector,unique_pos,Plot_settings,par,stat, testing,precision)
+function [idx] = plot_accuracy_internal_ellipse(input_group1,input_group2,sac_rea,type,effector,unique_pos,target_radius,Plot_settings,par,stat, testing,precision)
 global GLO;
 
 switch str2double(type)
@@ -1830,6 +1831,10 @@ for g=1:size(groups,1)
             end
             
             plot(center(1),center(2),'MarkerSize',10,'Marker','+','MarkerEdgeColor','r','MarkerFaceColor','r');
+            x_tar = target_radius*circle_x + center(1);
+            y_tar = target_radius*circle_y + center(2);
+            plot(x_tar,y_tar,'r')
+            
             if GLO.trial_by_trial
                 complex_mean=current_group(p).(type_effector_condition).mean_of_raw;
                 complex_raw=current_group(p).(type_effector_condition).raw_of_raw;
