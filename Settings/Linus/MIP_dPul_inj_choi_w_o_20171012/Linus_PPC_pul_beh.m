@@ -36,7 +36,7 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1 2 3 5 10 12]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.summary                         =   [3]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10 12]
 GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
@@ -79,8 +79,8 @@ GLO.remove_outliers                 =   0;
 % % 3: last saccade in the state
 % % 4: first saccade in the state
 % % 5: the first that is bigger than 'sac_min_amp'
-steady.reach_1st_pos                =   1; %%new used for all but
-steady.reach_1st_pos_in             =   0; %%new
+steady.reach_1st_pos                =   0; %%new used for all but
+steady.reach_1st_pos_in             =   1; %%new
 steady.reach_pos_at_state_change    =   0; %%new
 
 steady.remove_outliers              =   GLO.remove_outliers;
