@@ -37,12 +37,21 @@ Plot_settings.linewidth             = 2;
 Plot_settings.linestyle.CH          = '-';
 Plot_settings.linestyle.IN          = ':';
 
+
 fn_g = fieldnames(batch.out_stru_ext);
+
+if numel(batch.unique_pos) == 1
+ batch.unique_pos.Experimental = batch.unique_pos.Control;      
+end
+
 for i = 1:numel(fn_g)
     Group_temp(1,i)=batch.out_stru_ext.(fn_g{i});
-    monkey{1,i} = fn_g{i};
+    monkey{1,i} = fn_g{i}; 
     Positions(1,i)=batch.unique_pos.(fn_g{i});
 end
+
+
+    
 GLO.subject = monkey;
 
 Group = Group_temp;
