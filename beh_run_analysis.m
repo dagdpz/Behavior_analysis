@@ -158,9 +158,15 @@ for g = 1:numel(Group_temp) % I think this loop just check that the structure fi
     end
 end
 
+if numel(group) > 1
 oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental); %create NaN structure
 new.Control=oo;
 new.Experimental=oo;
+else 
+oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Control);
+new.Control=oo;
+new.Experimental=oo;
+end
 
 fn=fieldnames(batch.out_stru_ext); 
 for gr=1:numel(fn)  % here concatinate the existing with NaN to make sure no field is missing anywhere ??
