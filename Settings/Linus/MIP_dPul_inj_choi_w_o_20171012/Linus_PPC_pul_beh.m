@@ -46,6 +46,11 @@ GLO.keep_raw_output                 =   1; % 1 = save raw data in the output str
 GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
+%next 3 for plotting
+GLO.saccades_effectors              = {'3'};
+GLO.reaches_effectors               = {'4'};
+GLO.types_to_plot                   = {'4'};
+
 
 
 % steady.passfilter                   =   {'saccades','lat',0.08, 0.5;'reaches','lat',0.1, 10};
