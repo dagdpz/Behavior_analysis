@@ -36,8 +36,8 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1 2 3 5 10 12]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
-GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
+GLO.summary                         =   [6]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.target_locations_in_raw         =   0; %not used anymore
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
 GLO.euclideans_reach                =   [-15, 15]; % used in reallocate_positions_from_mpa ?
@@ -45,7 +45,7 @@ GLO.trial_numbers                   =   0; %in correlation plot
 GLO.keep_raw_output                 =   1; % 1 = save raw data in the output structure and plot raw traces in some plots 
 GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
-GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
+GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from state_inf, 1 only successful trials
 %next 3 for plotting
 GLO.saccades_effectors              = {'3'};
 GLO.reaches_effectors               = {'4'};
