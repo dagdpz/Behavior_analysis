@@ -18,11 +18,10 @@ f_input{1} = subject_files;
 %% MAIN FUNCTION STRUCTURE, RUN MPA THEN RUN BY RUN ANALYZYS AND THEN BATCH ANALYSYS
 correlation_conditions                                      = {'demanded_hand','choice','type','effector','target_side','success'};
 parameters_to_correlate                                     = {'lat','dur'};
-Sel_all = {'display',0,'nsacc_max',5,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val,...
-    'max_rea_dist', [10 10]};
+Sel_all = {'display',0,'nsacc_max',5,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
 
-% 'reach_1st_pos'                   
-% 'reach_1st_pos_in'               
+% 'reach_1st_pos'
+% 'reach_1st_pos_in'
 % 'reach_pos_at_state_change'
 
 steady_FN=fieldnames(steady);
@@ -94,6 +93,8 @@ unique_pos.reaches = unique_positions(reachpositions,1.5);
 %get target radius for reaches and saccades
 unique_pos.reaches_tar_rad = nanmean([out_comp_reaches.tar_rad]);
 unique_pos.saccades_tar_rad = nanmean([out_comp_saccades.tar_rad]);
+unique_pos.reaches_tar_siz = nanmean([out_comp_reaches.tar_siz]);
+unique_pos.saccades_tar_siz = nanmean([out_comp_saccades.tar_siz]);
 
 [out_str,  out_ini_fix,out_dur_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos);
 [out_stru_ext]                      = external_cal(out_str);
@@ -158,7 +159,7 @@ for idx_batch=1:numel(out_comp)
     idx.success{idx_batch}                          =   [out_comp{idx_batch,1}.binary.success]==1;
     idx.error{idx_batch}                            =   [out_comp{idx_batch,1}.binary.success]==0;
     idx.error_after_success{idx_batch}              =   [false (idx.error{idx_batch}(2:end) & idx.success{idx_batch}(1:end-1))];
-%     idx.incorrect_hand{idx_batch}                   =   idx.error_after_success{idx_batch} & ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_USE_INCORRECT_HAND');
+    %     idx.incorrect_hand{idx_batch}                   =   idx.error_after_success{idx_batch} & ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_USE_INCORRECT_HAND');
     idx.incorrect_hand{idx_batch}                   =   ismember({out_comp{idx_batch,1}.task.abort_code},'ABORT_USE_INCORRECT_HAND');
     idx.rew_mod{idx_batch}                          =   [out_comp{idx_batch,1}.task.reward_modulation]==1;
     
@@ -231,11 +232,13 @@ for t = 1:numel(type_names)
                         P_index     = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d;
                         P_index_t_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & ~idx.success{batch};
                         
-                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_s(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
-                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_a(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
-                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
-                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_t_a(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_t_a).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index_t_a).fix_pos]);
-                        
+                    
+                       
+                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_s(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
+                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_a(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
+                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
+                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_t_a(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_t_a).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index_t_a).fix_pos]);
+                      
                         %                         out_str(batch).(type_effector).(reach_or_saccade).(decision).accuracy_xy(p,1)            = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).accuracy_xy]);
                         
                     end
@@ -300,9 +303,13 @@ for t = 1:numel(type_names)
                             P_index_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_h & ~idx.success{batch};
                             P_index     = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_h;
                             
-                            out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_s(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
-                            out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_a(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
-                            out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position(p,1)     = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
+                         
+                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_s(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
+                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_a(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
+                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position(p,1)     = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
+                        
+                             
+                           
                         end
                         for s = 1:numel(side_names)
                             side = side_names{s};
@@ -424,7 +431,7 @@ if strcmp(reach_or_saccade,'reaches')
 elseif strcmp(reach_or_saccade,'saccades')
     parameters = {'lat','dur','endpos','tar_pos','velocity','run','session','trial','accuracy_xy','accuracy_x','accuracy_y'};
 else
-%     parameters = {'ini_fix','abort_code'};reach_or_saccade='reaches'; 
+    %     parameters = {'ini_fix','abort_code'};reach_or_saccade='reaches';
     parameters = {'ini_fix','abort_code','dur_fix'};reach_or_saccade='reaches';%MP
 end
 for p = 1:numel(parameters)
@@ -457,7 +464,7 @@ for p = 1:numel(parameters)
     
 end
 % if strcmp(decision,'IN')
-    variable_of_interest            = 1*(temp_index_su(temp_index));
+variable_of_interest            = 1*(temp_index_su(temp_index));
 % else
 %     variable_of_interest            = [ones(1,sum(temp_index_su)) zeros(1,sum(temp_cindex_su))];
 % end
@@ -469,9 +476,9 @@ out.successful.num_hits         = sum(variable_of_interest);
 
 
 if GLO.only_successful_side_selection
- variable_of_interest_side            = [ones(1,sum(temp_index_su)) zeros(1,sum(temp_cindex_su))]; 
+    variable_of_interest_side            = [ones(1,sum(temp_index_su)) zeros(1,sum(temp_cindex_su))];
 else
- variable_of_interest_side            = [ones(1,sum(temp_index)) zeros(1,sum(temp_cindex))];   
+    variable_of_interest_side            = [ones(1,sum(temp_index)) zeros(1,sum(temp_cindex))];
 end
 
 
