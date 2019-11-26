@@ -158,6 +158,9 @@ for rs=1:numel(reaches_saccades)
                         set(gca,'ylim',[min(ylim_sp(:,1)) max(ylim_sp(:,2))]);
                     end
                 end
+                if strcmp(par, 'successful') || strcmp(par, 'side_selection')
+                   set(gca,'ylim',[0 1]); 
+                end
                 title_and_save(summary_figure,plot_title);
                 
                 if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')|| strcmp(par,'endpoints_per_position_t_a') || strcmp(par,'successful')
@@ -275,10 +278,11 @@ for rs=1:numel(reaches_saccades)
                         effector=Plot_settings.(sac_rea).effectors{e};
                         subplot(Plot_settings.(sac_rea).n_rows,Plot_settings.(sac_rea).n_columns,(t-1)*Plot_settings.(sac_rea).n_columns + e);
                         %                         plot_accuracy_internal(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Plot_settings,par);
-                        plot_accuracy_internal_ellipse(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,Positions(1).(sac_rea),Positions(1).([sac_rea '_tar_rad']),Plot_settings,par,batch.stat.groups.(sac_rea).(par),testing,precision);
-                        set(gca,'ylim',[-30 30],'Xlim',[-30 30])
+                        plot_accuracy_internal_ellipse(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,effector,...
+                            Positions(1).(sac_rea),Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']),...
+                            Plot_settings,par,batch.stat.groups.(sac_rea).(par),testing,precision);
                         axis('equal')
-                        
+                        set(gca,'ylim',[-30 30],'Xlim',[-30 30])
                         
                         %  axis equal
                         %   set(gca,'xlim',[-30 -18],'ylim', [-4 4]) %4
@@ -373,8 +377,8 @@ for rs=1:numel(reaches_saccades)
                         effector=Plot_settings.(sac_rea).effectors_raw_xy{e};
                         ra((t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns_raw_xy,  (t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e);
                         raw_EH_first_reach_or_saccade(Group(1),Group(2),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1),Plot_settings,par,e,1);
-                        set(gca,'ylim',[-30 30],'Xlim',[-30 30])
                         axis('equal')
+                        set(gca,'ylim',[-30 30],'Xlim',[-30 30])
                     end
                 end
                 title_and_save(summary_figure,plot_title);
@@ -1741,7 +1745,7 @@ for g=1:size(groups,1)
 end
 end
 
-function [idx] = plot_accuracy_internal_ellipse(input_group1,input_group2,sac_rea,type,effector,unique_pos,target_radius,Plot_settings,par,stat, testing,precision)
+function [idx] = plot_accuracy_internal_ellipse(input_group1,input_group2,sac_rea,type,effector,unique_pos,target_radius,target_size,Plot_settings,par,stat, testing,precision)
 global GLO;
 
 switch str2double(type)
@@ -1831,9 +1835,12 @@ for g=1:size(groups,1)
             end
             
             plot(center(1),center(2),'MarkerSize',10,'Marker','+','MarkerEdgeColor','r','MarkerFaceColor','r');
-            x_tar = target_radius*circle_x + center(1);
-            y_tar = target_radius*circle_y + center(2);
-            plot(x_tar,y_tar,'r')
+            x_tar_rad = target_radius*circle_x + center(1);
+            y_tar_rad = target_radius*circle_y + center(2);
+            x_tar_siz = target_size*circle_x + center(1);
+            y_tar_siz = target_size*circle_y + center(2);
+            plot(x_tar_rad,y_tar_rad,'--r')
+            plot(x_tar_siz,y_tar_siz,'r')
             
             if GLO.trial_by_trial
                 complex_mean=current_group(p).(type_effector_condition).mean_of_raw;
@@ -1932,9 +1939,11 @@ for g=1:size(groups,1)
                 continue;
             end
             if ~GLO.CDF
-                temp_hist = hist(current_group(p).(condition).raw_of_raw,rt_b)/nansum(current_group(p).(condition).raw_of_raw)*100;
+%                 temp_hist = hist(current_group(p).(condition).raw_of_raw,rt_b)/nansum(current_group(p).(condition).raw_of_raw)*100;
+                 temp_hist = hist(current_group(p).(condition).raw_of_raw,rt_b);
                 if precision
-                    temp_hist = hist(current_group(p).(condition).raw_of_std,rt_b)/nansum(current_group(p).(condition).raw_of_std)*100;
+%                     temp_hist = hist(current_group(p).(condition).raw_of_std,rt_b)/nansum(current_group(p).(condition).raw_of_std)*100;
+                    temp_hist = hist(current_group(p).(condition).raw_of_std,rt_b);
                 end
                 plot(rt_b,temp_hist,'Color',col1(g,:),'Linewidth',GLO.linewidth,'LineStyle',lin(d))
             else
