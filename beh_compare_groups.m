@@ -368,7 +368,8 @@ for rs=1:numel(reaches_saccades)
             end
             
             if (any(ismember(6.5,GLO.summary)) || any(ismember(-1,GLO.summary))) && GLO.keep_raw_output
-                % RAW TRACES FIGURES
+                % RAW TRACES FIGURES (not what it does but not relevant if
+                % no saccades information
                 plot_title                                                = [' Summary 6.5, ' print_out2 ', ' par_title ];
                 summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
                 clear ylim_sp;
@@ -397,7 +398,9 @@ for rs=1:numel(reaches_saccades)
                         type=Plot_settings.types{t};
                         effector=Plot_settings.(sac_rea).effectors_raw_xy{e};
                         ra((t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns_raw_xy,  (t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e);
-                        raw_plotting_xy(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,current_axis);
+                        raw_plotting_xy(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,current_axis,...
+                             Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']));
+                          
                         if GLO.testing_patient
                             set(gca,'ylim',[-30 30],'Xlim',[-0.1 2])
                         else
@@ -419,13 +422,15 @@ for rs=1:numel(reaches_saccades)
                         type=Plot_settings.types{t};
                         effector=Plot_settings.(sac_rea).effectors_raw_xy{e};
                         ra((t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns_raw_xy,  (t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e);
-                        raw_plotting_xy(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,current_axis);
+                        raw_plotting_xy(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,current_axis,...
+                            Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']));
+%                         axis('equal')
                         if GLO.testing_patient
                             set(gca,'ylim',[-30 30],'Xlim',[-0.1 2])
                         else
                             set(gca,'ylim',[-30 30],'Xlim',[-0.1 2])
                         end
-                        %                     axis('equal')
+                        %                     
                     end
                 end
                 title_and_save(summary_figure,plot_title);
@@ -456,16 +461,17 @@ for rs=1:numel(reaches_saccades)
             subplot(Plot_settings.(sac_rea).n_rows,1,t);
             errors(G, Abort_codes,sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig));
         end
-        if isfield(Group(1).(sac_rea),par)
-            for sp=1:numel(subplot_indexes)
-                subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
-                ylim_sp(sp,:)=get(gca,'ylim');
-            end
-            for sp=1:numel(subplot_indexes)
-                subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
-                set(gca,'ylim',[min(ylim_sp(:,1)) max(ylim_sp(:,2))]);
-            end
-        end
+%         if isfield(Group(1).(sac_rea),par)
+%             for sp=1:numel(subplot_indexes)
+%                 subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
+%                 ylim_sp(sp,:)=get(gca,'ylim');
+%             end
+%             for sp=1:numel(subplot_indexes)
+%                 subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
+%                 set(gca,'ylim',[min(ylim_sp(:,1)) max(ylim_sp(:,2))]);
+%             end
+%         end
+        set(gca,'ylim',[-0.3 1]) ;
         title_and_save(summary_figure,plot_title);
         
     end
@@ -1012,7 +1018,7 @@ for s=1:numel(sides)
         switch str2double(effector)
             case 0, effector_label='saccades'; case 1, effector_label='free gaze reaches'; case 2, effector_label='joint eye-hand'; case 3, effector_label='disociated saccades'; case 4, effector_label='dissociated reaches'; case 6, effector_label='free gaze with fixation';
         end
-        elh(numel(effectors)*(s-1)+e)=text(idx+1,1,effector_label);
+%         elh(numel(effectors)*(s-1)+e)=text(idx+1,1,effector_label);
         type_effector=['t_' type '_e_' effector];
         
         if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
@@ -1031,7 +1037,7 @@ for s=1:numel(sides)
     end
 end
 
-y_lim=[0,0.5];
+y_lim = [-0.5,1];
 
 xticklabels='';
 set(gca,'XTickLabel',xticklabels);
@@ -1442,7 +1448,7 @@ end
     for p=1:numel(unique_pos)
         xcircle_rad=target_radius*cos(angle);
         ycircle_rad=target_radius*sin(angle);
-        plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'-r');
+        plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'--r');
         xcircle_siz=target_size*cos(angle);
         ycircle_siz=target_size*sin(angle);
         plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
@@ -1501,15 +1507,15 @@ end
 
 
     
-    angle=0:0.001:2*pi();
-    for p=1:numel(unique_pos)
-        xcircle_rad=target_radius*cos(angle);
-        ycircle_rad=target_radius*sin(angle);
-        plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'-r');
-        xcircle_siz=target_size*cos(angle);
-        ycircle_siz=target_size*sin(angle);
-        plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
-    end
+%     angle=0:0.001:2*pi();
+%     for p=1:numel(unique_pos)
+%         xcircle_rad=target_radius*cos(angle);
+%         ycircle_rad=target_radius*sin(angle);
+%         plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'--r');
+%         xcircle_siz=target_size*cos(angle);
+%         ycircle_siz=target_size*sin(angle);
+%         plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
+%     end
 
 
 type_effector=['t_' type '_e_' effector];
@@ -1529,7 +1535,7 @@ end
 
 
 
-set(gca,'xlim',[-inf,inf],'ylim',[-inf,inf])
+set(gca,'xlim',[-30 30],'ylim',[-30 30])
 title([type_labels ' ' effector_labels ])
 end
 
@@ -2136,12 +2142,15 @@ for g=1:size(groups,1)
                 t1=text(idx+(0.1), temp_mean+0.05, sprintf('%.2f',temp_mean));
                 set(t1,'Color', [0.3 0.3 0.3], 'FontSize', GLO.fontsize_small, 'FontWeight', 'bold','Rotation',90)
             end
-            t2=text(idx+(0.1), -0.3, Abort_codes.reduced_labels{k});
+            
             if g==1
+                t2=text(idx+(0.1), -0.3, Abort_codes.reduced_labels{k});
                 set(t2,'Color', [0.3 0.3 0.3], 'FontSize', GLO.fontsize_small-1, 'FontWeight', 'bold','Rotation',90)
             end
             
         end
+        
+        
     end
     
 end
