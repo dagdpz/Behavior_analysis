@@ -46,12 +46,11 @@ for i = 1:numel(fn_g)
     Group_temp(1,i)=batch.out_stru_ext.(fn_g{i});
     monkey{1,i} = fn_g{i};
     Positions(1,i)=batch.unique_pos.(fn_g{i});
-    
-     %in order to plot target on raw eye traces when dissociated reaches
+     %in order to plot target on raw eye traces of dissociated reaches
     if isempty(Positions(1,i).saccades) & strcmp(Plot_settings.saccades.effectors,'4')
-       Positions(1,i).saccades = Positions(1,i).reaches;
-       Positions(1,i).saccades_tar_rad = Positions(1,i).reaches_tar_rad;
-       Positions(1,i).saccades_tar_siz = Positions(1,i).reaches_tar_siz;
+       Positions(1,i).saccades = Positions(1,i).reaches
+       Positions(1,i).tar_rad = Positions(1,i).tar_rad
+       
     end
     
 end
