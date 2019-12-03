@@ -2197,11 +2197,10 @@ end
 %     case 3
 %         mov_in_state = [3,6,7,9,10,4,5];
 %     case 4
-%         mov_in_state = [3,6,8,4,5];
-
-mov_in_state = GLO.state_raw_traces;        
-        
+%         mov_in_state = [3,6,8,4,5];    
 % end
+
+mov_in_state = GLO.state_raw_traces; 
 
 for g=1:size(groups,1)
     current_group=groups(g,:);
