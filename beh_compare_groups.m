@@ -47,11 +47,11 @@ for i = 1:numel(fn_g)
     monkey{1,i} = fn_g{i};
     Positions(1,i)=batch.unique_pos.(fn_g{i});
     
-     %in order to plot target on raw eye traces when dissociated reaches
+    %in order to plot target on raw eye traces when dissociated reaches
     if isempty(Positions(1,i).saccades) & strcmp(Plot_settings.saccades.effectors,'4')
-       Positions(1,i).saccades = Positions(1,i).reaches;
-       Positions(1,i).saccades_tar_rad = Positions(1,i).reaches_tar_rad;
-       Positions(1,i).saccades_tar_siz = Positions(1,i).reaches_tar_siz;
+        Positions(1,i).saccades = Positions(1,i).reaches;
+        Positions(1,i).saccades_tar_rad = Positions(1,i).reaches_tar_rad;
+        Positions(1,i).saccades_tar_siz = Positions(1,i).reaches_tar_siz;
     end
     
 end
@@ -74,7 +74,7 @@ end
 % print_out = [GLO.subject{1} '(a)' ' Vs ' GLO.subject{2} '(b)'];
 print_out = [''];
 
- reaches_saccades=fieldnames(Group);
+reaches_saccades=fieldnames(Group);
 % reaches_saccades = {'reaches'};
 for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
@@ -367,7 +367,7 @@ for rs=1:numel(reaches_saccades)
                         effector=Plot_settings.(sac_rea).effectors_raw_xy{e};
                         ra((t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns_raw_xy,  (t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e);
                         raw_plotting(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,...
-                        Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']));
+                            Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']),Positions(1).([sac_rea '_fix_siz']),Positions(1).([sac_rea '_fix_rad']));
                         axis('equal')
                         set(gca,'ylim',[-30 30],'Xlim',[-30 30])
                         
@@ -408,8 +408,8 @@ for rs=1:numel(reaches_saccades)
                         effector=Plot_settings.(sac_rea).effectors_raw_xy{e};
                         ra((t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns_raw_xy,  (t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e);
                         raw_plotting_xy(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,current_axis,...
-                             Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']));
-                          
+                            Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']));
+                        
                         if GLO.testing_patient
                             set(gca,'ylim',[-30 30],'Xlim',[-0.1 2])
                         else
@@ -433,13 +433,13 @@ for rs=1:numel(reaches_saccades)
                         ra((t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns_raw_xy,  (t-1)*Plot_settings.(sac_rea).n_columns_raw_xy + e);
                         raw_plotting_xy(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors_raw_xy,Positions(1).(sac_rea),Plot_settings,par,e,1,current_axis,...
                             Positions(1).([sac_rea '_tar_rad']), Positions(1).([sac_rea '_tar_siz']));
-%                         axis('equal')
+                        %                         axis('equal')
                         if GLO.testing_patient
                             set(gca,'ylim',[-30 30],'Xlim',[-0.1 2])
                         else
                             set(gca,'ylim',[-30 30],'Xlim',[-0.1 2])
                         end
-                        %                     
+                        %
                     end
                 end
                 title_and_save(summary_figure,plot_title);
@@ -470,16 +470,16 @@ for rs=1:numel(reaches_saccades)
             subplot(Plot_settings.(sac_rea).n_rows,1,t);
             errors(G, Abort_codes,sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig));
         end
-%         if isfield(Group(1).(sac_rea),par)
-%             for sp=1:numel(subplot_indexes)
-%                 subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
-%                 ylim_sp(sp,:)=get(gca,'ylim');
-%             end
-%             for sp=1:numel(subplot_indexes)
-%                 subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
-%                 set(gca,'ylim',[min(ylim_sp(:,1)) max(ylim_sp(:,2))]);
-%             end
-%         end
+        %         if isfield(Group(1).(sac_rea),par)
+        %             for sp=1:numel(subplot_indexes)
+        %                 subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
+        %                 ylim_sp(sp,:)=get(gca,'ylim');
+        %             end
+        %             for sp=1:numel(subplot_indexes)
+        %                 subplot(Plot_settings.(sac_rea).n_rows,1,subplot_indexes(sp));
+        %                 set(gca,'ylim',[min(ylim_sp(:,1)) max(ylim_sp(:,2))]);
+        %             end
+        %         end
         set(gca,'ylim',[-0.3 1]) ;
         title_and_save(summary_figure,plot_title);
         
@@ -1027,7 +1027,7 @@ for s=1:numel(sides)
         switch str2double(effector)
             case 0, effector_label='saccades'; case 1, effector_label='free gaze reaches'; case 2, effector_label='joint eye-hand'; case 3, effector_label='disociated saccades'; case 4, effector_label='dissociated reaches'; case 6, effector_label='free gaze with fixation';
         end
-%         elh(numel(effectors)*(s-1)+e)=text(idx+1,1,effector_label);
+        %         elh(numel(effectors)*(s-1)+e)=text(idx+1,1,effector_label);
         type_effector=['t_' type '_e_' effector];
         
         if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
@@ -1425,7 +1425,7 @@ title([type_labels ' ' effector_labels ])
 end
 
 
-function  raw_plotting(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,e,s,target_radius, target_size)
+function  raw_plotting(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,e,s,target_radius, target_size, fixation_size, fixation_radius)
 global GLO
 switch str2double(type)
     case 1, type_labels='fixation';    case 2, type_labels='visually-guided';    case 2.5, type_labels='memory learning';    case 3, type_labels='memory-guided'; case 4, type_labels='delayed visually-guided';
@@ -1453,15 +1453,23 @@ switch str2double(effector)
     case 0, effector_labels='saccades'; case 1, effector_labels='free gaze reaches'; case 2, effector_labels='joint eye-hand'; case 3, effector_labels='disociated saccades'; case 4, effector_labels='dissociated reaches'; case 6, effector_labels='free gaze with fixation';
 end
 
- angle=0:0.001:2*pi();
-    for p=1:numel(unique_pos)
-        xcircle_rad=target_radius*cos(angle);
-        ycircle_rad=target_radius*sin(angle);
-        plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'--r');
-        xcircle_siz=target_size*cos(angle);
-        ycircle_siz=target_size*sin(angle);
-        plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
-    end
+%plot target
+angle=0:0.001:2*pi();
+for p=1:numel(unique_pos)
+    xcircle_rad=target_radius*cos(angle);
+    ycircle_rad=target_radius*sin(angle);
+    plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'--r');
+    xcircle_siz=target_size*cos(angle);
+    ycircle_siz=target_size*sin(angle);
+    plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
+end
+%plot fixation
+xcircle_fix_rad=fixation_radius*cos(angle);
+ycircle_fix_rad=fixation_radius*sin(angle);
+plot(0+xcircle_rad,0+ycircle_rad,'--r');
+xcircle_fix_siz=fixation_size*cos(angle);
+ycircle_fix_siz=fixation_size*sin(angle);
+plot(0+xcircle_siz,0+ycircle_siz,'r');
 
 type_effector=['t_' type '_e_' effector];
 
@@ -1515,7 +1523,7 @@ switch str2double(effector)
 end
 
 
-    
+
 %     angle=0:0.001:2*pi();
 %     for p=1:numel(unique_pos)
 %         xcircle_rad=target_radius*cos(angle);
@@ -2181,18 +2189,19 @@ else
     col2=[0.5 0.5 0.5; 0 0 0];
 end
 
-switch str2num(type_effector(3))
-    case 1
-        mov_in_state = [2,3];
-    case 2
-        mov_in_state = [3,4,5];
-    case 3
-        mov_in_state = [3,6,7,9,10,4,5];
-    case 4
-        mov_in_state = [3,6,8,4,5];
+% switch str2num(type_effector(3))
+%     case 1
+%         mov_in_state = [2,3];
+%     case 2
+%         mov_in_state = [3,4,5];
+%     case 3
+%         mov_in_state = [3,6,7,9,10,4,5];
+%     case 4
+%         mov_in_state = [3,6,8,4,5];
+
+mov_in_state = GLO.state_raw_traces;        
         
-        
-end
+% end
 
 for g=1:size(groups,1)
     current_group=groups(g,:);
