@@ -230,15 +230,16 @@ for t = 1:numel(type_names)
                         P_index_s   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & idx.success{batch};
                         P_index_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & ~idx.success{batch};
                         P_index     = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d;
-                        P_index_t_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & ~idx.success{batch};
+                        P_index_t_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_d & idx.hnd_abort_tar_acq{batch};
                         
-                    
-                       
-                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_s(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
-                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_a(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
-                            out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
+                        
+                        
+                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_s(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
+                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_a(p,1)  = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
+                        out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
+                        if strcmp(reach_or_saccade,'reaches')
                             out_str(batch).(type_effector).(reach_or_saccade).(decision).endpoints_per_position_t_a(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_t_a).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index_t_a).fix_pos]);
-                      
+                        end
                         %                         out_str(batch).(type_effector).(reach_or_saccade).(decision).accuracy_xy(p,1)            = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).accuracy_xy]);
                         
                     end
@@ -302,14 +303,16 @@ for t = 1:numel(type_names)
                             P_index_s   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_h & idx.success{batch};
                             P_index_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_h & ~idx.success{batch};
                             P_index     = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_h;
+                            P_index_t_a   = abs([out_comp{batch}.(reach_or_saccade).tar_pos]-[out_comp{batch}.(reach_or_saccade).fix_pos]-unique_pos.(reach_or_saccade)(p)) <1.5 & temp_index_h & idx.hnd_abort_tar_acq{batch};
                             
-                         
-                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_s(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
-                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_a(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
-                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position(p,1)     = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
-                        
-                             
-                           
+                            out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_s(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_s).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_s).fix_pos]);
+                            out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_a(p,1)   = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_a).endpos]    - [out_comp{batch}.(reach_or_saccade)(P_index_a).fix_pos]);
+                            out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position(p,1)     = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index).fix_pos]);
+                            if strcmp(reach_or_saccade,'reaches')
+                                out_str(batch).(type_effector).(reach_or_saccade).([decision '_' hand]).endpoints_per_position_t_a(p,1)    = get_raw_mean_std_xy([out_comp{batch}.(reach_or_saccade)(P_index_t_a).endpos]      - [out_comp{batch}.(reach_or_saccade)(P_index_t_a).fix_pos]);
+                            end
+                            
+                            
                         end
                         for s = 1:numel(side_names)
                             side = side_names{s};
