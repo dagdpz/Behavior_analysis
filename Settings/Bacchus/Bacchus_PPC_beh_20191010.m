@@ -22,7 +22,7 @@ GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
 GLO.append_pdfs                     =   0;
 GLO.parent_folder                   =   '';
-GLO.folder_to_save                  =   'Y:\Projects\Pulv_eye_gaze_position\behavior\Linus';
+GLO.folder_to_save                  =   'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Bacchus\20191113';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
 GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
@@ -36,8 +36,8 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1 2 3 5 10]; %which plots (vector of number of -1 for all plots)
-GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
+GLO.summary                         =   [1 2 3 5 6 10]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.target_locations_in_raw         =   0; %not used anymore
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
 GLO.euclideans_reach                =   [-15, 15]; % used in reallocate_positions_from_mpa ?
@@ -45,7 +45,11 @@ GLO.trial_numbers                   =   0; %in correlation plot
 GLO.keep_raw_output                 =   1; % 1 = save raw data in the output structure and plot raw traces in some plots 
 GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
-GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
+GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from state_inf, 1 only successful trials
+%next 3 for plotting
+GLO.saccades_effectors              = {'3'};
+GLO.reaches_effectors               = {'4'};
+GLO.types_to_plot                   = {'4'};
 
 
 
@@ -96,31 +100,35 @@ steady.saccade_definition         = 4;
         steady.tar_range_x                  =   [NaN;NaN];
         steady.tar_range_y                  =   [NaN;NaN];
 
-% load('Y:\Projects\PPC_pulv_eye_hand\ephys\MIP_dPul_inj_working_post_sfn\behaviour_filelist.mat');
-load('Y:\Projects\PPC_pulv_eye_hand\ephys\MIP_dPul_inj_choi_w_o_20171012\behaviour_filelist.mat');
-
-filelist_formatted_control=filelist_formatted.Lin_MIP_R_PT0_Ddre_han;
-filelist_formatted_inactivation=filelist_formatted.Lin_MIP_R_PT1_Ddre_han;
+% load('Y:\Projects\PPC_pulv_eye_hand\ephys\MIP_dPul_inj_choi_w_o_20171012\behaviour_filelist.mat');
+% 
+% filelist_formatted_control=filelist_formatted.Lin_MIP_R_PT0_Ddre_han;
+% filelist_formatted_inactivation=filelist_formatted.Lin_MIP_R_PT1_Ddre_han;
 
 % Linus dPul inactivation MIP recordings datasets
 subject_ID{1}='Control';
-group{1}                        = repmat({'Linus_phys'},size(filelist_formatted_control,1),1);
-dates_subject_in{1}             = filelist_formatted_control(:,1);
-batching{1}.runs                = filelist_formatted_control(:,2);  % either empty or specific runs specified
+group{1}                        = repmat({'Bacchus'},2,1);
+dates_subject_in{1}             = repmat({20191113},2,1);
+batching{1}.runs                = {5;15};  % either empty or specific runs specified
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
-subject_ID{2}='Experimental';
-group{2}                        = repmat({'Linus_phys'},size(filelist_formatted_inactivation,1),1);
-dates_subject_in{2}                = filelist_formatted_inactivation(:,1);
-batching{2}.runs                = filelist_formatted_inactivation(:,2);  % either empty or specific runs specified
-batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
-batching{2}.range_of_dates      = 0;
+% subject_ID{2}='Experimental';
+% group{2}                        = {'Bacchus'};
+% dates_subject_in{2}             = {20191121};
+% batching{2}.runs                = {2};  % either empty or specific runs specified
+% batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
+% batching{2}.range_of_dates      = 0;
+
+% subject_ID{2}='Experimental';
+% group{2}                        = repmat({'Linus_phys'},size(filelist_formatted_inactivation,1),1);
+% dates_subject_in{2}                = filelist_formatted_inactivation(:,1);
+% batching{2}.runs                = filelist_formatted_inactivation(:,2);  % either empty or specific runs specified
+% batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
+% batching{2}.range_of_dates      = 0;
 
 
 %% over all
-
-GLO.folder_to_save                  = 'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Linus\MIP_dPul_inj_post_sfn';
 
 run beh_run_analysis
 

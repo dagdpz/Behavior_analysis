@@ -97,7 +97,7 @@ for gr=1:numel(group)
         continue
     end
     %here get behavioral analysis from Monkeypsych_analyse and perform
-    %additional analysis, need to understand what's happening here !!!! 
+    %some correlation (latency with hands, etc) everything is saved in the structure bactch 
     [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), batch.unique_pos.(subject_ID{gr})] ...
         = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
 end
@@ -119,9 +119,9 @@ end
 
 unique_saccade_positions=unique([Positions.saccades]);
 unique_reach_positions=unique([Positions.reaches]);
-fieldnames_per_position={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a'};
+fieldnames_per_position={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a' };
 
-for g = 1:numel(Group_temp) %????
+for g = 1:numel(Group_temp) % I think this loop just check that the structure field exist, if not create it and fill it with NaN
     for FN=fieldnames_per_position
         % saccades
         if ~isfield(Group_temp(g).saccades,FN{:}) 
@@ -158,12 +158,18 @@ for g = 1:numel(Group_temp) %????
     end
 end
 
-oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental);
+if numel(group) > 1
+oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental); %create NaN structure
 new.Control=oo;
 new.Experimental=oo;
+else 
+oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Control);
+new.Control=oo;
+new.Experimental=oo;
+end
 
-fn=fieldnames(batch.out_stru_ext);
-for gr=1:numel(fn)
+fn=fieldnames(batch.out_stru_ext); 
+for gr=1:numel(fn)  % here concatinate the existing with NaN to make sure no field is missing anywhere ??
     fnn=fieldnames(batch.out_stru_ext.(fn{gr}));
     for j=1:numel(fnn)
         fnnn= fieldnames(batch.out_stru_ext.(fn{gr}).(fnn{j}));
@@ -172,8 +178,10 @@ for gr=1:numel(fn)
          end
     end
 end
+
 clear batch.out_stru_ext
 batch.out_stru_ext=new;
+
 
 
 if GLO.testing_patient
@@ -187,7 +195,7 @@ end
 [batch.stat]=beh_statistics(batch,testing);
 [batch.stat.groups, ~]=beh_statistics_control_exp_group(batch,testing);
 
-save([GLO.folder_to_save filesep 'data'],'batch');
+save([GLO.folder_to_save filesep 'data'],'-struct','batch');
 
 GLO.correlation_mode = steady.correlation_mode;
 if GLO.plot_it          == 1
