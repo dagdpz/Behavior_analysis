@@ -15,14 +15,14 @@ GLO.fontsize_ticks                  =   12;
 GLO.fontsize_labels                 =   12;
 GLO.linewidth                       =   2;
 GLO.plot_raw_endpoints              =   1; %1 means 1 point per trial, 0 means average across trials
-GLO.calculate_statististics         =   0;
-GLO.parametric_testing              =   0;
-GLO.plot_statististics              =   0;
+GLO.calculate_statististics         =   1;
+GLO.parametric_testing              =   1;
+GLO.plot_statististics              =   1;
 GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
 GLO.append_pdfs                     =   0;
 GLO.parent_folder                   =   '';
-GLO.folder_to_save                  =   'Y:\Projects\PPC_pulv_body_signals\behavior\Magnus\20191121';
+GLO.folder_to_save                  =   'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Bacchus\20191119';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
 GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
@@ -36,8 +36,8 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1 2 3 5 6 9 10 12]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
-GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
+GLO.summary                         =   [3 6]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.target_locations_in_raw         =   0; %not used anymore
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
 GLO.euclideans_reach                =   [-15, 15]; % used in reallocate_positions_from_mpa ?
@@ -45,15 +45,14 @@ GLO.trial_numbers                   =   0; %in correlation plot
 GLO.keep_raw_output                 =   1; % 1 = save raw data in the output structure and plot raw traces in some plots 
 GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
-GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
+GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from state_inf, 1 only successful trials
 %next 3 for plotting
-GLO.saccades_effectors              = {'1'};
-GLO.reaches_effectors               = {'1'};
-GLO.types_to_plot                   = {'1'};
-GLO.saccades.effectors_raw_xy       = {'1'};
-GLO.reaches.effectors_raw_xy        = {'1'};
-GLO.state_raw_traces                = [4 5];
-
+GLO.saccades_effectors              = {'4'};
+GLO.reaches_effectors               = {'4'};
+GLO.types_to_plot                   = {'4'};
+GLO.saccades.effectors_raw_xy       = {'4'};
+GLO.reaches.effectors_raw_xy        = {'4'};
+GLO.state_raw_traces                = [3 9 8 4 5];
 
 
 % steady.passfilter                   =   {'saccades','lat',0.08, 0.5;'reaches','lat',0.1, 10};
@@ -110,18 +109,18 @@ steady.saccade_definition         = 4;
 
 % Linus dPul inactivation MIP recordings datasets
 subject_ID{1}='Control';
-group{1}                        = repmat({'Magnus'},4,1);
-dates_subject_in{1}             = repmat({20191121},4,1);
-batching{1}.runs                = {6;8;11;13};  % either empty or specific runs specified
+group{1}                        = repmat({'Bacchus'},2,1);
+dates_subject_in{1}             = repmat({20191119},2,1);
+batching{1}.runs                = {2;3};  % either empty or specific runs specified
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
-subject_ID{2}='Experimental';
-group{2}                        = repmat({'Magnus'},4,1);
-dates_subject_in{2}             = repmat({20191121},4,1);
-batching{2}.runs                = {16;18;20;22;24};  % either empty or specific runs specified
-batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
-batching{2}.range_of_dates      = 0;
+% subject_ID{2}='Experimental';
+% group{2}                        = {'Bacchus'};
+% dates_subject_in{2}             = {20191121};
+% batching{2}.runs                = {2};  % either empty or specific runs specified
+% batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
+% batching{2}.range_of_dates      = 0;
 
 % subject_ID{2}='Experimental';
 % group{2}                        = repmat({'Linus_phys'},size(filelist_formatted_inactivation,1),1);

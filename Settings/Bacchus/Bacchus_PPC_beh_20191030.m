@@ -36,7 +36,7 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1 2 3 5 6 10]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.summary                         =   [3 6]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
 GLO.target_locations_in_raw         =   0; %not used anymore
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
@@ -50,7 +50,9 @@ GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial fro
 GLO.saccades_effectors              = {'3'};
 GLO.reaches_effectors               = {'4'};
 GLO.types_to_plot                   = {'4'};
-
+GLO.saccades.effectors_raw_xy       = {'4'};
+GLO.reaches.effectors_raw_xy        = {'4'};
+GLO.state_raw_traces                = [3 9 8 4 5];
 
 
 % steady.passfilter                   =   {'saccades','lat',0.08, 0.5;'reaches','lat',0.1, 10};
@@ -108,8 +110,8 @@ steady.saccade_definition         = 4;
 % Linus dPul inactivation MIP recordings datasets
 subject_ID{1}='Control';
 group{1}                        = repmat({'Bacchus'},2,1);
-dates_subject_in{1}             = repmat({20191114},2,1);
-batching{1}.runs                = {2;3};  % either empty or specific runs specified
+dates_subject_in{1}             = repmat({20191030},2,1);
+batching{1}.runs                = {5;6};  % either empty or specific runs specified
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 

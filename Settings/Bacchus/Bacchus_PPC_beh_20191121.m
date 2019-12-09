@@ -47,9 +47,12 @@ GLO.hits_in_plot                    =   1; % plot the number of hits per conditi
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from state_inf, 1 only successful trials
 %next 3 for plotting
-GLO.saccades_effectors              = {'3'};
+GLO.saccades_effectors              = {'4'};
 GLO.reaches_effectors               = {'4'};
 GLO.types_to_plot                   = {'4'};
+GLO.saccades.effectors_raw_xy       = {'4'};
+GLO.reaches.effectors_raw_xy        = {'4'};
+GLO.state_raw_traces                = [4 5];
 
 
 
