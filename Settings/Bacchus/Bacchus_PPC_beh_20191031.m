@@ -22,7 +22,7 @@ GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
 GLO.append_pdfs                     =   0;
 GLO.parent_folder                   =   '';
-GLO.folder_to_save                  =   'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Bacchus\20191030';
+GLO.folder_to_save                  =   'Y:\Projects\PPC_pulv_eye_hand\behavior\beh_analysis\Bacchus\20191031';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
 GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
@@ -47,7 +47,7 @@ GLO.hits_in_plot                    =   1; % plot the number of hits per conditi
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from state_inf, 1 only successful trials
 %next 3 for plotting
-GLO.saccades_effectors              = {'3'};
+GLO.saccades_effectors              = {'4'};
 GLO.reaches_effectors               = {'4'};
 GLO.types_to_plot                   = {'4'};
 GLO.saccades.effectors_raw_xy       = {'4'};
@@ -110,8 +110,8 @@ steady.saccade_definition         = 4;
 % Linus dPul inactivation MIP recordings datasets
 subject_ID{1}='Control';
 group{1}                        = repmat({'Bacchus'},2,1);
-dates_subject_in{1}             = repmat({20191030},2,1);
-batching{1}.runs                = {5;6};  % either empty or specific runs specified
+dates_subject_in{1}             = repmat({20191031},2,1);
+batching{1}.runs                = {2;3};  % either empty or specific runs specified
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
