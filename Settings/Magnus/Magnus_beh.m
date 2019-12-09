@@ -36,7 +36,7 @@ GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
 GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [1 2 3 5 10 12]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.summary                         =   [1 2 3 5 6 9 10 12]; %which plots (vector of number of -1 for all plots) [1 2 3 5 10]
 GLO.target_locations_in_raw         =   0; %in raw plots, also plot target location
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
@@ -47,9 +47,12 @@ GLO.hits_in_plot                    =   1; % plot the number of hits per conditi
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial from CUE_ON, 1 only successful trials
 %next 3 for plotting
-GLO.saccades_effectors              = {'3'};
+GLO.saccades_effectors              = {'1'};
 GLO.reaches_effectors               = {'1'};
-GLO.types_to_plot                   = {'2'};
+GLO.types_to_plot                   = {'1'};
+GLO.saccades.effectors_raw_xy       = {'1'};
+GLO.reaches.effectors_raw_xy        = {'1'};
+GLO.state_raw_traces                = [4 5];
 
 
 
