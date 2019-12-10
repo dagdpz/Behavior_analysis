@@ -1454,36 +1454,37 @@ switch str2double(effector)
 end
 
 %plot target
-angle=0:0.001:2*pi();
-for p=1:numel(unique_pos)
-    xcircle_rad=target_radius*cos(angle);
-    ycircle_rad=target_radius*sin(angle);
-    plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'--r');
-    xcircle_siz=target_size*cos(angle);
-    ycircle_siz=target_size*sin(angle);
-    plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
-end
-%plot fixation
-xcircle_fix_rad=fixation_radius*cos(angle);
-ycircle_fix_rad=fixation_radius*sin(angle);
-plot(0+xcircle_rad,0+ycircle_rad,'--r');
-xcircle_fix_siz=fixation_size*cos(angle);
-ycircle_fix_siz=fixation_size*sin(angle);
-plot(0+xcircle_siz,0+ycircle_siz,'r');
-
-type_effector=['t_' type '_e_' effector];
-
-
-if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
-    for h=1:numel(hands)
-        hand=['_' hands{h}];
-        plot_raw_internal(groups,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}));
+if ~isempty(unique_pos)
+    angle=0:0.001:2*pi();
+    for p=1:numel(unique_pos)
+        xcircle_rad=target_radius*cos(angle);
+        ycircle_rad=target_radius*sin(angle);
+        plot(real(unique_pos(p))+xcircle_rad,imag(unique_pos(p))+ycircle_rad,'--r');
+        xcircle_siz=target_size*cos(angle);
+        ycircle_siz=target_size*sin(angle);
+        plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
     end
-elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
-    hand=[];
-    plot_raw_internal(groups,type_effector,hand,Plot_settings,Plot_settings.colors.sac);
+    %plot fixation
+    xcircle_fix_rad=fixation_radius*cos(angle);
+    ycircle_fix_rad=fixation_radius*sin(angle);
+    plot(0+xcircle_rad,0+ycircle_rad,'--r');
+    xcircle_fix_siz=fixation_size*cos(angle);
+    ycircle_fix_siz=fixation_size*sin(angle);
+    plot(0+xcircle_siz,0+ycircle_siz,'r');
+    
+    type_effector=['t_' type '_e_' effector];
+    
+    
+    if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
+        for h=1:numel(hands)
+            hand=['_' hands{h}];
+            plot_raw_internal(groups,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}));
+        end
+    elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
+        hand=[];
+        plot_raw_internal(groups,type_effector,hand,Plot_settings,Plot_settings.colors.sac);
+    end
 end
-
 
 
 
@@ -2197,10 +2198,10 @@ end
 %     case 3
 %         mov_in_state = [3,6,7,9,10,4,5];
 %     case 4
-%         mov_in_state = [3,6,8,4,5];    
+%         mov_in_state = [3,6,8,4,5];
 % end
 
-mov_in_state = GLO.state_raw_traces; 
+mov_in_state = GLO.state_raw_traces;
 
 for g=1:size(groups,1)
     current_group=groups(g,:);
