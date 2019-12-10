@@ -1463,6 +1463,7 @@ if ~isempty(unique_pos)
         xcircle_siz=target_size*cos(angle);
         ycircle_siz=target_size*sin(angle);
         plot(real(unique_pos(p))+xcircle_siz,imag(unique_pos(p))+ycircle_siz,'r');
+
     end
     %plot fixation
     xcircle_fix_rad=fixation_radius*cos(angle);
@@ -1486,7 +1487,6 @@ if ~isempty(unique_pos)
     end
     
 end
-
 
 set(gca,'xlim',[-30,30],'ylim',[-30,30])
 title([type_labels ' ' effector_labels ])
@@ -2198,10 +2198,10 @@ end
 %     case 3
 %         mov_in_state = [3,6,7,9,10,4,5];
 %     case 4
-%         mov_in_state = [3,6,8,4,5];    
+%         mov_in_state = [3,6,8,4,5];
 % end
 
-mov_in_state = GLO.state_raw_traces; 
+mov_in_state = GLO.state_raw_traces;
 
 for g=1:size(groups,1)
     current_group=groups(g,:);
