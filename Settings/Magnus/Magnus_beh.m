@@ -22,7 +22,7 @@ GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
 GLO.append_pdfs                     =   0;
 GLO.parent_folder                   =   '';
-GLO.folder_to_save                  =   'Y:\Projects\PPC_pulv_body_signals\behavior\Magnus\20191121';
+GLO.folder_to_save                  =   'Y:\Projects\PhysiologicalRecording\Figures\Magnus\behavior\20191205';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
 GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
@@ -110,16 +110,16 @@ steady.saccade_definition         = 4;
 
 % Linus dPul inactivation MIP recordings datasets
 subject_ID{1}='Control';
-group{1}                        = repmat({'Magnus'},4,1);
-dates_subject_in{1}             = repmat({20191121},4,1);
-batching{1}.runs                = {6;8;11;13};  % either empty or specific runs specified
+group{1}                        = repmat({'Magnus'},3,1); %repmat({'Magnus'},4,1);
+dates_subject_in{1}             = repmat({20191205},3,1);%repmat({20191121},4,1);
+batching{1}.runs                = {4;6;8};  % either empty or spec ific runs specified
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
 subject_ID{2}='Experimental';
-group{2}                        = repmat({'Magnus'},4,1);
-dates_subject_in{2}             = repmat({20191121},4,1);
-batching{2}.runs                = {16;18;20;22;24};  % either empty or specific runs specified
+group{2}                        = repmat({'Magnus'},6,1);
+dates_subject_in{2}             = repmat({20191205},6,1);
+batching{2}.runs                = {10;12;14;15;17;19};  % either empty or specific runs specified
 batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{2}.range_of_dates      = 0;
 
