@@ -49,7 +49,7 @@ GLO.only_successful_side_selection  =   0; %0 takes in account aborted trial fro
 %next 3 for plotting
 GLO.saccades_effectors              = {'1'};
 GLO.reaches_effectors               = {'1'};
-GLO.types_to_plot                   = {'1'};
+GLO.types_to_plot                   = {'2'};
 GLO.saccades.effectors_raw_xy       = {'1'};
 GLO.reaches.effectors_raw_xy        = {'1'};
 GLO.state_raw_traces                = [4 5];
