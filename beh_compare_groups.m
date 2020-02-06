@@ -570,11 +570,18 @@ if strcmp(sac_rea,'reaches')
     
     
 else
-    comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-    comp_LS={[1 2] [4 5 6 7] [9 10 11 12]};
-    comp_RS={[[1 2]+14 [4 5 6 7]+14 [9 10 11 12]+14]};
-    comp_LH={[1 4 6 9 11 15 18 20 23 25]};
-    comp_RH={[1 4 6 9 11 15 18 20 23 25]+1};
+%     comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
+%     comp_LS={[1 2] [4 5 6 7] [9 10 11 12]};
+%     comp_RS={[[1 2]+14 [4 5 6 7]+14 [9 10 11 12]+14]};
+%     comp_LH={[1 4 6 9 11 15 18 20 23 25]};
+%     comp_RH={[1 4 6 9 11 15 18 20 23 25]+1};
+
+ comp_IN={[1 2] [3 4], [7 8] [9 10]};
+    comp_LS={[1 2 3 4] [7 8 9 10]};
+    comp_RS={[1 2 3 4] [7 8 9 10]};
+    comp_LH={[1 3 7 9]};
+    comp_RH={[1 3 7 9]+1};
+    
 end
 comp_IN_bar=comp_IN;
 
@@ -597,12 +604,17 @@ if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
     else
         %         comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
         comp_CH=comp_IN;
-        ds      = 14;
+       % ds      = 14;
+        ds      = 6;
         dh      = 2;
         dc      = 0;
-        compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
-        compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
-        compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
+%         compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
+%         compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
+%         compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
+ 
+        compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
+        compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
+        compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
     end
     %     comp_IN_bar=comp_IN;
     sig_IN=[]; sig_CH=[];
