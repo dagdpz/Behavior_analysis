@@ -80,7 +80,7 @@ for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
         %         parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','lat_residuals_sac_rea','lat_raw_sac_rea','lat_r_residuals','lat_slo_residuals','lat_int_residuals','lat_difference_sac_rea','ini_fix','ini_abort','abort_raw_x', 'success_raw_x'};
-        parameters={'ini_abort','lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a','accuracy_xy','precision_xy','successful','side_selection','abort_raw_x','success_raw_x'};
+        parameters={'ini_abort','lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a','accuracy_xy','successful','side_selection','abort_raw_x','success_raw_x'};
         
         eye_or_hand_evaluated = ' Hand';
     else
