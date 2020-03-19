@@ -75,7 +75,7 @@ end
 print_out = [''];
 
 reaches_saccades=fieldnames(Group);
- reaches_saccades = {'reaches'};
+  reaches_saccades = {'saccades'};
 for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
@@ -84,7 +84,7 @@ for rs=1:numel(reaches_saccades)
         
         eye_or_hand_evaluated = ' Hand';
     else
-        parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','velocity','abort_raw_x','success_raw_x'};
+        parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','successful','velocity','abort_raw_x','success_raw_x'};
         eye_or_hand_evaluated = ' Eye';
     end
     for s_p=1:numel(parameters);
@@ -555,7 +555,7 @@ for s=1:numel(sides)
 end
 
 
-if strcmp(sac_rea,'reaches')
+% if strcmp(sac_rea,'reaches')
     %      comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
     %      comp_LS={[1 2 3 4] [6 7 8 9]};
     %      comp_RS={[[1 2 3 4]+11] [[6 7 8 9]+11]};
@@ -569,25 +569,25 @@ if strcmp(sac_rea,'reaches')
     comp_RH={[1 3 7 9]+1};
     
     
-else
-%     comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-%     comp_LS={[1 2] [4 5 6 7] [9 10 11 12]};
-%     comp_RS={[[1 2]+14 [4 5 6 7]+14 [9 10 11 12]+14]};
-%     comp_LH={[1 4 6 9 11 15 18 20 23 25]};
-%     comp_RH={[1 4 6 9 11 15 18 20 23 25]+1};
-
- comp_IN={[1 2] [3 4], [7 8] [9 10]};
-    comp_LS={[1 2 3 4] [7 8 9 10]};
-    comp_RS={[1 2 3 4] [7 8 9 10]};
-    comp_LH={[1 3 7 9]};
-    comp_RH={[1 3 7 9]+1};
-    
-end
+% else
+% %     comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
+% %     comp_LS={[1 2] [4 5 6 7] [9 10 11 12]};
+% %     comp_RS={[[1 2]+14 [4 5 6 7]+14 [9 10 11 12]+14]};
+% %     comp_LH={[1 4 6 9 11 15 18 20 23 25]};
+% %     comp_RH={[1 4 6 9 11 15 18 20 23 25]+1};
+% 
+%  comp_IN={[1 2] [3 4], [7 8] [9 10]};
+%     comp_LS={[1 2 3 4] [7 8 9 10]};
+%     comp_RS={[1 2 3 4] [7 8 9 10]};
+%     comp_LH={[1 3 7 9]};
+%     comp_RH={[1 3 7 9]+1};
+%     
+% end
 comp_IN_bar=comp_IN;
 
 
 if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
-    if strcmp(sac_rea,'reaches')
+%     if strcmp(sac_rea,'reaches')
         %         comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
         comp_CH=comp_IN;
         ds      = 6;
@@ -601,21 +601,21 @@ if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
         compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
-    else
-        %         comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-        comp_CH=comp_IN;
-       % ds      = 14;
-        ds      = 6;
-        dh      = 2;
-        dc      = 0;
-%         compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
-%         compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
-%         compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
- 
-        compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
-        compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
-        compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
-    end
+%     else
+%         %         comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
+%         comp_CH=comp_IN;
+%        % ds      = 14;
+%         ds      = 6;
+%         dh      = 2;
+%         dc      = 0;
+% %         compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
+% %         compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
+% %         compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
+%  
+%         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
+%         compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
+%         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
+%     end
     %     comp_IN_bar=comp_IN;
     sig_IN=[]; sig_CH=[];
     for l=1:numel(comp_IN)
@@ -642,15 +642,15 @@ end
 % end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
 
-if strcmp(sac_rea,'reaches')
+% if strcmp(sac_rea,'reaches')
     xticks=[1 2 3 4, 7 8 9 10];
     %     xticklabels={'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb'};
     xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' };
-else
-    xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
-    %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
-    xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
-end
+% else
+%     xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
+%     %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
+%     xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
+% end
 
 set(gca,'ylim',y_lim,'xlim',[0,max(xticks)+1],'xtick',xticks,'XTickLabel',xticklabels);
 ylabel(par);
@@ -875,13 +875,13 @@ for s=1:numel(sides)
 end
 
 
-if strcmp(sac_rea,'reaches')
+% if strcmp(sac_rea,'reaches')
     %     comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
     comp_IN={[1 2] [3 4], [7 8] [9 10]};
     
-else
-    comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-end
+% else
+%     comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
+% end
 comp_IN_bar=comp_IN;
 
 
@@ -897,15 +897,15 @@ for e=1:numel(elh)
 end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
 
-if strcmp(sac_rea,'reaches')
+% if strcmp(sac_rea,'reaches')
     xticks=[1 2 3 4, 7 8 9 10];
     %     xticklabels={'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb'};
     xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
-else
-    xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
-    %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
-    xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
-end
+% else
+%     xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
+%     %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
+%     xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
+% end
 
 set(gca,'ylim',y_lim,'xlim',[0,max(xticks)+1],'xtick',xticks,'XTickLabel',xticklabels);
 ylabel(par);
@@ -2450,10 +2450,12 @@ for idd = 1:numel(id_b.c)
 end
 batch_n.c_cell = num2cell(batch_n.c);
 
+if isfield(filetable,'Experimental')
 filetable.Experimental          = vertcat(batch.files_for_input.Experimental{:}{:});
 for idx_batch                   = 1:numel(batch.files_for_input.Experimental{:})
     id_b.e(idx_batch)           = size(batch.files_for_input.Experimental{:}{idx_batch},1);
 end
+
 
 background.e=[];
 batch_n.e=[];
@@ -2467,6 +2469,7 @@ for idd = 1:numel(id_b.e)
     batch_n.e= [batch_n.e; repmat(idd,id_b.e(idd),1)];
 end
 batch_n.e_cell = num2cell(batch_n.e);
+end
 
 % plot_title                      = [' Summary 6, ' 'filelist'];
 % summary_figure                  = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
@@ -2480,12 +2483,13 @@ delete(subplot(1,2,1))
 set(t1,'units','normalized')
 set(t1,'position',pos)
 
+if isfield(filetable,'Experimental')
 t2 = uitable('Parent', summary_figure, 'Data', [batch_n.e_cell, filetable.Experimental], 'ColumnName', {'Batch', 'Experimental sessions', 'Experimental runs'},'ColumnWidth',{50 400 50},'RowStriping','off','BackgroundColor', [0.8 0.8 0.8]);
 pos = get(subplot(1,2,2),'position');
 delete(subplot(1,2,2))
 set(t2,'units','normalized')
 set(t2,'position',pos)
-
+end
 end
 
 function [G, Abort_codes] = error_str_2_num(input_group1, input_group2)

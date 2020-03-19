@@ -85,8 +85,10 @@ end
 out_comp_mat                        = vertcat(out_comp{:});
 out_comp_saccades                   = vertcat(out_comp_mat.saccades);
 out_comp_reaches                    = vertcat(out_comp_mat.reaches);
-saccadepositions                    = [out_comp_saccades.tar_pos]-[out_comp_saccades.fix_pos];
-reachpositions                      = [out_comp_reaches.tar_pos]-[out_comp_reaches.fix_pos];
+% saccadepositions                    = [out_comp_saccades.tar_pos]-[out_comp_saccades.fix_pos];
+% reachpositions                      = [out_comp_reaches.tar_pos]-[out_comp_reaches.fix_pos];
+saccadepositions                    = [out_comp_saccades.tar_pos];
+reachpositions                      = [out_comp_reaches.tar_pos];
 % reorganise and calculate mean, raw, stfd, and num of hits for the bacth
 unique_pos.saccades                 = unique_positions(saccadepositions,1.5);
 unique_pos.reaches = unique_positions(reachpositions,1.5);
