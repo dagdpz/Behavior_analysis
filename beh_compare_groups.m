@@ -75,7 +75,7 @@ end
 print_out = [''];
 
 reaches_saccades=fieldnames(Group);
-reaches_saccades = {'saccades'};
+% reaches_saccades = {'saccades'};
 for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
