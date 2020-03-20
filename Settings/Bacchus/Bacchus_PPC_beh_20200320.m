@@ -109,9 +109,9 @@ steady.downsampling               = 1;
 
 % Linus dPul inactivation MIP recordings datasets
 subject_ID{1}='Control';
-group{1}                        = {'Bacchus'};
-dates_subject_in{1}             = {20200320};;
-batching{1}.runs                = {4};  % either empty or specific runs specified
+group{1}                        = repmat({'Bacchus'},1,2);
+dates_subject_in{1}             = repmat({20200320},1,2);;
+batching{1}.runs                = {4;5};  % either empty or specific runs specified
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
