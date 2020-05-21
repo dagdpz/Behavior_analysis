@@ -353,7 +353,9 @@ for rs=1:numel(reaches_saccades)
             summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
             hand_release(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,Plot_settings,par);
             title_and_save(summary_figure,plot_title);
-            
+          
+       
+                 
         elseif (strcmp(par,'abort_raw_x') || strcmp(par,'success_raw_x') )&& (any(ismember(6,GLO.summary)) || any(ismember(7,GLO.summary)) || any(ismember(-1,GLO.summary)))
             if (any(ismember(6,GLO.summary)) || any(ismember(-1,GLO.summary))) && GLO.keep_raw_output
                 % RAW TRACES FIGURES
@@ -1182,6 +1184,8 @@ else
 end
 end
 
+
+
 function  hand_release_abort(input_group1,input_group2,sac_rea,Plot_settings,par)
 global GLO
 % if GLO.trial_by_trial
@@ -1962,7 +1966,7 @@ else
     lin=['-',':'];
 end
 switch par
-    case 'lat', rt_b=0.1:0.01:0.8;          case 'dur', rt_b=0:0.01:0.5;            case 'n_obs', rt_b=0:1:1000;                case 'velocity', rt_b=0:10:1000;
+    case 'lat', rt_b=0:0.05:0.8;          case 'dur', rt_b=0:0.1:0.5;            case 'n_obs', rt_b=0:1:1000;                case 'velocity', rt_b=0:10:1000;
     case 'lat_r', rt_b=0:0.1:1;             case 'lat_r_residuals', rt_b=0:0.1:1;   case 'dur_r', rt_b=0:0.1:1;                 case 'dur_r_residuals', rt_b=0:0.1:1;
     case 'lat_raw_sac_rea', rt_b=0:0.1:1;   case 'dur_raw_sac_rea', rt_b=0:0.1:1;   otherwise, rt_b=0:0.4:6;
 end
