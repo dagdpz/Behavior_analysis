@@ -1090,10 +1090,10 @@ if ~GLO.parametric_testing && GLO.calculate_statististics && GLO.plot_statistist
     [ps(3)] = signrank(LH1.(sub)',LH2.(sub)');
     [ps(4)] = signrank(RH1.(sub)',RH2.(sub)');
 elseif GLO.parametric_testing && GLO.calculate_statististics && GLO.plot_statististics
-    [~,     ps(1)] = ttest(LH1.(sub)',RH1.(sub)',0.05,'both',1);
-    [~,     ps(2)] = ttest(LH2.(sub)',RH2.(sub)',0.05,'both',1);
-    [~,     ps(3)] = ttest(LH1.(sub)',LH2.(sub)',0.05,'both',1);
-    [~,     ps(4)] = ttest(RH1.(sub)',RH2.(sub)',0.05,'both',1);
+    [~,     ps(1)] = ttest2(LH1.(sub)',RH1.(sub)',0.05,'both',1);
+    [~,     ps(2)] = ttest2(LH2.(sub)',RH2.(sub)',0.05,'both',1);
+    [~,     ps(3)] = ttest2(LH1.(sub)',LH2.(sub)',0.05,'both',1);
+    [~,     ps(4)] = ttest2(RH1.(sub)',RH2.(sub)',0.05,'both',1);
 end
 
 if GLO.calculate_statististics && GLO.plot_statististics
