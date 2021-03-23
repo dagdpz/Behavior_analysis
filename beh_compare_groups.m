@@ -74,8 +74,9 @@ end
 % print_out = [GLO.subject{1} '(a)' ' Vs ' GLO.subject{2} '(b)'];
 print_out = [''];
 
-reaches_saccades=fieldnames(Group);
-% reaches_saccades = {'saccades'};
+% reaches_saccades=fieldnames(Group);
+reaches_saccades = {'saccades'}; % to avoid empty plots when only 1 effector
+
 for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
@@ -546,6 +547,10 @@ for s=1:numel(sides)
                 e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
             end
         elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
+            if strcmp(side,'R')
+                idx = 6;
+            end
+            
             hand=[];idx_bar_start=idx+1;
             [idx e_bar_tmp]=plot_internal_per_condition(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,sig_residuals,precision);
             
@@ -564,11 +569,19 @@ end
 %      comp_LH={[1 3 6 8 12 14 17 19]};
 %      comp_RH={[1 3 6 8 12 14 17 19]+1};
 
+if  strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
 comp_IN={[1 2] [3 4], [7 8] [9 10]};
 comp_LS={[1 2 3 4] [7 8 9 10]};
 comp_RS={[1 2 3 4] [7 8 9 10]};
 comp_LH={[1 3 7 9]};
 comp_RH={[1 3 7 9]+1};
+elseif (strcmp(sac_rea,'saccades') && str2double(effector)==0)
+ comp_IN={[1 2] [3 4], [7 8] [9 10]};
+comp_LS={[1 2 3 4] [7 8 9 10]};
+comp_RS={[1 2 3 4] [7 8 9 10]};
+comp_LH={[1 3 7 9]};
+comp_RH={[1 3 7 9]+1};   
+end
 
 
 % else
@@ -866,6 +879,9 @@ for s=1:numel(sides)
                 e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
             end
         elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
+            if strcmp(side,'R')
+                idx = 6;
+            end
             hand=[];idx_bar_start=idx+1;
             [idx e_bar_tmp]=plot_internal_per_condition_ch_in(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,sig_residuals);
             
@@ -1587,6 +1603,7 @@ end
 
 for g=1:size(groups,1)
     current_group=groups(g,:);
+   
     for p=1:numel(current_group)
         idx=idx+1;
         e_bar{idx}=[];
