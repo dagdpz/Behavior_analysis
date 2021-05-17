@@ -117,8 +117,30 @@ for gr = 1:numel(fn_g)
     Positions(1,gr)=batch.unique_pos.(fn_g{gr});
 end
 
-unique_saccade_positions=unique([Positions.saccades]);
-unique_reach_positions=unique([Positions.reaches]);
+unique_saccade_positions_tmp=unique([Positions.saccades]);
+unique_reach_positions_tmp=unique([Positions.reaches]);
+%% need to make adjustments due to different precision in different groups
+unique_saccade_positions=[];
+ix=1;
+for k=1:numel(unique_saccade_positions_tmp)
+    if k>2 && any(abs(unique_saccade_positions-unique_saccade_positions_tmp(k))<1.5)
+        continue
+    else
+        unique_saccade_positions=[unique_saccade_positions unique_saccade_positions_tmp(k)];
+        ix=ix+1;
+    end
+end
+unique_reach_positions=[];
+ix=1;
+for k=1:numel(unique_reach_positions_tmp)
+    if k>2 && any(abs(unique_reach_positions-unique_reach_positions_tmp(k))<1.5)
+        continue
+    else
+        unique_reach_positions=[unique_reach_positions unique_reach_positions_tmp(k)];
+        ix=ix+1;
+    end
+end
+
 fieldnames_per_position={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a' };
 
 for g = 1:numel(Group_temp) % I think this loop just check that the structure field exist, if not create it and fill it with NaN
@@ -131,7 +153,7 @@ for g = 1:numel(Group_temp) % I think this loop just check that the structure fi
             s_NaNcell=repmat({NaN},numel(s_current_fieldnames),1);
             s_fieldname_dummie=[s_current_fieldnames s_NaNcell]';
             for s_p=1:numel(unique_saccade_positions)
-                s_idx=ismember(Positions(g).saccades,unique_saccade_positions(s_p));
+                s_idx=find(abs(Positions(g).saccades-unique_saccade_positions(r_p))<1.5);
                 if any(s_idx)
                     batch.out_stru_ext.(subject_ID{g}).saccades.(FN{:})(s_p)=Group_temp(g).saccades.(FN{:})(s_idx);
                 else
@@ -147,7 +169,7 @@ for g = 1:numel(Group_temp) % I think this loop just check that the structure fi
             r_NaNcell=repmat({NaN},numel(r_current_fieldnames),1);
             r_fieldname_dummie=[r_current_fieldnames r_NaNcell]';           
             for r_p=1:numel(unique_reach_positions)
-                r_idx=ismember(Positions(g).reaches,unique_reach_positions(r_p));
+                r_idx=find(abs(Positions(g).reaches-unique_reach_positions(r_p))<1.5);
                 if any(r_idx)
                     batch.out_stru_ext.(subject_ID{g}).reaches.(FN{:})(r_p)=Group_temp(g).reaches.(FN{:})(r_idx);
                 else
@@ -159,11 +181,11 @@ for g = 1:numel(Group_temp) % I think this loop just check that the structure fi
 end
 
 if numel(group) > 1
-oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental); %create NaN structure
+oo=DAG_create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Experimental); %create NaN structure
 new.Control=oo;
 new.Experimental=oo;
 else 
-oo=create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Control);
+oo=DAG_create_combined_nan_structure(batch.out_stru_ext.Control, batch.out_stru_ext.Control);
 new.Control=oo;
 new.Experimental=oo;
 end
