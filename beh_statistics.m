@@ -54,12 +54,12 @@ for sr=1:numel(saccades_reaches)
                                             if (strcmp(testing,'groups')) && ~GLO.parametric_testing
                                                 [pr hr tab_r]= ranksum(real(x),real(y));
                                                 [pi hi tab_i]= ranksum(imag(x),imag(y));
-                                            elseif (strcmp(testing,'groups')) && GLO.parametric_testing
-                                                [hr pr cir tab_r]= ttest2(real(x),real(y),0.05,0,1,1);
-                                                [hi pi cii tab_i]= ttest2(imag(x),imag(y),0.05,0,1,1);
+                                            elseif (strcmp(testing,'groups')) && GLO.parametric_testing 
+                                                [hr pr cir tab_r]= ttest2(real(x),real(y));
+                                                [hi pi cii tab_i]= ttest2(imag(x),imag(y));
                                             elseif (strcmp(testing,'patient')) && GLO.parametric_testing
-                                                [hr pr cir tab_r]= ttest2(real(x),real(y),0.05,0,1,1);
-                                                [hi pi cii tab_i]= ttest2(imag(x),imag(y),0.05,0,1,1);
+                                                [hr pr cir tab_r]= ttest(real(x),real(y));
+                                                [hi pi cii tab_i]= ttest(imag(x),imag(y));
                                             elseif (strcmp(testing,'patient')) && ~GLO.parametric_testing
                                                 [pr hr tab_r]= ranksum(real(x),real(y));
                                                 [pi hi tab_i]= ranksum(imag(x),imag(y));
@@ -105,7 +105,7 @@ for sr=1:numel(saccades_reaches)
                                                 elseif (strcmp(testing,'groups')) && GLO.parametric_testing
                                                     [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
                                                 elseif (strcmp(testing,'patient')) && GLO.parametric_testing
-                                                    [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
+                                                    [h pp ci tab]= ttest(x,y);
                                                 elseif (strcmp(testing,'patient')) && ~GLO.parametric_testing
                                                     [pp h tab]= ranksum(x,y);
                                                 end

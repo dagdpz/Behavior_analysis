@@ -18,10 +18,10 @@ f_input{1} = subject_files;
 %% MAIN FUNCTION STRUCTURE, RUN MPA THEN RUN BY RUN ANALYZYS AND THEN BATCH ANALYSYS
 correlation_conditions                                      = {'demanded_hand','choice','type','effector','target_side','success'};
 parameters_to_correlate                                     = {'lat','dur'};
- Sel_all = {'display',0,'nsacc_max',20,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
+Sel_all = {'display',0,'nsacc_max',20,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
 
 %for trial by trial inspection 
-%  Sel_all = {'display',1,'summary',0,'nsacc_max',5,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
+%    Sel_all = {'display',1,'summary',0,'nsacc_max',5,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
 % 'reach_1st_pos'
 % 'reach_1st_pos_in'
 % 'reach_pos_at_state_change'

@@ -354,9 +354,9 @@ for rs=1:numel(reaches_saccades)
             summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
             hand_release(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,Plot_settings,par);
             title_and_save(summary_figure,plot_title);
-          
-       
-                 
+            
+            
+            
         elseif (strcmp(par,'abort_raw_x') || strcmp(par,'success_raw_x') )&& (any(ismember(6,GLO.summary)) || any(ismember(7,GLO.summary)) || any(ismember(-1,GLO.summary)))
             if (any(ismember(6,GLO.summary)) || any(ismember(-1,GLO.summary))) && GLO.keep_raw_output
                 % RAW TRACES FIGURES
@@ -570,17 +570,17 @@ end
 %      comp_RH={[1 3 6 8 12 14 17 19]+1};
 
 if  strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
-comp_IN={[1 2] [3 4], [7 8] [9 10]};
-comp_LS={[1 2 3 4] [7 8 9 10]};
-comp_RS={[1 2 3 4] [7 8 9 10]};
-comp_LH={[1 3 7 9]};
-comp_RH={[1 3 7 9]+1};
+    comp_IN={[1 2] [3 4], [7 8] [9 10]};
+    comp_LS={[1 2 3 4] [7 8 9 10]};
+    comp_RS={[1 2 3 4] [7 8 9 10]};
+    comp_LH={[1 3 7 9]};
+    comp_RH={[1 3 7 9]+1};
 elseif (strcmp(sac_rea,'saccades') && str2double(effector)==0)
- comp_IN={[1 2] [3 4], [7 8] [9 10]};
-comp_LS={[1 2 3 4] [7 8 9 10]};
-comp_RS={[1 2 3 4] [7 8 9 10]};
-comp_LH={[1 3 7 9]};
-comp_RH={[1 3 7 9]+1};   
+    comp_IN={[1 2]  [7 8]};
+    comp_LS={[1 2] [7 8]};
+    comp_RS={[1 2] [7 8]};
+    comp_LH={[]};
+    comp_RH={[]};
 end
 
 
@@ -602,36 +602,48 @@ comp_IN_bar=comp_IN;
 
 
 if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
-    %     if strcmp(sac_rea,'reaches')
-    %         comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
-    comp_CH=comp_IN;
-    ds      = 6;
-    dh      = 2;
-    dc      = 0;
-    
-    %         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds], [6 6+ds], [7 7+ds], [8 8+ds], [9 9+ds]};
-    %         compIN.hand={[1 1+dh], [2 2+dh], [12 12+dh] [13 13+dh], [6 6+dh] [7 7+dh], [17 17+dh] [18 18+dh]};
-    %         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds], [12 5+ds], [13 6+ds], [14 7+ds], [15 8+ds]}; % placeholder
-    
-    compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
-    compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
-    compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
-    %     else
-    %         %         comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-    %         comp_CH=comp_IN;
-    %        % ds      = 14;
-    %         ds      = 6;
-    %         dh      = 2;
-    %         dc      = 0;
-    % %         compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
-    % %         compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
-    % %         compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
-    %
-    %         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
-    %         compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
-    %         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
-    %     end
-    %     comp_IN_bar=comp_IN;
+    if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
+        %         comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
+        comp_CH=comp_IN;
+        ds      = 6;
+        dh      = 2;
+        dc      = 0;
+        
+        %         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds], [6 6+ds], [7 7+ds], [8 8+ds], [9 9+ds]};
+        %         compIN.hand={[1 1+dh], [2 2+dh], [12 12+dh] [13 13+dh], [6 6+dh] [7 7+dh], [17 17+dh] [18 18+dh]};
+        %         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds], [12 5+ds], [13 6+ds], [14 7+ds], [15 8+ds]}; % placeholder
+        
+        compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
+        compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
+        compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
+        
+        
+    else
+        comp_CH=comp_IN;
+        ds      = 6;
+        dh      = 2;
+        dc      = 0;
+        
+        compIN.space={[1 1+ds], [2 2+ds]};
+        compIN.hand={};
+        compIN.choice={[1 1+ds], [2 2+ds]}; % placeholder
+        
+        %         %         comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
+        %         comp_CH=comp_IN;
+        %        % ds      = 14;
+        %         ds      = 6;
+        %         dh      = 2;
+        %         dc      = 0;
+        % %         compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
+        % %         compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
+        % %         compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
+        %
+        %         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
+        %         compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
+        %         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
+        %     end
+        %     comp_IN_bar=comp_IN;
+    end
     sig_IN=[]; sig_CH=[];
     for l=1:numel(comp_IN)
         sig_IN = [sig_IN idx_stat_IN{comp_IN{l}(2)}{2}];
@@ -657,15 +669,17 @@ end
 % end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
 
-% if strcmp(sac_rea,'reaches')
+ if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
 xticks=[1 2 3 4, 7 8 9 10];
 %     xticklabels={'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb'};
 xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' };
-% else
+ else
+     xticks=[1 2 7 8];
+     xticklabels={'Con' 'Ina' 'Con' 'Ina' };
 %     xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
 %     %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
 %     xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
-% end
+ end
 
 set(gca,'ylim',y_lim,'xlim',[0,max(xticks)+1],'xtick',xticks,'XTickLabel',xticklabels);
 ylabel(par);
@@ -1603,7 +1617,7 @@ end
 
 for g=1:size(groups,1)
     current_group=groups(g,:);
-   
+    
     for p=1:numel(current_group)
         idx=idx+1;
         e_bar{idx}=[];
@@ -1650,6 +1664,7 @@ for g=1:size(groups,1)
             
             
             temp_raw = current_group(p).(condition).raw_of_mean;
+            
             if precision
                 temp_raw = current_group(p).(condition).raw_of_std;
             end
@@ -1663,6 +1678,7 @@ for g=1:size(groups,1)
                         raw_h{idx}.(con) = plot(idx,temp_raw(s),'o','MarkerFaceColor',col2,'MarkerEdgeColor',col1(g,:),'Linewidth',GLO.linewidth,'MarkerSize',Plot_settings.markersize);
                     end
                 end
+                
             else
                 e_bar{idx}.(con)=errorbar_constant_barsize_working(idx,temp_mean,temp_sem,temp_sem,0.3,Plot_settings.markers.B);
                 set(e_bar{idx}.(con),'MarkerFaceColor',col2,'MarkerEdgeColor',col2,'Color',col1(g,:),'Linewidth',GLO.linewidth,'MarkerSize',Plot_settings.markersize);
@@ -1677,7 +1693,20 @@ for g=1:size(groups,1)
                 set(t,'Color', [0.3 0.3 0.3], 'FontSize', GLO.fontsize_small, 'FontWeight', 'bold')
             end
         end
+        
     end
+    
+end
+% line between points
+if strcmp(type_effector,'t_4_e_0')  && size(groups,1) == 2  && GLO.point_per_batch;
+    condition_in = [type_effector  '_' side '_IN'];
+    condition_ch = [type_effector  '_' side '_CH'];
+   
+    for cnd = 1:size(groups(1).(condition_in).raw_of_mean,2)
+    plot([idx-1  idx],[groups(1).(condition_in).raw_of_mean(cnd) groups(2).(condition_in).raw_of_mean(cnd)],'color',[0.5 0.5 0.5]);
+    plot([idx-1  idx],[groups(1).( condition_ch).raw_of_mean(cnd) groups(2).( condition_ch).raw_of_mean(cnd)],'k');
+    end
+    
 end
 end
 
