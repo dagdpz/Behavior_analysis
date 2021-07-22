@@ -28,11 +28,9 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
     dag_drive='Y:';
     da=[];
     for sub=1:numel(group{gr})        
-        if GLO.testing_patient
-            glo.tmp_dir                    = [dag_drive filesep 'Data\Patient_and_controls_20160212\' group{gr}{sub}];
-        else
+       
             glo.tmp_dir                    = [dag_drive filesep 'Data\' group{gr}{sub}];
-        end
+       
         
         [~, date_files{gr}{sub}]                 = beh_arrange_trials_eye_hand(glo.tmp_dir, dates_subject_in{gr}{sub}, batching{gr});
         

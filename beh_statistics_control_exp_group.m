@@ -27,7 +27,7 @@ for sr=1:numel(saccades_reaches)
     for pa=1:numel(parameters)
         par=parameters{pa};
         if strcmp(par,'ini_fix') || strcmp(par,'ini_dur') ||strcmp(par,'ini_abort') || strcmp(par,'hnd_switch') || strcmp(par,'abort_raw_states') || strcmp(par,'abort_raw_time_axis') || strcmp(par,'abort_raw_x') || strcmp(par,'abort_raw_y') || strcmp(par,'abort_fix_pos') || strcmp(par,'abort_tar_pos') || strcmp(par,'success_raw_states') || strcmp(par,'success_raw_time_axis') || strcmp(par,'success_raw_x') || strcmp(par,'success_raw_y') || strcmp(par,'success_fix_pos') || strcmp(par,'success_tar_pos') || strcmp(par,'abort_code') || strcmp(par,'abort_lat') || strcmp(par,'success_lat') ...
-                || strcmp(par,'abort_trial') || strcmp(par,'abort_run') || strcmp(par,'abort_session') || strcmp(par,'success_trial') || strcmp(par,'success_run') || strcmp(par,'success_session') || strcmp(par,'trial') || strcmp(par,'run') || strcmp(par,'session'), continue, end
+                || strcmp(par,'abort_trial') || strcmp(par,'abort_run') || strcmp(par,'abort_session') || strcmp(par,'success_trial') || strcmp(par,'success_run') || strcmp(par,'success_session') || strcmp(par,'trial') || strcmp(par,'run') || strcmp(par,'session') || strcmp(par,'hnd_stay'), continue, end
         out_stru_te_sr=vertcat(out_stru_te.(par));
         type_effector_fieldnames=fieldnames(out_stru_te_sr);
         
@@ -111,10 +111,13 @@ for sr=1:numel(saccades_reaches)
                                         elseif (strcmp(testing,'groups')) && GLO.parametric_testing
                                             [hr pr cir tab_r]= ttest2(real(x),real(y));
                                             [hi pi cii tab_i]= ttest2(imag(x),imag(y));
+                                             elseif (strcmp(testing,'groups')) && GLO.parametric_testing  && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
+                                           [hr pr tab_r]= ttest(real(x),real(y));
+                                            [hi pi tab_i]= ttest(imag(x),imag(y));
                                         elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
-                                            [hr pr tab_r]= ttest_1n(real(x),real(y));
-                                            [hi pi tab_i]= ttest_1n(imag(x),imag(y));
-                                        elseif (strcmp(testing,'patient')) && ~(strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && GLO.parametric_testing
+                                           
+                                        elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && GLO.parametric_testing
+                                                
                                             [hr pr cir tab_r]= ttest(real(x),real(y));
                                             [hi pi cii tab_i]= ttest(imag(x),imag(y));
                                         elseif (strcmp(testing,'patient')) && ~(strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && ~GLO.parametric_testing
@@ -169,9 +172,10 @@ for sr=1:numel(saccades_reaches)
                                             [h pp ci tab]= ttest(x,y,0.05,'both',1);
                                         elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
                                             [h pp tab]= ttest_1n(x,y);
-                                        elseif (strcmp(testing,'patient')) && ~(strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && GLO.parametric_testing
+                                        elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && GLO.parametric_testing
+                                
                                             [h pp ci tab]= ttest(x,y);
-                                        elseif (strcmp(testing,'patient')) && ~(strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && ~GLO.parametric_testing
+                                        elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && ~GLO.parametric_testing
                                             [pp h tab]= ranksum(x,y);
                                         end
                                     end

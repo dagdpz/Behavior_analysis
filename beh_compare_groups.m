@@ -509,7 +509,7 @@ function isdata=temp_means_bars(input_group1,input_group2,sac_rea,type,effectors
 global GLO
 
 switch str2double(type)
-    case 1, type_labels='fixation';    case 2, type_labels='visually-guided';    case 2.5, type_labels='memory learning';    case 3, type_labels='memory-guided'; case 4, type_labels='Delayed dissociated reaches';
+    case 1, type_labels='fixation';    case 2, type_labels='visually-guided';    case 2.5, type_labels='memory learning';    case 3, type_labels='memory-guided'; case 4, type_labels='Delayed';
 end
 hands={'LH','RH'};
 sides={'L','R'};
@@ -526,6 +526,11 @@ for s=1:numel(sides)
     side=sides{s};
     side_label=side_labels{s};
     counter_side=countersides{s};
+   if strcmp(sac_rea,'saccades') 
+            if strcmp(side,'R')
+                idx = 4;
+            end
+   end
     idx=idx+1;
     slh(s)=text(idx+2,1,[side_label ' HEMISPACE']);
     
@@ -760,14 +765,14 @@ hold on
 
 % set(gca,'layer','top','ygrid','on','yminorgrid','on')
 
-comp_IN_mat=vertcat(comp_IN_bar{:});
-ho = patch([comp_IN_mat(:,1)-0.5 comp_IN_mat(:,1)+0.5 comp_IN_mat(:,1)+0.5 comp_IN_mat(:,1)-0.5]',repmat([-1000 -1000 1000 1000],size(comp_IN_mat,1),1)','r');
-set(ho,'facecolor',[0.85 0.85 0.85])
-ha = patch([comp_IN_mat(:,2)-0.5 comp_IN_mat(:,2)+0.5 comp_IN_mat(:,2)+0.5 comp_IN_mat(:,2)-0.5]',repmat([-1000 -1000 1000 1000],size(comp_IN_mat,1),1)','r');
-set(ha,'facecolor',[[0.65,0.65,0.65]])
-
-uistack(ho,'bottom');
-uistack(ha,'bottom');
+% comp_IN_mat=vertcat(comp_IN_bar{:});
+% ho = patch([comp_IN_mat(:,1)-0.5 comp_IN_mat(:,1)+0.5 comp_IN_mat(:,1)+0.5 comp_IN_mat(:,1)-0.5]',repmat([-1000 -1000 1000 1000],size(comp_IN_mat,1),1)','r');
+% set(ho,'facecolor',[0.85 0.85 0.85])
+% ha = patch([comp_IN_mat(:,2)-0.5 comp_IN_mat(:,2)+0.5 comp_IN_mat(:,2)+0.5 comp_IN_mat(:,2)-0.5]',repmat([-1000 -1000 1000 1000],size(comp_IN_mat,1),1)','r');
+% set(ha,'facecolor',[[0.65,0.65,0.65]])
+% 
+% uistack(ho,'bottom');
+% uistack(ha,'bottom');
 
 % comp_S_mat=[horzcat(comp_LS{:})', horzcat(comp_RS{:})'];
 % hLS = patch([comp_S_mat(:,1)-0.5 comp_S_mat(:,1)+0.5 comp_S_mat(:,1)+0.5 comp_S_mat(:,1)-0.5]',repmat([-1000 -1000 1000 1000],size(comp_IN_mat,1),1)','r');

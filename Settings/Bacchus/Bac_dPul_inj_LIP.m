@@ -29,7 +29,7 @@ GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate s
 GLO.CDF                             =   0; % 1 plot cumulative distribution function
 GLO.text_in_plot                    =   1; % plot mean and std in text
 GLO.same_day                        =   0;
-GLO.testing_patient                 =   1;
+GLO.testing_patient                 =   0; 
 GLO.instructed_only                 =   0;
 GLO.choice_only                     =   0;
 GLO.only_significant                =   1; % for sigstar
@@ -43,7 +43,7 @@ GLO.modify_positions                =   0; % used in reallocate_positions_from_m
 GLO.euclideans_reach                =   [-15, 15]; % used in reallocate_positions_from_mpa ?
 GLO.trial_numbers                   =   0; %in correlation plot
 GLO.keep_raw_output                 =   1; % 1 = save raw data in the output structure and plot raw traces in some plots 
-GLO.hits_in_plot                    =   1; % plot the number of hits per condition on plots
+GLO.hits_in_plot                    =   0; % plot the number of hits per condition on plots
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   1; %0 takes in account aborted trial from state_inf, 1 only successful trials
 %next 3 for plotting
