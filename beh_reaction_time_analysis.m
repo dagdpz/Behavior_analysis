@@ -1,4 +1,4 @@
-function [f_input, out_comp, out_stru_ext, unique_pos] = beh_reaction_time_analysis(files_for_input,dates, batching,subject_files,steady)
+function [f_input, out_comp, out_stru_ext, unique_pos] = beh_reaction_time_analysis(files_for_input,dates, batching,subject_files,steady,inactivation_sites)
 global  GLO
 GLO.dates                           = dates;
 %% ??
@@ -105,7 +105,7 @@ unique_pos.reaches_fix_siz = nanmean([out_comp_reaches.fix_siz]);
 unique_pos.saccades_fix_siz = nanmean([out_comp_saccades.fix_siz]);
 
 
-[out_str,  out_ini_fix,out_dur_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos);
+[out_str,  out_ini_fix,out_dur_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos,inactivation_sites);
 [out_stru_ext]                      = external_cal(out_str);
 
 subparameters                       = {'mean','raw','std','num_hits'};
@@ -125,7 +125,7 @@ out_stru_ext.reaches.hnd_stay.LH=get_external_means_std([out_hnd_abort.LH.hnd_st
 out_stru_ext.reaches.hnd_stay.RH=get_external_means_std([out_hnd_abort.RH.hnd_stay],subparameters);
 end
 
-function  [out_str, out_ini_fix, out_dur_fix, out_ini_abort, out_hnd_abort]= rt_s_internal_cal(out_comp,unique_pos)
+function  [out_str, out_ini_fix, out_dur_fix, out_ini_abort, out_hnd_abort]= rt_s_internal_cal(out_comp,unique_pos,inactivation_sites)
 global GLO
 
 % effector_names                  = {'0','2','3','4',GLO.type_of_free_gaze};
@@ -153,6 +153,7 @@ for idx_batch=1:numel(out_comp)
     eye_horizontal_distance                         =   real([out_comp{idx_batch,1}.saccades.tar_pos] - [out_comp{idx_batch,1}.saccades.fix_pos]);
     hnd_horizontal_distance                         =   real([out_comp{idx_batch,1}.reaches.tar_pos] - [out_comp{idx_batch,1}.reaches.fix_pos]);
     
+    if strcmp(inactivation_sites{idx_batch},'R') | strcmp(inactivation_sites{idx_batch},'Nan')
     idx.L_tar{idx_batch}                            =   eye_horizontal_distance <0.01 | hnd_horizontal_distance <0.01;
     idx.R_tar{idx_batch}                            =   eye_horizontal_distance >0.01 | hnd_horizontal_distance >0.01;
     
@@ -161,10 +162,20 @@ for idx_batch=1:numel(out_comp)
     
     idx.L_tar_close{idx_batch}                      =   (eye_horizontal_distance <0.01    & eye_horizontal_distance>=-15) | (hnd_horizontal_distance<0.01    & hnd_horizontal_distance>=-15);
     idx.R_tar_close{idx_batch}                      =   (eye_horizontal_distance >0.01    & eye_horizontal_distance<=15)  | (hnd_horizontal_distance>0.01    & hnd_horizontal_distance<=15);
+
+    elseif strcmp(inactivation_sites{idx_batch},'L') 
+    idx.R_tar{idx_batch}                            =   eye_horizontal_distance <0.01 | hnd_horizontal_distance <0.01;
+    idx.L_tar{idx_batch}                            =   eye_horizontal_distance >0.01 | hnd_horizontal_distance >0.01;
+    
+    idx.R_tar_far{idx_batch}                        =   eye_horizontal_distance <-15 | hnd_horizontal_distance <-15;
+    idx.L_tar_far{idx_batch}                        =   eye_horizontal_distance >15 |  hnd_horizontal_distance >15;
+    
+    idx.R_tar_close{idx_batch}                      =   (eye_horizontal_distance <0.01    & eye_horizontal_distance>=-15) | (hnd_horizontal_distance<0.01    & hnd_horizontal_distance>=-15);
+    idx.L_tar_close{idx_batch}                      =   (eye_horizontal_distance >0.01    & eye_horizontal_distance<=15)  | (hnd_horizontal_distance>0.01    & hnd_horizontal_distance<=15);
+    end
     
     idx.CH{idx_batch}                               =   [out_comp{idx_batch,1}.binary.choice]==1;
     idx.IN{idx_batch}                               =   [out_comp{idx_batch,1}.binary.choice]==0;
-    
     idx.success{idx_batch}                          =   [out_comp{idx_batch,1}.binary.success]==1;
     idx.error{idx_batch}                            =   [out_comp{idx_batch,1}.binary.success]==0;
     idx.error_after_success{idx_batch}              =   [false (idx.error{idx_batch}(2:end) & idx.success{idx_batch}(1:end-1))];

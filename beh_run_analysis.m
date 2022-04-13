@@ -39,7 +39,8 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
         end
         if ~isempty(da)
             dates_subject_temp{gr}          = [dates_subject_temp{gr}; unique(da)];
-            subject_files_temp{gr}               = [subject_files_temp{gr}; date_files{gr}(sub)];            
+            subject_files_temp{gr}               = [subject_files_temp{gr}; date_files{gr}(sub)];
+            inactivation_sites_subject_tmp{gr} = batching{gr}.inactivation_sites;
         else
             continue
         end
@@ -48,6 +49,7 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
     
     if batching_type{gr}==1
         dates_subject{gr}={[dates_subject_temp{gr}{:}]};
+        inactivation_sites_subject{gr}={[dates_subject_temp{gr}{:}]};
         subject_files{gr}={vertcat(subject_files_temp{gr}{:})};
         subject_files_ttemp{gr}{1}={};
         % check if runs are repeated in groups with same sessions for different 'subject' for run_by_run batching
@@ -97,7 +99,7 @@ for gr=1:numel(group)
     %here get behavioral analysis from Monkeypsych_analyse and perform
     %some correlation (latency with hands, etc) everything is saved in the structure bactch 
     [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), batch.unique_pos.(subject_ID{gr})] ...
-        = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
+        = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady,inactivation_sites_subject_tmp{gr});
 end
 
 %% Here repetition for the same group
