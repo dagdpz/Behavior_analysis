@@ -22,7 +22,7 @@ GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
 GLO.append_pdfs                     =   0;
 GLO.parent_folder                   =   '';
-GLO.folder_to_save                  =   'Y:\Projects\Simultaneous_dPul_PPC_recordings\behavior\beh_analysis\Linus\LIP_dPul_inj_10s';
+GLO.folder_to_save                  =   'Y:\Projects\Simultaneous_dPul_PPC_recordings\behavior\beh_analysis\Linus\LIP_dPul_8s';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
 GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
@@ -35,8 +35,8 @@ GLO.choice_only                     =   0;
 GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
-GLO.point_per_batch                 =   1; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [3];  %1 2 5 10 11 which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
+GLO.summary                         =   [1 2 5 10 11];  %1 2 5 10 11 which plots (vector of number of -1 for all plots) [1 2 3 5 10]
 GLO.target_locations_in_raw         =   0; %not used anymore
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups, not used anymore
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
@@ -113,17 +113,17 @@ steady.downsampling               = 1;
         steady.tar_range_x                  =   [NaN;NaN];
         steady.tar_range_y                  =   [NaN;NaN];
 
- load('Y:\Projects\Simultaneous_dPul_PPC_recordings\ephys\dPul_inj_LIP_Lin_10s_\behaviour_filelist.mat');
+ load('Y:\Projects\Simultaneous_dPul_PPC_recordings\ephys\dPul_LIP_Lin_8s\behaviour_filelist.mat');
  
- filelist_formatted_control=filelist_formatted.Lin_LIP_R_PT0_Dsac_han;
- filelist_formatted_inactivation=filelist_formatted.Lin_LIP_R_PT1_Dsac_han;
+ filelist_formatted_control=filelist_formatted.Lin_LIP_L_PT0_Dsac_han;
+%  filelist_formatted_inactivation=filelist_formatted.Lin_LIP_R_PT1_Dsac_han;
 
 subject_ID{1}='Control';
 group{1}                        = repmat({'Linus'},size(filelist_formatted_control,1),1);
 dates_subject_in{1}             = filelist_formatted_control(:,1);
 batching{1}.runs                = filelist_formatted_control(:,2);  % either empty or specific runs specified
-batching{1}.inactivation_sites   = {'R','R','R','R','R','R','R','L','L','L'};
-batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
+batching{1}.inactivation_sites   = {'L','L','L','L','L','L','L','L'};
+batching_type{1}                = 2; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
 % subject_ID{2}='Experimental';
@@ -134,13 +134,13 @@ batching{1}.range_of_dates      = 0;
 % batching_type{2}                = 2; % 1 run by run, 2 session by session, 3 group by group
 % batching{2}.range_of_dates      = 0;% 
 
-subject_ID{2}='Experimental';
-group{2}                        = repmat({'Linus'},1,10);
-dates_subject_in{2}                = filelist_formatted_control(:,1);
-batching{2}.runs                = {3;5;3;3;3;4;4;3;3;3};  % either empty or specific runs specified
-batching{2}.inactivation_sites   = {'R','R','R','R','R','R','R','L','L','L'};
-batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
-batching{2}.range_of_dates      = 0;% 
+% subject_ID{2}='Experimental';
+% group{2}                        = repmat({'Linus'},1,10);
+% dates_subject_in{2}                = filelist_formatted_control(:,1);
+% batching{2}.runs                = {3;5;3;3;3;4;4;3;3;3};  % either empty or specific runs specified
+% batching{2}.inactivation_sites   = {'R','R','R','R','R','R','R','L','L','L'};
+% batching_type{2}                = 2; % 1 run by run, 2 session by session, 3 group by group
+% batching{2}.range_of_dates      = 0;% 
 
 % subject_ID{2}='Experimental';
 % group{2}                        = repmat({'Bacchus'},1,2);

@@ -170,7 +170,7 @@ for sr=1:numel(saccades_reaches)
                                         elseif (strcmp(testing,'groups')) && GLO.parametric_testing && (strcmp(subcondition,'raw_of_raw')) 
                                             [h pp ci tab]= ttest2(x,y,0.05,0,1,1);
                                         elseif (strcmp(testing,'groups')) && GLO.parametric_testing  && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
-                                            [h pp ci tab]= ttest(x,y,0.05,'both',1);
+                                            [h pp ci tab]= ttest2(x,y,0.05,'both',1);
                                         elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
                                             [h pp tab]= ttest_1n(x,y);
                                         elseif (strcmp(testing,'patient')) && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' )) && GLO.parametric_testing

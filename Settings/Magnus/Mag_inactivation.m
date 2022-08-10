@@ -22,7 +22,7 @@ GLO.plot_it                         =   1;
 GLO.create_pdf                      =   1;
 GLO.append_pdfs                     =   0;
 GLO.parent_folder                   =   '';
-GLO.folder_to_save                  =   'Y:\Projects\Simultaneous_dPul_PPC_recordings\behavior\beh_analysis\Linus\LIP_dPul_inj_10s';
+GLO.folder_to_save                  =   'Y:\Projects\Simultaneous_dPul_PPC_recordings\behavior\beh_analysis\Magnus\dPul_inactivation';
 GLO.type_of_free_gaze               =   '6';
 GLO.one_subject                     =   0;
 GLO.trial_by_trial                  =   0; % for statistics, 0 means calculate statistics bases on average per run
@@ -31,12 +31,12 @@ GLO.text_in_plot                    =   1; % plot mean and std in text
 GLO.same_day                        =   0;
 GLO.testing_patient                 =   0;
 GLO.instructed_only                 =   0;
-GLO.choice_only                     =   0;
+GLO.choice_only                     =   1;
 GLO.only_significant                =   1; % for sigstar
 GLO.only_success_for_accuracy       =   0;
 GLO.only_between_group_comparissons =   0;
-GLO.point_per_batch                 =   1; %0 average across session , 1 % 1 point per run
-GLO.summary                         =   [3];  %1 2 5 10 11 which plots (vector of number of -1 for all plots) [1 2 3 5 10]
+GLO.point_per_batch                 =   0; %0 average across session , 1 % 1 point per run
+GLO.summary                         =   [1];  %1 2 5 10 11 which plots (vector of number of -1 for all plots) [1 2 3 5 10]
 GLO.target_locations_in_raw         =   0; %not used anymore
 GLO.saccade_in_raw                  =   0; %only for one plot, see beh_compare_groups, not used anymore
 GLO.modify_positions                =   0; % used in reallocate_positions_from_mpa ?
@@ -47,11 +47,11 @@ GLO.hits_in_plot                    =   1; % plot the number of hits per conditi
 GLO.min_hits                        =   0; %or 1 for 50 hits min
 GLO.only_successful_side_selection  =   1; %0 takes in account aborted trial from state_inf, 1 only successful trials
 %next 3 for plotting
-GLO.saccades_effectors              = {'0'};
-GLO.reaches_effectors               = {'4'};
-GLO.types_to_plot                   = {'4'};
-GLO.saccades.effectors_raw_xy       = {'0'};
-GLO.reaches.effectors_raw_xy        = {'4'};
+GLO.saccades_effectors              = {'1'};
+GLO.reaches_effectors               = {'1'};
+GLO.types_to_plot                   = {'2'};
+GLO.saccades.effectors_raw_xy       = {'6'};
+GLO.reaches.effectors_raw_xy        = {'6'};
 GLO.state_raw_traces                = [4 5];
 
 
@@ -103,7 +103,7 @@ steady.sac_min_dur                   = 0.01;
 % steady.max_sac_dist               = 7;
 steady.eyetracker_sample_rate     = 220; % Hertz
 steady.correct_offset             = 1;
-steady.saccade_definition         = 1;
+steady.saccade_definition         = 4;
 steady.smoothing_samples          = 15; %downsampling does a diff to find relevant changing samples, then it inerpolates to 1 ms between such samples and then it smoothens, the smoothing is set such that it grabs one sample before and one after plus a bit more but not reaching 2 samples 4.54 ms each sample of the eyetracker
 steady.sac_min_amp                = 2;
 steady.keep_raw_data              = 1;
@@ -113,32 +113,25 @@ steady.downsampling               = 1;
         steady.tar_range_x                  =   [NaN;NaN];
         steady.tar_range_y                  =   [NaN;NaN];
 
- load('Y:\Projects\Simultaneous_dPul_PPC_recordings\ephys\dPul_inj_LIP_Lin_10s_\behaviour_filelist.mat');
- 
- filelist_formatted_control=filelist_formatted.Lin_LIP_R_PT0_Dsac_han;
- filelist_formatted_inactivation=filelist_formatted.Lin_LIP_R_PT1_Dsac_han;
 
 subject_ID{1}='Control';
-group{1}                        = repmat({'Linus'},size(filelist_formatted_control,1),1);
-dates_subject_in{1}             = filelist_formatted_control(:,1);
-batching{1}.runs                = filelist_formatted_control(:,2);  % either empty or specific runs specified
-batching{1}.inactivation_sites   = {'R','R','R','R','R','R','R','L','L','L'};
+group{1}                        = repmat({'Magnus'},1,17);
+dates_subject_in{1}             = {20191121,20191121,20191121,20191127,20191127,20191127, ...
+   20191128,20191128,20191128,20191204,20191204,20191205,20191205,20191205,20191210,20191210,20191210 };
+batching{1}.runs                = {8;11;13;2;4;6;2;4;6;2;4;4;6;8;2;4;6};  % either empty or specific runs specified
+batching{1}.inactivation_sites   = {'R','R','R','R','R','R','R','R','R','R','R','L','L','L','L','L','L'};
 batching_type{1}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{1}.range_of_dates      = 0;
 
-% subject_ID{2}='Experimental';
-% group{2}                        = repmat({'Linus'},size(filelist_formatted_inactivation,1),1);
-% dates_subject_in{2}                = filelist_formatted_inactivation(:,1);
-% batching{2}.runs                = filelist_formatted_inactivation(:,2);  % either empty or specific runs specified
-% batching{2}.inactivation_sites   = {'R','R','R','R','R','R','R','R','R','R','R','R','R','L','L','L','L','L','L'};
-% batching_type{2}                = 2; % 1 run by run, 2 session by session, 3 group by group
-% batching{2}.range_of_dates      = 0;% 
 
 subject_ID{2}='Experimental';
-group{2}                        = repmat({'Linus'},1,10);
-dates_subject_in{2}                = filelist_formatted_control(:,1);
-batching{2}.runs                = {3;5;3;3;3;4;4;3;3;3};  % either empty or specific runs specified
-batching{2}.inactivation_sites   = {'R','R','R','R','R','R','R','L','L','L'};
+group{2}                        = repmat({'Magnus'},1,25);
+dates_subject_in{2}                = {20191121,20191121,20191121,20191121,20191121,20191127, ...
+  20191127,20191127,20191127,20191128,20191128,20191128,20191204,20191204,20191204,20191205,20191205, ...
+  20191205,20191205,20191205,20191205,20191205,20191210,20191210,20191210,20191210,20191210};
+batching{2}.runs                = {16;18;20;22;24;8;10;18;9;11;19;9;10;16;10;12;14;15;17;19;10;12;14;16;19};  % either empty or specific runs specified
+batching{2}.inactivation_sites   = {'R','R','R','R','R','R','R','R','R','R','R','R','R','R' ...
+   'L','L','L','L','L','L','L','L','L','L','L','L','L'};
 batching_type{2}                = 1; % 1 run by run, 2 session by session, 3 group by group
 batching{2}.range_of_dates      = 0;% 
 
