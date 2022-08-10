@@ -108,7 +108,7 @@ for sr=1:numel(saccades_reaches)
                                         if (strcmp(testing,'groups')) && ~GLO.parametric_testing
                                             [pr hr tab_r]= ranksum(real(x),real(y));
                                             [pi hi tab_i]= ranksum(imag(x),imag(y));
-                                        elseif (strcmp(testing,'groups')) && GLO.parametric_testing
+                                        elseif (strcmp(testing,'groups')) && GLO.parametric_testing  && ~(strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))
                                             [hr pr cir tab_r]= ttest2(real(x),real(y));
                                             [hi pi cii tab_i]= ttest2(imag(x),imag(y));
                                              elseif (strcmp(testing,'groups')) && GLO.parametric_testing  && (strcmp(subcondition,'raw_of_mean') || strcmp(subcondition,'raw_of_std' ))

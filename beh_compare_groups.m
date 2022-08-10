@@ -75,7 +75,7 @@ end
 print_out = [''];
 
 reaches_saccades =fieldnames(Group);
-% reaches_saccades = {'saccades'}; % to avoid empty plots when only 1 effector
+reaches_saccades = {'saccades'}; % to avoid empty plots when only 1 effector
 
 for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
@@ -86,7 +86,7 @@ for rs=1:numel(reaches_saccades)
         eye_or_hand_evaluated = ' Hand';
     else
                   parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','successful','velocity','abort_raw_x','success_raw_x','side_selection'};
-%         parameters={'side_selection'};
+%          parameters={'side_selection'};
         eye_or_hand_evaluated = ' Eye';
     end
     for s_p=1:numel(parameters);

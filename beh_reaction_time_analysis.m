@@ -163,7 +163,7 @@ for idx_batch=1:numel(out_comp)
     idx.L_tar_close{idx_batch}                      =   (eye_horizontal_distance <0.01    & eye_horizontal_distance>=-15) | (hnd_horizontal_distance<0.01    & hnd_horizontal_distance>=-15);
     idx.R_tar_close{idx_batch}                      =   (eye_horizontal_distance >0.01    & eye_horizontal_distance<=15)  | (hnd_horizontal_distance>0.01    & hnd_horizontal_distance<=15);
 
-    elseif strcmp(inactivation_sites{idx_batch},'L') 
+    elseif strcmp(inactivation_sites{idx_batch},'L') % if left = reverse sides
     idx.R_tar{idx_batch}                            =   eye_horizontal_distance <0.01 | hnd_horizontal_distance <0.01;
     idx.L_tar{idx_batch}                            =   eye_horizontal_distance >0.01 | hnd_horizontal_distance >0.01;
     
