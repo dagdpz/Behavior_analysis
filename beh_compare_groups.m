@@ -85,8 +85,8 @@ for rs=1:numel(reaches_saccades)
         
         eye_or_hand_evaluated = ' Hand';
     else
-                 parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','successful','velocity','abort_raw_x','success_raw_x','side_selection'};
-%         parameters={'successful'};
+%                  parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','successful','velocity','abort_raw_x','success_raw_x','side_selection'};
+        parameters={'side_selection'};
         eye_or_hand_evaluated = ' Eye';
     end
     for s_p=1:numel(parameters);
@@ -755,7 +755,7 @@ if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
                                             sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.(types{comps}));
                                         end
                                     else %summaries per batch
-                                        if ~GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4} < 0.05  )
+                                        if GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4} < 0.05  )
                                             sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.(types{comps}));
                                         elseif ~GLO.only_significant
                                             sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.(types{comps}));
