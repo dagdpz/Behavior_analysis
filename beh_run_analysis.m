@@ -47,11 +47,11 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
         clear da        
     end
     % trick to analyse by sessions only a subselection of runs
-    for ns = 1:size(subject_files_temp{1,1},1)
-         runs_tmp = cellfun(@horzcat,subject_files_temp{1,1}{ns,1}(:,2));
-         to_remove = ~ismember(runs_tmp,filelist_formatted_control{ns,2});
-         subject_files_temp{1,1}{ns,1}(to_remove,:) = [];           
-    end
+%     for ns = 1:size(subject_files_temp{1,1},1)
+%          runs_tmp = cellfun(@horzcat,subject_files_temp{1,1}{ns,1}(:,2));
+%          to_remove = ~ismember(runs_tmp,filelist_formatted_control{ns,2});
+%          subject_files_temp{1,1}{ns,1}(to_remove,:) = [];           
+%     end
     %end of trick
     
     if batching_type{gr}==1
