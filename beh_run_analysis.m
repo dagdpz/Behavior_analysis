@@ -123,7 +123,7 @@ unique_reach_positions_tmp=unique([Positions.reaches]);
 unique_saccade_positions=[];
 ix=1;
 for k=1:numel(unique_saccade_positions_tmp)
-    if k>2 && any(abs(unique_saccade_positions-unique_saccade_positions_tmp(k))<1.5)
+    if k>1 && any(abs(unique_saccade_positions-unique_saccade_positions_tmp(k))<1.5) %% this is twice the precision for individual groups, cause it caused problems in Linus inactivation dataset
         continue
     else
         unique_saccade_positions=[unique_saccade_positions unique_saccade_positions_tmp(k)];
@@ -133,7 +133,7 @@ end
 unique_reach_positions=[];
 ix=1;
 for k=1:numel(unique_reach_positions_tmp)
-    if k>2 && any(abs(unique_reach_positions-unique_reach_positions_tmp(k))<1.5)
+    if k>1 && any(abs(unique_reach_positions-unique_reach_positions_tmp(k))<1.5)
         continue
     else
         unique_reach_positions=[unique_reach_positions unique_reach_positions_tmp(k)];
@@ -153,7 +153,7 @@ for g = 1:numel(Group_temp) % I think this loop just check that the structure fi
             s_NaNcell=repmat({NaN},numel(s_current_fieldnames),1);
             s_fieldname_dummie=[s_current_fieldnames s_NaNcell]';
             for s_p=1:numel(unique_saccade_positions)
-                s_idx=find(abs(Positions(g).saccades-unique_saccade_positions(r_p))<1.5);
+                s_idx=find(abs(Positions(g).saccades-unique_saccade_positions(s_p))<1.5);
                 if any(s_idx)
                     batch.out_stru_ext.(subject_ID{g}).saccades.(FN{:})(s_p)=Group_temp(g).saccades.(FN{:})(s_idx);
                 else

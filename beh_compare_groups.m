@@ -1,6 +1,6 @@
 function beh_compare_groups(batch,testing)
 global GLO
-close all
+%close all
 
 
 
@@ -20,7 +20,7 @@ Plot_settings.saccades.n_columns_raw_xy     = numel(Plot_settings.saccades.effec
 Plot_settings.reaches.n_columns_raw_xy      = numel(Plot_settings.reaches.effectors_raw_xy);
 
 Plot_settings.colors.IN             = [.5 .5 .5];
-Plot_settings.colors.CH             = [0 0 0];
+Plot_settings.colors.CH             = [0 0 0];%
 Plot_settings.colors.RH             = [0 1 0;0 0.5 0];
 Plot_settings.colors.LH             = [0 1 1;0 0 1];
 Plot_settings.colors.sac            = [1 0 0;0.5 0 0];
@@ -225,7 +225,7 @@ for rs=1:numel(reaches_saccades)
                     type=Plot_settings.types{t};
                     if isfield(Group(1).(sac_rea),par) && (any(ismember(10,GLO.summary)) || any(ismember(-1,GLO.summary)))
                         subplot(Plot_settings.(sac_rea).n_rows,1,t);
-                        isdata= temp_means_bars_ch_in(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig));
+                        isdata= temp_means_bars_ch_in(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig),precision);
                         if isdata
                             subplot_indexes=[subplot_indexes t];
                         end
@@ -610,13 +610,13 @@ if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
         ds      = 6;
         dh      = 2;
         dc      = 0;
-        %         compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
-        %         compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
-        %         compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
-        
-        compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
-        compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
-        compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
+        compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
+        compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
+        compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
+%         
+%         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
+%         compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
+%         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
     end
     comp_IN_bar=comp_IN;
     sig_IN=[]; sig_CH=[];
@@ -821,7 +821,7 @@ ylabel(par);
 
 end
 
-function isdata=temp_means_bars_ch_in(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,stat,sig_residuals_group1,sig_residuals_group2)
+function isdata=temp_means_bars_ch_in(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,stat,sig_residuals_group1,sig_residuals_group2,precision)
 global GLO
 
 switch str2double(type)
@@ -859,14 +859,14 @@ for s=1:numel(sides)
                 hand=['_' hands{h}];idx_bar_start=idx+1;
                 [idx e_bar_tmp]=plot_internal_per_condition_ch_in(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,sig_residuals);
                 
-                %                 [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,precision);
+                [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,precision);
                 e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
             end
         elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
             hand=[];idx_bar_start=idx+1;
             [idx e_bar_tmp]=plot_internal_per_condition_ch_in(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,sig_residuals);
             
-            %             [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,precision);
+            [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,precision);
             e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
         end
         title(type_labels)

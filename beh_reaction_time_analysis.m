@@ -403,10 +403,18 @@ end
 function unique_pos=unique_positions(saccadepositions,target_pos_precision)
 target_positions                    =   unique(saccadepositions(~isnan(saccadepositions)));
 n_targets                           =   numel(target_positions);
-for t = 1:n_targets
-    target_positions(abs(target_positions-target_positions(t))<target_pos_precision) = target_positions(t);
+unique_pos=[];
+for k=1:numel(target_positions)
+    if k>1 && any(abs(unique_pos-target_positions(k))<1.5)
+        continue
+    else
+        unique_pos=[unique_pos target_positions(k)];
+    end
 end
-unique_pos                          = unique(target_positions);
+% for t = 1:n_targets
+%     target_positions(abs(target_positions-target_positions(t))<target_pos_precision) = target_positions(t);
+% end
+% unique_pos                          = unique(target_positions);
 end
 
 
