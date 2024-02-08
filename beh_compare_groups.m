@@ -1,10 +1,6 @@
 function beh_compare_groups(batch,testing)
 global GLO
 %close all
-
-
-
-
 Plot_settings.saccades.effectors    = GLO.saccades_effectors ;
 Plot_settings.reaches.effectors     = GLO.reaches_effectors ;
 Plot_settings.types                 = GLO.types_to_plot ;
@@ -48,18 +44,14 @@ for i = 1:numel(fn_g)
     Positions(1,i)=batch.unique_pos.(fn_g{i});
     
     %in order to plot target on raw eye traces when dissociated reaches
-    if isempty(Positions(1,i).saccades) & strcmp(Plot_settings.saccades.effectors,'4')
+    if isempty(Positions(1,i).saccades) && any(ismember(Plot_settings.saccades.effectors,'4'))
         Positions(1,i).saccades = Positions(1,i).reaches;
         Positions(1,i).saccades_tar_rad = Positions(1,i).reaches_tar_rad;
         Positions(1,i).saccades_tar_siz = Positions(1,i).reaches_tar_siz;
-    end
-    
+    end    
 end
 
-
-
 GLO.subject = monkey;
-
 Group = Group_temp;
 unique_saccade_positions    =   unique([Positions.saccades]);
 unique_reach_positions      =   unique([Positions.reaches]);
@@ -69,22 +61,18 @@ for i = 1:numel(Group)
     Positions(1,i).reaches  =   unique_reach_positions;
 end
 
-
-
-% print_out = [GLO.subject{1} '(a)' ' Vs ' GLO.subject{2} '(b)'];
-print_out = [''];
-
 reaches_saccades=fieldnames(Group);
+enpoint_parameters={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_c','endpoints_per_position_a','endpoints_per_position_t_a'};
 % reaches_saccades = {'saccades'};
 for rs=1:numel(reaches_saccades)
     sac_rea=reaches_saccades{rs};
     if strcmp(sac_rea,'reaches')
-        %         parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','precision_xy','successful','lat_residuals_sac_rea','lat_raw_sac_rea','lat_r_residuals','lat_slo_residuals','lat_int_residuals','lat_difference_sac_rea','ini_fix','ini_abort','abort_raw_x', 'success_raw_x'};
-        parameters={'ini_abort','lat','dur','ini_fix','dur_fix','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_t_a','accuracy_xy','successful','side_selection','abort_raw_x','success_raw_x'};
-        
+        parameters={'ini_abort','lat','dur','ini_fix','dur_fix','accuracy_xy','successful','side_selection','abort_raw_x','success_raw_x',...
+            'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_c','endpoints_per_position_a','endpoints_per_position_t_a',};        
         eye_or_hand_evaluated = ' Hand';
     else
-        parameters={'lat','dur','endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','accuracy_xy','successful','velocity','abort_raw_x','success_raw_x','side_selection'};
+        parameters={'lat','dur','accuracy_xy','successful','velocity','abort_raw_x','success_raw_x','side_selection',...
+            'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_c','endpoints_per_position_a'};
         eye_or_hand_evaluated = ' Eye';
     end
     for s_p=1:numel(parameters);
@@ -95,6 +83,7 @@ for rs=1:numel(reaches_saccades)
             case 'dur';                         par_title = 'Movement time to target';
             case 'endpoints_per_position';      par_title = 'accuracy all';
             case 'endpoints_per_position_s';    par_title = 'accuracy successful only';
+            case 'endpoints_per_position_c';    par_title = 'accuracy completed only';
             case 'endpoints_per_position_a';    par_title = 'accuracy aborted only';
             case 'endpoints_per_position_t_a';  par_title = 'accuracy hand target aborted only';
             case 'velocity';                    par_title = 'velocity';
@@ -122,21 +111,20 @@ for rs=1:numel(reaches_saccades)
             case 'side_selection';              par_title = 'side selection';
         end
         
-        %         print_out2  = [print_out ',' eye_or_hand_evaluated];
         print_out2  = [eye_or_hand_evaluated];
         
-        %         idx_p   = findstr(par, 'residuals');
-        %         if ~isempty(idx_p)
-        %             par_sig = [par(1:idx_p-3) 'p' par(idx_p-1:end)];
-        %         else
-        par_sig = 'lat_p_residuals';
-        %         end
+        idx_p   = findstr(par, 'residuals');
+        if ~isempty(idx_p)
+            par_sig = [par(1:idx_p-3) 'p' par(idx_p-1:end)];
+        else
+            par_sig = 'lat_p_residuals';
+        end
         precision = 0;
         if strcmp(par,'precision_xy'), precision = 1; par='accuracy_xy'; end
-        
-        if (~strcmp(par,'ini_fix')&& ~strcmp(par,'dur_fix') && ~strcmp(par,'lat_residuals_sac_rea') && ~strcmp(par,'endpoints_per_position') && ~strcmp(par,'endpoints_per_position_s') && ~strcmp(par,'endpoints_per_position_a')&& ~strcmp(par,'endpoints_per_position_t_a')  && ~strcmp(par,'ini_abort') && ~strcmp(par,'lat_raw_sac_rea') ...
+        endpoints_par=ismember(par,enpoint_parameters);
+        if (~endpoints_par && ~strcmp(par,'ini_abort') && ~strcmp(par,'lat_raw_sac_rea') ...
                 && ~strcmp(par,'abort_raw_states') && ~strcmp(par,'abort_raw_time_axis') && ~strcmp(par,'abort_raw_x') && ~strcmp(par,'abort_raw_y') ...
-                && ~strcmp(par,'success_raw_states') && ~strcmp(par,'success_raw_time_axis') && ~strcmp(par,'success_raw_x') && ~strcmp(par,'success_raw_y')) ...
+                && ~strcmp(par,'ini_fix')&& ~strcmp(par,'dur_fix') && ~strcmp(par,'lat_residuals_sac_rea') && ~strcmp(par,'success_raw_states') && ~strcmp(par,'success_raw_time_axis') && ~strcmp(par,'success_raw_x') && ~strcmp(par,'success_raw_y')) ...
                 && (any(ismember(1,GLO.summary)) || any(ismember(2,GLO.summary)) || any(ismember(10,GLO.summary)) || any(ismember(11,GLO.summary)) || any(ismember(-1,GLO.summary)))
             
             if (any(ismember(1,GLO.summary)) || any(ismember(-1,GLO.summary)))
@@ -151,7 +139,7 @@ for rs=1:numel(reaches_saccades)
                         subplot(Plot_settings.(sac_rea).n_rows,1,t);
                         if ~isfield(Group(1).(sac_rea),par_sig), Group(1).(sac_rea).(par_sig)=NaN; end
                         if ~isfield(Group(2).(sac_rea),par_sig), Group(2).(sac_rea).(par_sig)=NaN; end
-                        isdata= temp_means_bars(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig),precision);
+                        isdata= temp_means_bars(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig),precision);
                         if isdata
                             subplot_indexes=[subplot_indexes t];
                         end
@@ -172,12 +160,10 @@ for rs=1:numel(reaches_saccades)
                 end
                 title_and_save(summary_figure,plot_title);
                 
-                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')|| strcmp(par,'endpoints_per_position_t_a') || strcmp(par,'successful')
+                if endpoints_par || strcmp(par,'successful')
                     continue
                 end
             end
-            
-            
             
             if (any(ismember(11,GLO.summary)) || any(ismember(-1,GLO.summary))) %&& (strcmp(par,'lat') || strcmp(par,'successful'))
                 % Session by session dots plot
@@ -207,12 +193,10 @@ for rs=1:numel(reaches_saccades)
                 end
                 title_and_save(summary_figure,plot_title);
                 
-                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a') ||strcmp(par,'successful')
+                if endpoints_par ||strcmp(par,'successful')
                     continue
                 end
             end
-            
-            
             
             
             if (any(ismember(10,GLO.summary)) || any(ismember(-1,GLO.summary)))
@@ -243,7 +227,7 @@ for rs=1:numel(reaches_saccades)
                 end
                 title_and_save(summary_figure,plot_title);
                 
-                if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a') || strcmp(par,'successful')
+                if endpoints_par || strcmp(par,'successful')
                     continue
                 end
             end
@@ -268,12 +252,11 @@ for rs=1:numel(reaches_saccades)
                             subplot_indexes_h=[subplot_indexes_h t];
                         end
                     end
-                end
-                
+                end                
                 title_and_save(summary_figure,plot_title);
             end
             
-        elseif (strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a')) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary))) % && strcmp(effector,GLO.type_of_free_gaze)
+        elseif (endpoints_par) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary))) % && strcmp(effector,GLO.type_of_free_gaze)
             % ACCURACY BAR FIGURES
             plot_title                                                = [' Summary 3, ' print_out2 ', ' par_title ];
             summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
@@ -281,7 +264,7 @@ for rs=1:numel(reaches_saccades)
             clear ylim_sp;
             for t=1:numel(Plot_settings.types)
                 type=Plot_settings.types{t};
-                if (strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a') || strcmp(par,'endpoints_per_position_t_a')) && isfield(Group(1).(sac_rea),par) && isfield(Group(2).(sac_rea),par) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary)))
+                if (endpoints_par) && isfield(Group(1).(sac_rea),par) && isfield(Group(2).(sac_rea),par) && (any(ismember(3,GLO.summary)) || any(ismember(-1,GLO.summary)))
                     
                     for e=1:numel(Plot_settings.(sac_rea).effectors)
                         effector=Plot_settings.(sac_rea).effectors{e};
@@ -292,12 +275,6 @@ for rs=1:numel(reaches_saccades)
                             Plot_settings,par,batch.stat.groups.(sac_rea).(par),testing,precision);
                         axis('equal')
                         set(gca,'ylim',[-30 30],'Xlim',[-30 30])
-                        
-                        %  axis equal
-                        %   set(gca,'xlim',[-30 -18],'ylim', [-4 4]) %4
-                        % set(gca,'xlim',[18 30],'ylim', [-4 4]) %3
-                        %   set(gca,'xlim',[-18 -6],'ylim', [-4 4]) %2
-                        %   set(gca,'xlim',[6 18],'ylim', [-4 4]) %1
                     end
                 end
             end
@@ -353,8 +330,6 @@ for rs=1:numel(reaches_saccades)
             summary_figure                                            = figure('units','normalized','outerposition',[0 0 1 1],'name',plot_title);
             hand_release(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,Plot_settings,par);
             title_and_save(summary_figure,plot_title);
-            
-            
             
         elseif (strcmp(par,'abort_raw_x') || strcmp(par,'success_raw_x') )&& (any(ismember(6,GLO.summary)) || any(ismember(7,GLO.summary)) || any(ismember(-1,GLO.summary)))
             if (any(ismember(6,GLO.summary)) || any(ismember(-1,GLO.summary))) && GLO.keep_raw_output
@@ -484,11 +459,7 @@ for rs=1:numel(reaches_saccades)
         %         end
         set(gca,'ylim',[-0.3 1]) ;
         title_and_save(summary_figure,plot_title);
-        
     end
-    
-    
-    
 end
 
 %% FILELIST PLOT
@@ -498,13 +469,10 @@ if (any(ismember(8,GLO.summary)) || any(ismember(-1,GLO.summary)))
     plot_file_names(batch,summary_figure)
     title_and_save(summary_figure,plot_title);
 end
-
-
-
 end
 
 %% EXTERNAL LOOP PLOTTING FUNCTIONS
-function isdata=temp_means_bars(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,stat,sig_residuals_group1,sig_residuals_group2,precision)
+function isdata=temp_means_bars(input_group1,input_group2,sac_rea,type,effectors,Plot_settings,par,stat,sig_residuals_group1,sig_residuals_group2,precision)
 global GLO
 
 switch str2double(type)
@@ -537,98 +505,71 @@ for s=1:numel(sides)
         elh(numel(effectors)*(s-1)+e)=text(idx+1,1,effector_label);
         type_effector=['t_' type '_e_' effector];
         
-        if strcmp(sac_rea,'reaches') || (strcmp(sac_rea,'saccades') && str2double(effector)~=0)
+        if str2double(effector)~=0
             for h=1:numel(hands)
                 hand=['_' hands{h}];idx_bar_start=idx+1;
                 [idx e_bar_tmp]=plot_internal_per_condition(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,sig_residuals,precision);
                 
-                [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,precision);
+                [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,par,stat,precision);
                 e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
             end
-        elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
+        elseif str2double(effector)==0
             hand=[];idx_bar_start=idx+1;
             [idx e_bar_tmp]=plot_internal_per_condition(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,sig_residuals,precision);
             
-            [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,precision);
+            [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,par,stat,precision);
             e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
         end
         title(type_labels)
     end
 end
 
+        [idx_stat_IN{cellfun(@isempty,idx_stat_IN)}]=deal({NaN,NaN});
+        [idx_stat_CH{cellfun(@isempty,idx_stat_CH)}]=deal({NaN,NaN});
+        
+        comp_IN={};
+        comp.space={};
+        comp.hand={};
+        comp.choice={};
+        xticks=[];
+        ne=numel(effectors);
+        for e=1:ne
+            effector=str2double(effectors{e});
+            e0_passed=e>1 && ismember('0',effectors{1:e-1});
+            sL=1+(e-1)*5-2*e0_passed;
+            sR=2+ne*5+(e-1)*5-4*e0_passed -2*(effector==0);
+            if effector==0
+                comp_IN=[comp_IN {[sL sL+1]}  {[sR sR+1]} ];
+                comp.space=[comp.space {[sL sR]} {[sL sR]+1}];
+                comp.choice=[comp.choice {[sL sL]} {[sR sR]} {[sL sL]+1} {[sR sR]+1}];
+                xticks=[xticks sL sL+1 sR sR+1];
+            else
+                comp_IN=[comp_IN {[sL sL+1]} {[sL sL+1]+2} {[sR sR+1]} {[sR sR+1]+2}];
+                comp.space=[comp.space {[sL sR]} {[sL sR]+2} {[sL sR]+1} {[sL sR]+3}];
+                comp.choice=[comp.choice {[sL sL]} {[sR sR]} {[sL sL]+2} {[sR sR]+2} {[sL sL]+1} {[sR sR]+1} {[sL sL]+3} {[sR sR]+3}];
+                comp.hand=[comp.hand {[sL sL+2]} {[sR sR+2]} {[sL+1 sL+3]} {[sR+1 sR+3]}];
+                xticks=[xticks sL sL+1 sL+2 sL+3 sR sR+1 sR+2 sR+3];
+            end
+        end
 
-if strcmp(sac_rea,'reaches')
-    comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
-    comp_LS={[1 2 3 4] [6 7 8 9]};
-    comp_RS={[[1 2 3 4]+11] [[6 7 8 9]+11]};
-    comp_LH={[1 3 6 8 12 14 17 19]};
-    comp_RH={[1 3 6 8 12 14 17 19]+1};
-    
-    % comp_IN={[1 2] [3 4], [7 8] [9 10]};
-    % comp_LS={[1 2 3 4] [7 8 9 10]};
-    % comp_RS={[1 2 3 4] [7 8 9 10]};
-    % comp_LH={[1 3 7 9]};
-    % comp_RH={[1 3 7 9]+1};
-    
-    
-else
-    comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-    comp_LS={[1 2] [4 5 6 7] [9 10 11 12]};
-    comp_RS={[[1 2]+14 [4 5 6 7]+14 [9 10 11 12]+14]};
-    comp_LH={[1 4 6 9 11 15 18 20 23 25]};
-    comp_RH={[1 4 6 9 11 15 18 20 23 25]+1};
-    
-    %  comp_IN={[1 2] [3 4], [7 8] [9 10]};
-    %     comp_LS={[1 2 3 4] [7 8 9 10]};
-    %     comp_RS={[1 2 3 4] [7 8 9 10]};
-    %     comp_LH={[1 3 7 9]};
-    %     comp_RH={[1 3 7 9]+1};
-    
-end
+ comp_CH=comp_IN;
 comp_IN_bar=comp_IN;
 
+ xticklabels=[repmat({'Con'},1,numel(xticks)/2) ;repmat({'Ina'},1,numel(xticks)/2)];
+ xticklabels=xticklabels(:);
 
 if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
-    if strcmp(sac_rea,'reaches')
-        %             comp_IN={[1 2] [3 4], [6 7] [8 9], [12 13] [14 15], [17 18] [19 20]};
-        comp_CH=comp_IN;
-        ds      = 6;
-        dh      = 2;
-        dc      = 0;
-        
-        compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds], [6 6+ds], [7 7+ds], [8 8+ds], [9 9+ds]};
-        compIN.hand={[1 1+dh], [2 2+dh], [12 12+dh] [13 13+dh], [6 6+dh] [7 7+dh], [17 17+dh] [18 18+dh]};
-        compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds], [12 5+ds], [13 6+ds], [14 7+ds], [15 8+ds]}; % placeholder
-        
-        %     compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
-        %     compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
-        %     compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
-    else
-        %         comp_IN={[1 2], [4 5], [6 7], [9 10] [11 12], [15 16], [18 19] [20 21], [23 24] [25 26]};
-        comp_CH=comp_IN;
-        % ds      = 14;
-        ds      = 6;
-        dh      = 2;
-        dc      = 0;
-        compIN.space={[1 1+ds], [2 2+ds], [NaN NaN], [NaN NaN], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};
-        compIN.hand={[NaN NaN], [NaN NaN], [NaN NaN], [NaN NaN],[4 4+dh], [5 5+dh], [18 18+dh] [19 19+dh], [9 9+dh] [10 10+dh],[23 23+dh] [24 24+dh]};
-        compIN.choice={[1 1+ds], [2 2+ds], [4 4+ds], [5 5+ds], [6 6+ds], [7 7+ds], [9 9+ds], [10 10+ds], [11 11+ds], [12 12+ds]};     % placeholder
-%         
-%         compIN.space={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]};
-%         compIN.hand={[1 1+dh], [2 2+dh],  [7 7+dh],[8 8+dh]};
-%         compIN.choice={[1 1+ds], [2 2+ds], [3 3+ds], [4 4+ds]}; % placeholder
-    end
     comp_IN_bar=comp_IN;
     sig_IN=[]; sig_CH=[];
     for l=1:numel(comp_IN)
         sig_IN = [sig_IN idx_stat_IN{comp_IN{l}(2)}{2}];
         sig_CH = [sig_CH idx_stat_CH{comp_CH{l}(2)}{2}];
     end
-    comp_IN(isnan(sig_IN))=[];
-    sig_IN(isnan(sig_IN))=[];
+%     comp_IN(isnan(sig_IN))=[];
+%     sig_IN(isnan(sig_IN))=[];
     sig_IN(sig_IN>0.05)=NaN;
-    comp_CH(isnan(sig_CH))=[];
-    sig_CH(isnan(sig_CH))=[];
+%     comp_CH(isnan(sig_CH))=[];
+%     sig_CH(isnan(sig_CH))=[];
     sig_CH(sig_CH>0.05)=NaN;
 end
 
@@ -644,16 +585,6 @@ for e=1:numel(elh)
 end
 y_lim(2)=y_lim(2)+diff(y_lim)*3/10;
 
-if strcmp(sac_rea,'reaches')
-    xticks=[1 2 3 4, 6 7 8 9, 12 13 14 15, 17 18 19 20];
-    %xticks=[1 2 3 4, 6 7 8 9, ];
-    %     xticklabels={'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb'};
-    xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' };
-else
-    xticks=[1 2, 4 5 6 7, 9 10 11 12, 15 16, 18 19 20 21, 23 24 25 26];
-    %     xticklabels={'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb' 'LHa' 'LHb' 'RHa' 'RHb' 'NHa' 'NHb' 'LHa' 'LHb' 'RHa' 'RHb'};
-    xticklabels={'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina' 'Con' 'Ina'};
-end
 
 set(gca,'ylim',y_lim,'xlim',[0,max(xticks)+1],'xtick',xticks,'XTickLabel',xticklabels);
 ylabel(par);
@@ -665,8 +596,12 @@ if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
         comp_CH=comp_CH(~isnan(sig_CH)&sig_CH<0.05);
         sig_CH=sig_CH(~isnan(sig_CH)&sig_CH<0.05);
     end
-    s_IN = sigstar_eye_hand(comp_IN,sig_IN,0,Plot_settings.colors.IN);
-    s_CH = sigstar_eye_hand(comp_CH,sig_CH,0,Plot_settings.colors.CH);
+    if ~isempty(comp_IN)
+    sigstar_eye_hand(comp_IN,sig_IN,0,Plot_settings.colors.IN);
+    end
+    if ~isempty(comp_CH)
+    sigstar_eye_hand(comp_CH,sig_CH,0,Plot_settings.colors.CH);
+    end
     
     if ~GLO.only_between_group_comparissons
         comparissons={'space','hand','choice'};
@@ -694,35 +629,32 @@ if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1
                             continue
                         else
                             if precision, totest_raw = 'raw_of_std'; totest_mean = 'raw_of_std'; else totest_raw = 'raw_of_raw'; totest_mean = 'raw_of_mean'; end
-                            if strcmp(sac_rea,'saccades') && str2double(effectors{e})==0 %saccades
+                            
+                            %if strcmp(sac_rea,'saccades') && str2double(effectors{e})==0 %saccades
                                 if (GLO.trial_by_trial) ||  GLO.testing_patient %trial by trial
-                                    if GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4} < 0.05  )
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
-                                    elseif ~GLO.only_significant
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
+                                    if ~GLO.only_significant || (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4} < 0.05  )
+                                        sigstar_eye_hand(comp.(comparisson)(e),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
                                     end
                                 else %summaries per batch
-                                    if GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4} < 0.05 )
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
-                                    elseif ~GLO.only_significant
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
+                                    if ~GLO.only_significant || (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4} < 0.05 )
+                                        sigstar_eye_hand(comp.(comparisson)(e),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
                                     end
                                 end
-                            else %reaches
-                                if (GLO.trial_by_trial) ||  GLO.testing_patient %trial by trial
-                                    if GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4} < 0.05  )
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
-                                    elseif ~GLO.only_significant
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
-                                    end
-                                else %summaries per batch
-                                    if ~GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4} < 0.05  )
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
-                                    elseif ~GLO.only_significant
-                                        sigstar_eye_hand(compIN.(comparisson)(e*4+compc*2+g-6-not_exisent_comparison_counter),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
-                                    end
-                                end
-                            end
+%                             else %reaches
+%                                 if (GLO.trial_by_trial) ||  GLO.testing_patient %trial by trial
+%                                     if GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4} < 0.05  )
+%                                         sigstar_eye_hand(comp.(comparisson)(e),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
+%                                     elseif ~GLO.only_significant
+%                                         sigstar_eye_hand(comp.(comparisson)(e),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_raw){4},0,Plot_settings.colors.IN);
+%                                     end
+%                                 else %summaries per batch
+%                                     if ~GLO.only_significant && (~isnan(stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4}) && stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4} < 0.05  )
+%                                         sigstar_eye_hand(comp.(comparisson)(e),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
+%                                     elseif ~GLO.only_significant
+%                                         sigstar_eye_hand(comp.(comparisson)(e),stat.(comparisson)(g).(sac_rea).(par).(subcondition).(totest_mean){4},0,Plot_settings.colors.IN);
+%                                     end
+%                                 end
+%                             end
                         end
                     end
                 end
@@ -859,14 +791,14 @@ for s=1:numel(sides)
                 hand=['_' hands{h}];idx_bar_start=idx+1;
                 [idx e_bar_tmp]=plot_internal_per_condition_ch_in(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,sig_residuals);
                 
-                [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.(hands{h}),par,stat,precision);
+                [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,par,stat,precision);
                 e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
             end
         elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
             hand=[];idx_bar_start=idx+1;
             [idx e_bar_tmp]=plot_internal_per_condition_ch_in(idx,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,sig_residuals);
             
-            [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,Plot_settings.colors.sac,par,stat,precision);
+            [idx_stat_IN{idx} idx_stat_CH{idx}]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,par,stat,precision);
             e_bar(idx_bar_start:idx)=e_bar_tmp(idx_bar_start:idx);
         end
         title(type_labels)
@@ -1081,8 +1013,9 @@ temp_raw = 'raw_of_mean';
 LH1=input_group1.LH; RH1=input_group1.RH;
 LH2=input_group2.LH; RH2=input_group2.RH;
 
-
-if ~GLO.parametric_testing && GLO.calculate_statististics && GLO.plot_statististics
+if any([numel(LH1.(sub)) numel(RH1.(sub)) numel(LH2.(sub)) numel(RH2.(sub))])<2
+ ps(1:4)=NaN;
+elseif ~GLO.parametric_testing && GLO.calculate_statististics && GLO.plot_statististics
     [ps(1)] = signrank(LH1.(sub)',RH1.(sub)');
     [ps(2)] = signrank(LH2.(sub)',RH2.(sub)');
     [ps(3)] = signrank(LH1.(sub)',LH2.(sub)');
@@ -1497,7 +1430,7 @@ if ~isempty(unique_pos)
         end
     elseif strcmp(sac_rea,'saccades') && str2double(effector)==0
         hand=[];
-        plot_raw_internal(groups,type_effector,hand,Plot_settings,Plot_settings.colors.sac),sac_rea;
+        plot_raw_internal(groups,type_effector,hand,Plot_settings,Plot_settings.colors.sac,sac_rea);
     end
     
 end
@@ -1812,8 +1745,8 @@ if GLO.instructed_only
     lin=['-','-'];
 elseif GLO.choice_only
     conditions= {'CH_LH','CH_RH'};
-    symbol=['s','s'];
-    lin=[':',':'];
+    symbol=['o','o'];
+    lin=['-','-'];
 else
     conditions= {'IN_LH','IN_RH','CH_LH','CH_RH'};
     symbol=['o','o','s','s'];
@@ -1829,8 +1762,8 @@ if strcmp(sac_rea,'saccades') && str2double(effector)==0
         lin='-';
     elseif GLO.choice_only
         conditions={'CH'};
-        symbol='s';
-        lin=':';
+        symbol='o';
+        lin='-';
     else
         conditions={'IN','CH'};
         symbol=['o','s'];
@@ -1896,21 +1829,22 @@ for g=1:size(groups,1)
             else
                 complex_mean=current_group(p).(type_effector_condition).mean_of_mean;
                 complex_raw=current_group(p).(type_effector_condition).raw_of_mean;
-                real_std=mean(real(current_group(p).(type_effector_condition).raw_of_std));
-                imag_std=mean(imag(current_group(p).(type_effector_condition).raw_of_std));
+%                 real_std=mean(real(current_group(p).(type_effector_condition).raw_of_std));
+%                 imag_std=mean(imag(current_group(p).(type_effector_condition).raw_of_std));
+                real_std=real(current_group(p).(type_effector_condition).raw_of_std);
+                imag_std=imag(current_group(p).(type_effector_condition).raw_of_std);
             end
             
-            complex_all=current_group(p).(type_effector_condition).raw_of_raw;
-            
-            X_mean=real(complex_mean);
-            Y_mean=imag(complex_mean);
-            plot(real(complex_mean),imag(complex_mean),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor',current_color,'Color',current_color);
-            if GLO.plot_raw_endpoints
-                %                 scatter(real(complex_all),imag(complex_all),10,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color);
-                scatter(real(complex_all),imag(complex_all),10,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color);
-            end
-            cl=line((circle_x*real_std)+real(complex_mean),(circle_y*imag_std)+imag(complex_mean));
-            
+%             complex_all=current_group(p).(type_effector_condition).raw_of_raw;
+%             
+%             X_mean=real(complex_mean);
+%             Y_mean=imag(complex_mean);
+            plot(real(complex_mean),imag(complex_mean),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color,'LineStyle','none');
+            plot(real(complex_raw),imag(complex_raw),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor',current_color,'LineStyle','none');
+%             if GLO.plot_raw_endpoints
+%                 scatter(real(complex_all),imag(complex_all),10,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color);
+%             end
+            cl=line((circle_x'*real_std)+real(complex_mean),(circle_y'*imag_std)+imag(complex_mean));
             set(cl,'Color',current_color,'LineWidth',GLO.linewidth,'LineStyle',lin(c));
             
             if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1 && isfield(stat(p).([type_effector '_' condition]),'raw_of_raw')
@@ -1930,15 +1864,15 @@ for g=1:size(groups,1)
                 n_stars_y= (py<0.001) + (py<0.01) + (py<0.05);
                 xstars = repmat('x',1,n_stars_x);
                 ystars = repmat('y',1,n_stars_y);
-                text(center(1),center(2)+2+c,xstars,'fontsize',20,'color',current_color)
-                text(center(1),center(2)+6+c,ystars,'fontsize',20,'color',current_color)
+                text(center(1)+2+c,center(2),xstars,'fontsize',20,'color',current_color,'HorizontalAlignment', 'center','VerticalAlignment', 'middle')
+                text(center(1),center(2)+2+c,ystars,'fontsize',20,'color',current_color,'HorizontalAlignment', 'center','VerticalAlignment', 'middle')
                 
                 n_stars_x_pre= (px_pre<0.001) + (px_pre<0.01) + (px_pre<0.05);
                 n_stars_y_pre= (py_pre<0.001) + (py_pre<0.01) + (py_pre<0.05);
                 xstars_pre = repmat('-',1,n_stars_x_pre);
                 ystars_pre = repmat('|',1,n_stars_y_pre);
-                text(center(1),center(2)+2+c,xstars_pre,'fontsize',20,'color',current_color)
-                text(center(1),center(2)+6+c,ystars_pre,'fontsize',20,'color',current_color)
+                text(center(1)+2+c,center(2),xstars_pre,'fontsize',20,'color',current_color,'HorizontalAlignment', 'center','VerticalAlignment', 'middle')
+                text(center(1),center(2)+2+c,ystars_pre,'fontsize',20,'color',current_color,'HorizontalAlignment', 'center','VerticalAlignment', 'middle')
             end
         end
     end
@@ -2336,7 +2270,7 @@ end
 
 %% STATISTICS FUNCTIONS
 
-function [par_label_IN, par_label_CH]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,Plot_settings,col1,par,stat,precision)
+function [par_label_IN, par_label_CH]=stat_sig(idx,sac_rea,groups,side,counter_side,type_effector,hand,par,stat,precision)
 global GLO
 par_label_IN = {NaN;NaN};
 par_label_CH = {NaN;NaN};
@@ -2574,7 +2508,7 @@ for gr= 1:numel(groups)
     end
 end
 uniques = unique(uniques);
-
+uniques(uniques==0)=[];
 Abort_codes.reduced_original = Abort_codes.original(uniques,1);
 Abort_codes.reduced_labels = Abort_codes.labels(uniques,1);
 

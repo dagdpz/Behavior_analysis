@@ -31,7 +31,7 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
         if GLO.testing_patient
             glo.tmp_dir                    = [dag_drive filesep 'Data\Patient_and_controls_20160212\' group{gr}{sub}];
         else
-            glo.tmp_dir                    = [dag_drive filesep 'Data\' group{gr}{sub}];
+            glo.tmp_dir                    = [group{gr}{sub}(1:end-9)];
         end
         
         [~, date_files{gr}{sub}]                 = beh_arrange_trials_eye_hand(glo.tmp_dir, dates_subject_in{gr}{sub}, batching{gr});
@@ -98,6 +98,14 @@ for gr=1:numel(group)
     end
     %here get behavioral analysis from Monkeypsych_analyse and perform
     %some correlation (latency with hands, etc) everything is saved in the structure bactch 
+    if GLO.clean_data
+        for s=1:numel(subject_files{gr})
+            [datapath,dates]=fileparts(subject_files{gr}{s}{1});
+            dates=str2double(dates);
+            MPA_clean_data(datapath,dates)
+        end
+    end
+    
     [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), batch.unique_pos.(subject_ID{gr})] ...
         = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
 end
@@ -196,7 +204,11 @@ for gr=1:numel(fn)  % here concatinate the existing with NaN to make sure no fie
     for j=1:numel(fnn)
         fnnn= fieldnames(batch.out_stru_ext.(fn{gr}).(fnn{j}));
         for within_sub=1:numel(fnnn)
-            new.(fn{gr}).(fnn{j}).(fnnn{within_sub})=catstruct(new.(fn{gr}).(fnn{j}).(fnnn{within_sub}), batch.out_stru_ext.(fn{gr}).(fnn{j}).(fnnn{within_sub}));            
+            try
+            new.(fn{gr}).(fnn{j}).(fnnn{within_sub})=catstruct(new.(fn{gr}).(fnn{j}).(fnnn{within_sub}), batch.out_stru_ext.(fn{gr}).(fnn{j}).(fnnn{within_sub})); 
+            catch eee
+                
+            end
          end
     end
 end

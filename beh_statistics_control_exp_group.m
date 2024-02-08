@@ -23,11 +23,16 @@ for sr=1:numel(saccades_reaches)
         continue;
     end
     parameters=fieldnames(out_stru_te);
-    
+    to_skip={'ini_fix','ini_dur','ini_abort','hnd_switch','abort_raw_states','abort_raw_time_axis','abort_raw_x','abort_raw_y','abort_fix_pos','abort_tar_pos','success_raw_states','success_raw_time_axis',...
+    'success_raw_x','success_raw_y','success_fix_pos','success_tar_pos','abort_code','abort_lat','success_lat','completed_raw_states','completed_raw_time_axis','completed_raw_x','completed_raw_y',...
+    'completed_fix_pos','completed_tar_pos','completed_lat','abort_trial','abort_run','abort_session','success_trial','success_run','success_session','trial','run','session'};
+
+    per_pos_parameters={'endpoints_per_position','endpoints_per_position_s','endpoints_per_position_a','endpoints_per_position_c','endpoints_per_position_t_a','endpos','tar_pos'};%% endpos/tar_pos?
     for pa=1:numel(parameters)
         par=parameters{pa};
-        if strcmp(par,'ini_fix') || strcmp(par,'ini_dur') ||strcmp(par,'ini_abort') || strcmp(par,'hnd_switch') || strcmp(par,'abort_raw_states') || strcmp(par,'abort_raw_time_axis') || strcmp(par,'abort_raw_x') || strcmp(par,'abort_raw_y') || strcmp(par,'abort_fix_pos') || strcmp(par,'abort_tar_pos') || strcmp(par,'success_raw_states') || strcmp(par,'success_raw_time_axis') || strcmp(par,'success_raw_x') || strcmp(par,'success_raw_y') || strcmp(par,'success_fix_pos') || strcmp(par,'success_tar_pos') || strcmp(par,'abort_code') || strcmp(par,'abort_lat') || strcmp(par,'success_lat') ...
-                || strcmp(par,'abort_trial') || strcmp(par,'abort_run') || strcmp(par,'abort_session') || strcmp(par,'success_trial') || strcmp(par,'success_run') || strcmp(par,'success_session') || strcmp(par,'trial') || strcmp(par,'run') || strcmp(par,'session'), continue, end
+        if  ismember(par,to_skip)
+            continue
+        end
         out_stru_te_sr=vertcat(out_stru_te.(par));
         type_effector_fieldnames=fieldnames(out_stru_te_sr);
         
@@ -88,7 +93,7 @@ for sr=1:numel(saccades_reaches)
         
         for te=1:numel(type_effector_fieldnames)
             type_effector=type_effector_fieldnames{te};
-            if strcmp(par,'endpoints_per_position') || strcmp(par,'endpoints_per_position_s') || strcmp(par,'endpoints_per_position_a')  || strcmp(par,'endpoints_per_position_t_a')|| strcmp(par,'endpos') || strcmp(par,'tar_pos') %% endpos? tar_pos?
+            if ismember(par,per_pos_parameters) || strcmp(par,'endpos') || strcmp(par,'tar_pos') %% endpos? tar_pos?
                 for p=1:size(out_stru_te_sr,2)
                     if ~isstruct(out_stru_te_sr(1,p).(type_effector))  |  ~isstruct(out_stru_te_sr(2,p).(type_effector))
                         out_stat.(sac_rea).(par)(p,1).(type_effector).(subcondition)={NaN NaN NaN NaN};
@@ -103,7 +108,7 @@ for sr=1:numel(saccades_reaches)
                         y = [out_stru_te_sr_con(1,2).(subcondition)]';
                         if ~any(isempty(real(x)) | isempty(real(y)))
                             if ~all(isnan(real(x))) && ~all(isnan(real(y)))
-                                if GLO.calculate_statististics && ~GLO.one_subject
+                                if GLO.calculate_statististics && ~GLO.one_subject && numel(x)>2
                                     if isempty(strfind(par,'sac_rea')) %| ~strcmp(par,'accuracy')
                                         if (strcmp(testing,'groups')) && ~GLO.parametric_testing
                                             [pr hr tab_r]= ranksum(real(x),real(y));
