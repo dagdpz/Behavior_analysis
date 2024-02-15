@@ -1,12 +1,6 @@
-function [f_input, out_comp, out_stru_ext, unique_pos] = beh_reaction_time_analysis(files_for_input,dates, batching,subject_files,steady)
+function [f_input, out_comp, out_stru_ext, unique_pos] = beh_reaction_time_analysis(files_for_input,dates, batching,subject_files,unique_pos,steady)
 global  GLO
 GLO.dates                           = dates;
-% %% ??
-% dag_drive_IP=DAG_get_server_IP;
-% GLO.temp_dir                    = [dag_drive_IP 'Data\' files_for_input{1}];
-% h                               = findstr('Data\', GLO.temp_dir);
-% GLO.monkey                      = GLO.temp_dir(h+5:end);
-
 if GLO.delete_last
     for idx_batch                   = 1:numel(files_for_input_batch(:,1))
         DeleteLastTrial(files_for_input_batch{idx_batch,1});
@@ -18,13 +12,9 @@ f_input{1} = subject_files;
 %% MAIN FUNCTION STRUCTURE, RUN MPA THEN RUN BY RUN ANALYZYS AND THEN BATCH ANALYSYS
 correlation_conditions                                      = {'demanded_hand','choice','type','effector','target_side','success'};
 parameters_to_correlate                                     = {'lat','dur'};
- % Sel_all = {'display',0,'nsacc_max',10,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
 
-%for trial by trial inspection 
- Sel_all = {'display',0,'summary',0,'nsacc_max',5,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
-% 'reach_1st_pos'
-% 'reach_1st_pos_in'
-% 'reach_pos_at_state_change'
+%for trial by trial inspection
+Sel_all = {'display',0,'summary',0,'nsacc_max',5,'correlation_conditions',correlation_conditions,'parameters_to_correlate',parameters_to_correlate,'runs_as_batches',batching.runs_as_batches_val};
 
 steady_FN=fieldnames(steady);
 for f=1:numel(steady_FN)
@@ -82,32 +72,30 @@ for n=1:numel(out_comp)
     clear tmp
 end
 
-%[out_comp,~,~]                                          = monkeypsych_analyze_hand_eye_choice_seperately7(MA_input{:});
-
 %% Unique positions
-out_comp_mat                        = vertcat(out_comp{:});
-out_comp_saccades                   = vertcat(out_comp_mat.saccades);
-out_comp_reaches                    = vertcat(out_comp_mat.reaches);
-saccadepositions                    = [out_comp_saccades.tar_pos]-[out_comp_saccades.fix_pos];
-reachpositions                      = [out_comp_reaches.tar_pos]-[out_comp_reaches.fix_pos];
-% saccadepositions                    = [out_comp_saccades.tar_pos];
-% reachpositions                      = [out_comp_reaches.tar_pos];
-% reorganise and calculate mean, raw, stfd, and num of hits for the bacth
-unique_pos.saccades                 = unique_positions(saccadepositions,1.5);
-unique_pos.reaches = unique_positions(reachpositions,1.5);
-%get target/fixation radius for reaches and saccades
-unique_pos.reaches_tar_rad = nanmean([out_comp_reaches.tar_rad]);
-unique_pos.saccades_tar_rad = nanmean([out_comp_saccades.tar_rad]);
-unique_pos.reaches_tar_siz = nanmean([out_comp_reaches.tar_siz]);
-unique_pos.saccades_tar_siz = nanmean([out_comp_saccades.tar_siz]);
-unique_pos.reaches_fix_rad = nanmean([out_comp_reaches.fix_rad]);
-unique_pos.saccades_fix_rad = nanmean([out_comp_saccades.fix_rad]);
-unique_pos.reaches_fix_siz = nanmean([out_comp_reaches.fix_siz]);
-unique_pos.saccades_fix_siz = nanmean([out_comp_saccades.fix_siz]);
-
+if isempty(unique_pos)
+    out_comp_mat                        = vertcat(out_comp{:});
+    out_comp_saccades                   = vertcat(out_comp_mat.saccades);
+    out_comp_reaches                    = vertcat(out_comp_mat.reaches);
+    saccadepositions                    = [out_comp_saccades.tar_pos]-[out_comp_saccades.fix_pos];
+    reachpositions                      = [out_comp_reaches.tar_pos]-[out_comp_reaches.fix_pos];
+    
+    % reorganise and calculate mean, raw, stfd, and num of hits for the bacth
+    unique_pos.saccades                 = unique_positions(saccadepositions,1.5);
+    unique_pos.reaches                  = unique_positions(reachpositions,1.5);
+    %get target/fixation radius for reaches and saccades
+    unique_pos.reaches_tar_rad          = nanmean([out_comp_reaches.tar_rad]);
+    unique_pos.saccades_tar_rad         = nanmean([out_comp_saccades.tar_rad]);
+    unique_pos.reaches_tar_siz          = nanmean([out_comp_reaches.tar_siz]);
+    unique_pos.saccades_tar_siz         = nanmean([out_comp_saccades.tar_siz]);
+    unique_pos.reaches_fix_rad          = nanmean([out_comp_reaches.fix_rad]);
+    unique_pos.saccades_fix_rad         = nanmean([out_comp_saccades.fix_rad]);
+    unique_pos.reaches_fix_siz          = nanmean([out_comp_reaches.fix_siz]);
+    unique_pos.saccades_fix_siz         = nanmean([out_comp_saccades.fix_siz]);
+end
 
 [out_str,  out_ini_fix,out_dur_fix, out_ini_abort, out_hnd_abort]              = rt_s_internal_cal(out_comp,unique_pos);
-[out_stru_ext]                      = external_cal(out_str);
+[out_stru_ext]                                                                 = external_cal(out_str);
 
 subparameters                       = {'mean','raw','std','num_hits'};
 out_stru_ext.reaches.ini_fix.LH=get_external_means_std([out_ini_fix.LH.ini_fix],subparameters);
@@ -399,17 +387,12 @@ for te=1:numel(type_effector_fieldnames)
                         out_stru_ext.(sac_rea).(subcondition)(p).([type_effector '_' condition])=temp;
                     end
                 elseif (any(ismember({'abort_code','abort_raw_x','abort_raw_y','abort_raw_states','abort_raw_time_axis','abort_fix_pos','abort_tar_pos','abort_lat',...
-                                                 'success_raw_x','success_raw_y','success_raw_states','success_raw_time_axis','success_fix_pos','success_tar_pos', 'success_lat',...                                        
-                                                 'completed_raw_x','completed_raw_y','completed_raw_states','completed_raw_time_axis','completed_fix_pos','completed_tar_pos', 'completed_lat'},subcondition)))
+                        'success_raw_x','success_raw_y','success_raw_states','success_raw_time_axis','success_fix_pos','success_tar_pos', 'success_lat',...
+                        'completed_raw_x','completed_raw_y','completed_raw_states','completed_raw_time_axis','completed_fix_pos','completed_tar_pos', 'completed_lat'},subcondition)))
                     
                     out_stru_ext.(sac_rea).(subcondition).([type_effector '_' condition])=out_sc;
                 else
-                    try
                     temp=get_external_means_std(out_sc,subparameters);
-                    catch eeee
-                       eeee; 
-                        
-                    end
                     out_stru_ext.(sac_rea).(subcondition).([type_effector '_' condition])=[temp];
                 end
             end
@@ -419,28 +402,20 @@ end
 
 end
 
-
-
 function unique_pos=unique_positions(saccadepositions,target_pos_precision)
 target_positions                    =   unique(saccadepositions(~isnan(saccadepositions)));
 n_targets                           =   numel(target_positions);
 unique_pos=[];
 for k=1:numel(target_positions)
-    if k>1 && any(abs(unique_pos-target_positions(k))<1.5)
+    if k>1 && any(abs(unique_pos-target_positions(k))<target_pos_precision)
         continue
     else
         unique_pos=[unique_pos target_positions(k)];
     end
 end
-% for t = 1:n_targets
-%     target_positions(abs(target_positions-target_positions(t))<target_pos_precision) = target_positions(t);
-% end
-% unique_pos                          = unique(target_positions);
 end
 
-
-% get_raw_mean_std(out_comp{idx_batch},temp_index_h,temp_index_h,'abort_code','IN');
-function out = get_hand_switch_errors(temp_index_all,temp_index_h,idx,idx_batch)%,temp_index_h,idx,idx_batch,{'hnd_switch','hnd_stay'}
+function out = get_hand_switch_errors(temp_index_all,temp_index_h,idx,idx_batch)%
 parameters={'hnd_switch','hnd_stay'};
 for p = 1:numel(parameters)
     par                             = parameters{p};
@@ -458,9 +433,6 @@ out.successful.raw              = variable_of_interest;
 out.successful.std              = nanstd(variable_of_interest);
 out.successful.num_hits         = sum(variable_of_interest);
 end
-
-
-
 
 function out = get_raw_mean_std(input,temp_index,counterside_index,reach_or_saccade,decision)
 global GLO
@@ -538,7 +510,6 @@ out.side_selection.raw              = variable_of_interest_side;
 out.side_selection.std              = nanstd(variable_of_interest_side);
 out.side_selection.num_hits         = sum(variable_of_interest_side);
 end
-
 
 function out = get_corr(input,temp_index,out)
 parameters={'lat_r','lat_p','lat_slo','lat_int','lat_r_residuals','lat_p_residuals','lat_slo_residuals','lat_int_residuals','lat_raw_sac_rea','lat_difference_sac_rea','lat_residuals_sac_rea'};

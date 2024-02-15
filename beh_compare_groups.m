@@ -1826,6 +1826,7 @@ for g=1:size(groups,1)
                 complex_raw=current_group(p).(type_effector_condition).raw_of_raw;
                 real_std=real(current_group(p).(type_effector_condition).std_of_raw);
                 imag_std=imag(current_group(p).(type_effector_condition).std_of_raw);
+            cl=line((circle_x'*real_std)+real(complex_mean),(circle_y'*imag_std)+imag(complex_mean));
             else
                 complex_mean=current_group(p).(type_effector_condition).mean_of_mean;
                 complex_raw=current_group(p).(type_effector_condition).raw_of_mean;
@@ -1833,18 +1834,18 @@ for g=1:size(groups,1)
 %                 imag_std=mean(imag(current_group(p).(type_effector_condition).raw_of_std));
                 real_std=real(current_group(p).(type_effector_condition).raw_of_std);
                 imag_std=imag(current_group(p).(type_effector_condition).raw_of_std);
+            cl=line(bsxfun(@plus,(circle_x'*real_std),real(complex_raw)),bsxfun(@plus,(circle_y'*imag_std),imag(complex_raw)));
             end
             
 %             complex_all=current_group(p).(type_effector_condition).raw_of_raw;
 %             
 %             X_mean=real(complex_mean);
 %             Y_mean=imag(complex_mean);
-            plot(real(complex_mean),imag(complex_mean),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color,'LineStyle','none');
-            plot(real(complex_raw),imag(complex_raw),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor',current_color,'LineStyle','none');
+            plot(real(complex_mean),imag(complex_mean),'MarkerSize',6,'Marker',symbol(c),'MarkerEdgeColor','k','MarkerFaceColor',current_color,'LineStyle','none');
+            plot(real(complex_raw),imag(complex_raw),'MarkerSize',4,'Marker',symbol(c),'MarkerEdgeColor','none','MarkerFaceColor',current_color,'LineStyle','none');
 %             if GLO.plot_raw_endpoints
 %                 scatter(real(complex_all),imag(complex_all),10,'Marker',symbol(c),'MarkerEdgeColor',current_color,'MarkerFaceColor',current_color);
 %             end
-            cl=line((circle_x'*real_std)+real(complex_mean),(circle_y'*imag_std)+imag(complex_mean));
             set(cl,'Color',current_color,'LineWidth',GLO.linewidth,'LineStyle',lin(c));
             
             if GLO.calculate_statististics ==1 && GLO.plot_statististics == 1 && isfield(stat(p).([type_effector '_' condition]),'raw_of_raw')

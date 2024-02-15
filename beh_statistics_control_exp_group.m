@@ -106,6 +106,7 @@ for sr=1:numel(saccades_reaches)
                         x=[]; y=[]; hr=NaN; pr=NaN;  hi=NaN; pi=NaN; tab_r=NaN; tab_i=NaN;
                         x = [out_stru_te_sr_con(1,1).(subcondition)]';
                         y = [out_stru_te_sr_con(1,2).(subcondition)]';
+                        x=x(~isnan(x)); y=y(~isnan(y));
                         if ~any(isempty(real(x)) | isempty(real(y)))
                             if ~all(isnan(real(x))) && ~all(isnan(real(y)))
                                 if GLO.calculate_statististics && ~GLO.one_subject && numel(x)>2

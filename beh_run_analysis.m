@@ -92,6 +92,11 @@ for gr=1:numel(group)  %this entire loop defines how to analyse data (batching, 
     end   
 end
 
+%% to make sure unique positions are the same for both experimental and control sessions, we define them only on control trials.....
+%% this is annyoing, but necessary
+
+unique_pos=[];
+
 for gr=1:numel(group)
     if GLO.one_subject == 1 && (gr>1)
         continue
@@ -106,8 +111,9 @@ for gr=1:numel(group)
         end
     end
     
-    [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), batch.unique_pos.(subject_ID{gr})] ...
-        = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},steady);
+    [batch.files_for_input.(subject_ID{gr}), batch.out_comp.(subject_ID{gr}), batch.out_stru_ext.(subject_ID{gr}), unique_pos] ...
+        = beh_reaction_time_analysis(group{gr},dates_subject{gr}, batching{gr},subject_files{gr},unique_pos,steady);
+    batch.unique_pos.(subject_ID{gr})=unique_pos;
 end
 
 %% Here repetition for the same group
