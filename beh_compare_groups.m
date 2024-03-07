@@ -53,12 +53,12 @@ end
 
 GLO.subject = monkey;
 Group = Group_temp;
-unique_saccade_positions    =   unique([Positions.saccades]);
-unique_reach_positions      =   unique([Positions.reaches]);
+% unique_saccade_positions    =   unique([Positions.saccades]);
+% unique_reach_positions      =   unique([Positions.reaches]);
 
 for i = 1:numel(Group)
-    Positions(1,i).saccades =   unique_saccade_positions;
-    Positions(1,i).reaches  =   unique_reach_positions;
+    Positions(1,i).saccades =   batch.unique_pos.Experimental.saccades;
+    Positions(1,i).reaches  =   batch.unique_pos.Experimental.reaches;
 end
 
 reaches_saccades=fieldnames(Group);
@@ -175,7 +175,7 @@ for rs=1:numel(reaches_saccades)
                     type=Plot_settings.types{t};
                     if isfield(Group(1).(sac_rea),par) && (any(ismember(11,GLO.summary)) || any(ismember(-1,GLO.summary)))
                         subplot(Plot_settings.(sac_rea).n_rows,1,t);
-                        isdata= temp_means_bars_consecutive(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,precision);
+                        isdata= temp_means_bars_consecutive(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,batch.stat,precision);
                         if isdata
                             subplot_indexes=[subplot_indexes t];
                         end
@@ -209,7 +209,7 @@ for rs=1:numel(reaches_saccades)
                     type=Plot_settings.types{t};
                     if isfield(Group(1).(sac_rea),par) && (any(ismember(10,GLO.summary)) || any(ismember(-1,GLO.summary)))
                         subplot(Plot_settings.(sac_rea).n_rows,1,t);
-                        isdata= temp_means_bars_ch_in(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig),precision);
+                        isdata= temp_means_bars_ch_in(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,batch.stat,Group(1).(sac_rea).(par_sig),Group(2).(sac_rea).(par_sig),precision);
                         if isdata
                             subplot_indexes=[subplot_indexes t];
                         end
@@ -245,9 +245,9 @@ for rs=1:numel(reaches_saccades)
                         hi((t-1)*2*Plot_settings.(sac_rea).n_columns + e*2-1)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns*2,(t-1)*2*Plot_settings.(sac_rea).n_columns + e*2-1);
                         if ~isfield(Group(1).(sac_rea),par), Group(1).(sac_rea).(par)=NaN; end
                         if ~isfield(Group(2).(sac_rea),par), Group(2).(sac_rea).(par)=NaN; end
-                        isdata= plot_par_histograms(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,precision,e,1);
+                        isdata= plot_par_histograms(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,precision,e,1);
                         hi((t-1)*2*Plot_settings.(sac_rea).n_columns + e*2)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns*2,(t-1)*2*Plot_settings.(sac_rea).n_columns + e*2);
-                        isdata= plot_par_histograms(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,precision,e,2);
+                        isdata= plot_par_histograms(Group(1).(sac_rea).(par),Group(2).(sac_rea).(par),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,precision,e,2);
                         if isdata
                             subplot_indexes_h=[subplot_indexes_h t];
                         end
@@ -306,9 +306,9 @@ for rs=1:numel(reaches_saccades)
                     co((t-1)*2*Plot_settings.(sac_rea).n_columns + e*2-1)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns*2,(t-1)*2*Plot_settings.(sac_rea).n_columns + e*2-1);
                     if ~isfield(Group(1).(sac_rea),par), Group(1).(sac_rea).(par)=NaN; end
                     if ~isfield(Group(2).(sac_rea),par), Group(2).(sac_rea).(par)=NaN; end
-                    plot_par_correlations(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,e,1);
+                    plot_par_correlations(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,e,1);
                     co((t-1)*2*Plot_settings.(sac_rea).n_columns + e*2)=subplot(Plot_settings.(sac_rea).n_rows, Plot_settings.(sac_rea).n_columns*2,(t-1)*2*Plot_settings.(sac_rea).n_columns + e*2);
-                    plot_par_correlations(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors,Positions(1).(sac_rea),Plot_settings,par,e,2);
+                    plot_par_correlations(Group(1).(sac_rea),Group(2).(sac_rea),sac_rea,type,Plot_settings.(sac_rea).effectors,Plot_settings,par,e,2);
                     %                     if isdata
                     %                         subplot_indexes_h=[subplot_indexes_h t];
                     %                     end
@@ -687,7 +687,7 @@ uistack(ha,'bottom');
 
 end
 
-function isdata=temp_means_bars_consecutive(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,stat,precision)
+function isdata=temp_means_bars_consecutive(input_group1,input_group2,sac_rea,type,effectors,Plot_settings,par,stat,precision)
 global GLO
 
 switch str2double(type)
@@ -753,7 +753,7 @@ ylabel(par);
 
 end
 
-function isdata=temp_means_bars_ch_in(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,stat,sig_residuals_group1,sig_residuals_group2,precision)
+function isdata=temp_means_bars_ch_in(input_group1,input_group2,sac_rea,type,effectors,Plot_settings,par,stat,sig_residuals_group1,sig_residuals_group2,precision)
 global GLO
 
 switch str2double(type)
@@ -856,7 +856,7 @@ uistack(ha,'bottom');
 
 end
 
-function isdata=plot_par_histograms(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,precision,e,s)
+function isdata=plot_par_histograms(input_group1,input_group2,sac_rea,type,effectors,Plot_settings,par,precision,e,s)
 global GLO
 switch str2double(type)
     case 1, type_labels='fixation';    case 2, type_labels='visually-guided';    case 2.5, type_labels='memory learning';    case 3, type_labels='memory-guided'; case 4, type_labels='delayed visually-guided';
@@ -898,7 +898,7 @@ end
 title([type_labels ' ' effector_labels ' ' side_label])
 end
 
-function c=plot_par_correlations(input_group1,input_group2,sac_rea,type,effectors,unique_pos,Plot_settings,par,e,s)
+function c=plot_par_correlations(input_group1,input_group2,sac_rea,type,effectors,Plot_settings,par,e,s)
 global GLO
 switch str2double(type)
     case 1, type_labels='fixation';    case 2, type_labels='visually-guided';    case 2.5, type_labels='memory learning';    case 3, type_labels='memory-guided'; case 4, type_labels='delayed visually-guided';
